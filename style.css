@@ -48,16 +48,18 @@ html {
   /* Original Easter Egg Cat Styling (in footer) */
   #easter-egg-cat {
     /* Tailwind classes handle positioning (absolute), opacity, transition */
-    /* Add any additional specific styles here if needed */
   }
   
-  /* NEW Chasing Cat Styling */
-  #chasing-cat {
+  /* Chasing Cat Image Styling */
+  #chasing-cat-img {
       /* Tailwind classes handle fixed position, size, z-index, pointer-events, opacity */
       /* We use JS to set left/top via transform */
       transition: transform 0.1s linear; /* Smooth position changes */
       /* Ensure it's centered on its coordinates */
       transform: translate(-50%, -50%);
+       /* Helps keep pixel art sharp */
+       image-rendering: pixelated;
+       image-rendering: crisp-edges; /* Fallback/alternative */
   }
   
   

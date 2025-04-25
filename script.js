@@ -4,75 +4,157 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- Simple Blue Dot Cursor Follower (Disabled) ---
     /* ... (code remains commented out) ... */
 
-    // --- Chasing Cat Cursor (NEW - Targets #chasing-cat) ---
-    const chasingCat = document.getElementById('chasing-cat'); // Changed variable name for clarity
+    // --- Chasing Cat Image Animation (Using separate images) ---
+    const catImg = document.getElementById('chasing-cat-img'); // Target the img tag
 
-    if (chasingCat) { // Check if the chasing cat element exists
-        let mouseX = -100; // Start mouse position off-screen
-        let mouseY = -100;
-        let catX = -100;   // Start cat position off-screen
-        let catY = -100;
-        let speed = 0.07; // Controls how fast the cat catches up (lower is slower)
-        let isMoving = false;
+    if (catImg) { // Check if the cat element exists
+        let mouseX = window.innerWidth / 2; // Actual mouse position
+        let mouseY = window.innerHeight / 2;
+        let catX = window.innerWidth / 2;   // Cat's current center position
+        let catY = window.innerHeight / 2;
+        let targetX = mouseX; // The point the cat is trying to reach
+        let targetY = mouseY;
+        let speed = 0.25; // Cat follow speed
+        let isAnimating = false;
+        let animationFrameId = null;
+        let isMouseInside = false;
+        let scaleX = 1; // For mirroring
 
-        // Track mouse movement
-        document.addEventListener('mousemove', (e) => {
-            mouseX = e.clientX;
-            mouseY = e.clientY;
-            if (!isMoving) {
-                // Start the animation loop if it's not already running
-                isMoving = true;
-                requestAnimationFrame(animateChasingCat); // Use specific function name
-                 // Make cat visible when mouse first moves
-                 chasingCat.style.opacity = '0.8'; // Use the Tailwind opacity class value
-            }
-        });
+        // --- Offset: Adjust where the cat aims relative to the cursor ---
+        const offsetX = 15; // Aim slightly to the right of the cursor
+        const offsetY = 15; // Aim slightly below the cursor
 
-         // Hide cat when mouse leaves the window
-        document.addEventListener('mouseleave', () => {
-            mouseX = -100; // Move target off-screen
-            mouseY = -100;
-            // Optional: fade out smoothly
-            // chasingCat.style.opacity = '0';
-        });
-        // Make cat visible when mouse enters again
-         document.addEventListener('mouseenter', () => {
-             chasingCat.style.opacity = '0.8';
-            if (!isMoving) {
-                 isMoving = true;
-                 requestAnimationFrame(animateChasingCat); // Use specific function name
-            }
-         });
+        // --- Image Animation Variables ---
+        const idleImageSrc = 'images/cat-3.png'; // Idle frame
+        const walkImageFiles = [ // Array of walking frame filenames
+            'images/cat-1.png',
+            'images/cat-2.png',
+            'images/cat-4.png',
+            'images/cat-5.png',
+            'images/cat-6.png',
+            'images/cat-7.png',
+            'images/cat-8.png',
+        ];
+        let currentWalkFrameIndex = 0;
+        let lastFrameTime = 0;
+        const frameInterval = 250; // Animation pace (milliseconds)
+        let isCatMoving = false;
 
-
-        // Animation function for the chasing cat
-        function animateChasingCat() {
-            // Calculate distance between cat and mouse
-            let dx = mouseX - catX;
-            let dy = mouseY - catY;
-
-            // Move cat towards mouse using easing
-            catX += dx * speed;
-            catY += dy * speed;
-
-            // Apply the position using transform for better performance
-            // The -50% translates it so the center of the cat aligns with the coordinates
-            chasingCat.style.transform = `translate(calc(${catX}px - 50%), calc(${catY}px - 50%))`;
-
-            // Check if the cat is close enough to the target or if mouse left window
-            if (Math.abs(dx) < 1 && Math.abs(dy) < 1 && mouseX === -100) {
-                 isMoving = false; // Stop the loop if mouse left and cat reached target
-                 // Optional: Hide cat completely when stopped off-screen
-                 // chasingCat.style.opacity = '0';
-            } else {
-                 requestAnimationFrame(animateChasingCat); // Continue the animation loop
+        // Function to start the animation loop
+        function startAnimationLoop() {
+            if (!isAnimating) {
+                isAnimating = true;
+                catImg.style.opacity = '0.9';
+                catImg.src = idleImageSrc;
+                lastFrameTime = performance.now();
+                if (animationFrameId) cancelAnimationFrame(animationFrameId);
+                animationFrameId = requestAnimationFrame(animateCatPosition);
             }
         }
 
-        // Initial call to position the cat off-screen correctly
-        chasingCat.style.transform = `translate(calc(${catX}px - 50%), calc(${catY}px - 50%))`;
+        // Function to stop the animation loop
+        function stopAnimationLoop() {
+            if (isAnimating) {
+                isAnimating = false;
+                if (animationFrameId) cancelAnimationFrame(animationFrameId);
+                animationFrameId = null;
+                catImg.style.opacity = '0';
+                catX = -200;
+                catY = -200;
+                catImg.style.transform = `translate(calc(${catX}px - 50%), calc(${catY}px - 50%)) scaleX(${scaleX})`;
+                catImg.src = idleImageSrc;
+                currentWalkFrameIndex = 0;
+            }
+        }
 
-    } // End if(chasingCat)
+        // Track mouse movement
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX; // Update actual mouse position
+            mouseY = e.clientY;
+            // Update the target for the cat, including the offset
+            targetX = mouseX + offsetX;
+            targetY = mouseY + offsetY;
+            if (isMouseInside) startAnimationLoop();
+        });
+
+        // Handle mouse leaving the window
+        document.addEventListener('mouseleave', () => {
+            isMouseInside = false;
+            // Set target off-screen (offset doesn't matter much here)
+            targetX = -200;
+            targetY = -200;
+        });
+
+         // Handle mouse entering the window
+         document.addEventListener('mouseenter', (e) => { // Get initial position on enter
+            isMouseInside = true;
+            mouseX = e.clientX; // Update actual mouse position on enter
+            mouseY = e.clientY;
+            // Reset cat position near the entry point
+            catX = mouseX;
+            catY = mouseY;
+            targetX = mouseX + offsetX; // Set initial target with offset
+            targetY = mouseY + offsetY;
+            startAnimationLoop();
+         });
+
+        // Animation function for position and frame updates
+        function animateCatPosition(currentTime) {
+            // Calculate distance from cat's current position to its target position
+            let dx = targetX - catX;
+            let dy = targetY - catY;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+
+            // Check if the cat should be considered "moving"
+            isCatMoving = distance > 5; // Threshold to consider moving
+
+            // Move cat towards target
+            if (distance > 1) { // Only move if not already very close
+                catX += dx * speed;
+                catY += dy * speed;
+            } else if (!isMouseInside) { // If mouse is outside AND cat reached off-screen target
+                stopAnimationLoop();
+                return; // Exit the function early
+            }
+
+            // Determine direction for mirroring based on movement towards target
+            if (Math.abs(dx) > 1) { // Only change direction if moving horizontally significantly
+                scaleX = (dx > 0) ? 1 : -1; // Mirror if dx is negative (moving left)
+            }
+
+            // Update cat image element's position and apply mirroring via scaleX
+            // The calculation centers the image element at (catX, catY)
+            catImg.style.transform = `translate(calc(${catX}px - 50%), calc(${catY}px - 50%)) scaleX(${scaleX})`;
+
+            // Update image source based on movement
+            if (isCatMoving) {
+                // Walking Animation: Cycle through walkImageFiles
+                if (currentTime - lastFrameTime > frameInterval) {
+                    currentWalkFrameIndex = (currentWalkFrameIndex + 1) % walkImageFiles.length;
+                    catImg.src = walkImageFiles[currentWalkFrameIndex];
+                    lastFrameTime = currentTime;
+                }
+            } else {
+                // Idle Animation: Set to the idle image
+                if (catImg.src !== idleImageSrc) { // Only set if not already idle
+                    catImg.src = idleImageSrc;
+                }
+                currentWalkFrameIndex = 0; // Reset walk cycle index
+            }
+
+            // Continue the loop if it should still be animating
+            if (isAnimating) {
+                animationFrameId = requestAnimationFrame(animateCatPosition);
+            }
+        }
+
+        // Initial setup
+        catImg.style.opacity = '0'; // Start hidden
+        catImg.src = idleImageSrc; // Start with idle frame
+        catImg.style.transform = `translate(calc(${catX}px - 50%), calc(${catY}px - 50%)) scaleX(${scaleX})`;
+
+
+    } // End if(catImg)
 
 
     // --- Update Copyright Year ---
@@ -114,12 +196,14 @@ document.addEventListener('DOMContentLoaded', () => {
         };
         const scrollObserver = new IntersectionObserver(observerCallback, observerOptions);
         sections.forEach(section => {
+            // Exclude hero section if it uses CSS keyframe animations
             if (section.id !== 'hero') {
                  section.classList.add('opacity-0', 'translate-y-5', 'transition-all', 'duration-700', 'ease-out');
                  scrollObserver.observe(section);
             }
         });
     } else {
+        // Fallback for older browsers
         sections.forEach(section => {
              if (section.id !== 'hero') {
                 section.classList.remove('opacity-0', 'translate-y-5');
