@@ -1,65 +1,42 @@
-/* Import Google Fonts */
+/* Google Fonts (if you want to @import here) */
 /* @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Pacifico&display=swap'); */
 
-/* Apply smooth scrolling */
-html {
-    scroll-behavior: smooth;
-  }
-  
-  /* Define font families */
-  :root {
-    --font-sans: 'Poppins', sans-serif;
-    --font-display: 'Pacifico', cursive;
-  }
-  
-  body {
-    font-family: var(--font-sans);
-    overflow-x: hidden; /* Prevent horizontal scroll */
-  }
-  
-  /* Apply Pacifico font */
-  .font-pacifico {
-    font-family: var(--font-display);
-  }
-  
-  /* Animation keyframes */
-  @keyframes fadeInDown {
-    from { opacity: 0; transform: translateY(-20px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-  @keyframes fadeInUp {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-  
-  /* Apply animations */
-  .animate-fade-in-down { animation: fadeInDown 0.8s ease-out forwards; }
-  .animate-fade-in-up { animation: fadeInUp 0.8s ease-out 0.2s forwards; opacity: 0; }
-  
-  /* Style for the simple blue dot cursor follower (commented out) */
-  /* #cursor-follower { ... } */
-  /* a:hover ~ #cursor-follower, ... { ... } */
-  
-  /* Ensure sections have scroll margin for sticky header */
-  section {
-      /* scroll-mt-20 is added via Tailwind in HTML */
-  }
-  
-  /* Original Easter Egg Cat Styling (in footer) */
-  #easter-egg-cat {
-    /* Tailwind classes handle positioning (absolute), opacity, transition */
-  }
-  
-  /* Chasing Cat Image Styling */
-  #chasing-cat-img {
-      /* Tailwind classes handle fixed position, size, z-index, pointer-events, opacity */
-      /* We use JS to set left/top via transform */
-      transition: transform 0.1s linear; /* Smooth position changes */
-      /* Ensure it's centered on its coordinates */
-      transform: translate(-50%, -50%);
-       /* Helps keep pixel art sharp */
-       image-rendering: pixelated;
-       image-rendering: crisp-edges; /* Fallback/alternative */
-  }
-  
-  
+/* Smooth scroll */
+html { scroll-behavior: smooth; }
+
+/* Font families */
+:root {
+  --font-sans: 'Poppins', sans-serif;
+  --font-display: 'Pacifico', cursive;
+}
+body {
+  font-family: var(--font-sans);
+  overflow-x: hidden;
+}
+.font-pacifico { font-family: var(--font-display); }
+
+/* Fade animations */
+@keyframes fadeInDown { from { opacity:0; transform:translateY(-20px);} to{opacity:1;transform:translateY(0);} }
+@keyframes fadeInUp   { from { opacity:0; transform:translateY(20px);}  to{opacity:1;transform:translateY(0);} }
+.animate-fade-in-down { animation: fadeInDown 0.8s ease-out forwards; }
+.animate-fade-in-up   { animation: fadeInUp 0.8s ease-out 0.2s forwards; opacity:0; }
+
+/* Nav links */
+.nav-link { @apply text-gray-600 hover:text-blue-600 transition; }
+
+/* Easter-egg cat */
+#easter-egg-cat { /* styling handled by Tailwind */ }
+
+/* ===== Chasing Cat ===== */
+#chasing-cat-img {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 64px;    /* w-16 */
+  height: 64px;   /* h-16 */
+  transform-origin: center center;
+  opacity: 0;
+  transition: transform 0.1s linear, opacity 0.2s ease-in-out;
+  pointer-events: none;
+  image-rendering: pixelated;
+}

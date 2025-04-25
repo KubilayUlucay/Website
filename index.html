@@ -1,262 +1,299 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kubilay Ulucay | EEE & CS Student</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Pacifico&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💡</text></svg>">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Kubilay Ulucay | EEE & CS Student</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Pacifico&display=swap"
+    rel="stylesheet"
+  >
+  <link rel="stylesheet" href="style.css">
+  <link
+    rel="icon"
+    href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💡</text></svg>"
+  >
 </head>
 <body class="bg-gray-100 text-gray-800 font-poppins selection:bg-blue-200 selection:text-blue-900 overflow-x-hidden">
 
-    <img id="chasing-cat-img" src="images/cat-3.png" alt="Chasing Cat" class="fixed w-16 h-16 z-50 pointer-events-none opacity-90 object-contain" style="left: -100px; top: -100px; transform: translate(-50%, -50%)">
-    <header class="bg-white shadow-md sticky top-0 z-40">
-        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
-            <a href="index.html" class="text-3xl font-pacifico text-gray-800 hover:text-blue-600 transition duration-300">Kubilay Ulucay</a>
-            <ul class="hidden md:flex space-x-6">
-                <li><a href="#about" class="text-gray-600 hover:text-blue-600 transition duration-300">About</a></li>
-                <li><a href="#projects" class="text-gray-600 hover:text-blue-600 transition duration-300">Projects</a></li>
-                <li><a href="#experience" class="text-gray-600 hover:text-blue-600 transition duration-300">Experience</a></li>
-                <li><a href="#skills" class="text-gray-600 hover:text-blue-600 transition duration-300">Skills</a></li>
-                <li><a href="#contact" class="text-gray-600 hover:text-blue-600 transition duration-300">Contact</a></li>
+  <!-- ===== Chasing Cat ===== -->
+  <img
+    id="chasing-cat-img"
+    src="images/cat-3.png"
+    alt="Chasing Cat"
+    class="fixed w-16 h-16 z-50 pointer-events-none opacity-90 object-contain"
+  >
+
+  <!-- ===== Header ===== -->
+  <header class="bg-white shadow-md sticky top-0 z-40">
+    <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+      <a href="index.html" class="text-3xl font-pacifico text-gray-800 hover:text-blue-600 transition duration-300">
+        Kubilay Ulucay
+      </a>
+      <ul class="hidden md:flex space-x-6">
+        <li><a href="#about" class="text-gray-600 hover:text-blue-600 transition duration-300">About</a></li>
+        <li><a href="#projects" class="text-gray-600 hover:text-blue-600 transition duration-300">Projects</a></li>
+        <li><a href="#experience" class="text-gray-600 hover:text-blue-600 transition duration-300">Experience</a></li>
+        <li><a href="#skills" class="text-gray-600 hover:text-blue-600 transition duration-300">Skills</a></li>
+        <li><a href="#contact" class="text-gray-600 hover:text-blue-600 transition duration-300">Contact</a></li>
+      </ul>
+      <button id="mobile-menu-button" class="md:hidden text-gray-600 hover:text-blue-600 focus:outline-none">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M4 6h16M4 12h16m-7 6h7"/>
+        </svg>
+      </button>
+    </nav>
+    <div id="mobile-menu" class="hidden md:hidden px-6 pb-4">
+      <ul class="flex flex-col space-y-2">
+        <li><a href="#about" class="block text-gray-600 hover:text-blue-600 transition duration-300">About</a></li>
+        <li><a href="#projects" class="block text-gray-600 hover:text-blue-600 transition duration-300">Projects</a></li>
+        <li><a href="#experience" class="block text-gray-600 hover:text-blue-600 transition duration-300">Experience</a></li>
+        <li><a href="#skills" class="block text-gray-600 hover:text-blue-600 transition duration-300">Skills</a></li>
+        <li><a href="#contact" class="block text-gray-600 hover:text-blue-600 transition duration-300">Contact</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <!-- ===== Main Content ===== -->
+  <main class="container mx-auto px-6 py-12">
+    <!-- Hero Section -->
+    <section id="hero" class="text-center mb-20 pt-10">
+      <img src="images/profile.jpg" alt="Kubilay Ulucay"
+           class="w-36 h-36 rounded-full object-cover mx-auto mb-6 shadow-lg border-4 border-white">
+      <h1 class="text-5xl md:text-6xl font-bold mb-4 animate-fade-in-down font-pacifico">
+        Seyit Kubilay Ulucay
+      </h1>
+      <p class="text-xl md:text-2xl text-gray-600 mb-8 animate-fade-in-up">
+        Electrical & Electronics Engineer | CS Minor | Trying not to short-circuit my career goals.
+      </p>
+      <a href="S_KubilayUlucay_CV_2025.pdf" target="_blank"
+         class="inline-block bg-blue-600 text-white font-semibold py-3 px-8 rounded-lg shadow-md
+                hover:bg-blue-700 transition duration-300 transform hover:scale-105">
+        View My CV
+      </a>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="mb-20 scroll-mt-20">
+      <h2 class="text-4xl font-bold text-center mb-10 font-pacifico">About Me</h2>
+      <div class="bg-white p-8 rounded-lg shadow-lg">
+        <p class="text-lg leading-relaxed mb-4">
+          Hello! I'm Kubilay, an Electrical and Electronics Engineering student at Özyeğin University with a minor in Computer Science, expecting to graduate in 2025. I have a passion for bridging the gap between hardware and software, particularly in areas like power systems, sustainable technologies, electric vehicles, and robotics.
+        </p>
+        <p class="text-lg leading-relaxed mb-4">
+          I thrive on hands-on projects, from designing custom motors and analyzing wind turbine grids to developing automation logic and diving into machine learning for financial analysis. My internship at BEKO R&D honed my skills in sensor integration and R&D processes within a corporate setting.
+        </p>
+        <p class="text-lg leading-relaxed">
+          Beyond academics, I've been actively involved in the IEEE Özyeğin University Student Branch, growing from crew member to Chairman and now President of the Supervisory Board, significantly boosting our activities and membership. I'm always eager to learn, solve problems, and contribute to innovative projects. Located right here in beautiful İstanbul!
+        </p>
+      </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects" class="mb-20 scroll-mt-20">
+      <h2 class="text-4xl font-bold text-center mb-10 font-pacifico">Projects</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <a href="project-motor.html" class="block bg-white rounded-lg shadow-lg overflow-hidden transform hover:scale-105 transition duration-300 hover:shadow-xl">
+          <div class="p-6">
+            <h3 class="text-2xl font-semibold mb-3">Remote-Controlled Axial Flux Motor</h3>
+            <p class="text-gray-600 mb-4">Designed, built, and tested a custom electric axial flux motor with hand-wired coils and NRF24 remote control.</p>
+            <span class="inline-block bg-blue-100 text-blue-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded">Arduino</span>
+            <span class="inline-block bg-green-100 text-green-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded">3D Printing</span>
+            <span class="inline-block bg-yellow-100 text-yellow-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded">Custom PCB</span>
+          </div>
+        </a>
+        <a href="project-turbine.html" class="block bg-white rounded-lg shadow-lg overflow-hidden transform hover:scale-105 transition duration-300 hover:shadow-xl">
+          <div class="p-6">
+            <h3 class="text-2xl font-semibold mb-3">Wind Turbine Grid Integration</h3>
+            <p class="text-gray-600 mb-4">Analyzed impact and cost-effectiveness of wiring configurations for wind turbine grid integration using PowerWorld Simulator.</p>
+            <span class="inline-block bg-purple-100 text-purple-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded">PowerWorld</span>
+            <span class="inline-block bg-red-100 text-red-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded">Analysis</span>
+          </div>
+        </a>
+        <a href="project-plc.html" class="block bg-white rounded-lg shadow-lg overflow-hidden transform hover:scale-105 transition duration-300 hover:shadow-xl">
+          <div class="p-6">
+            <h3 class="text-2xl font-semibold mb-3">PLC Automation Systems</h3>
+            <p class="text-gray-600 mb-4">Developed automation logic for a simulated traffic light system and a functional toy claw machine using Schneider EcoStruxure.</p>
+            <span class="inline-block bg-indigo-100 text-indigo-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded">PLC</span>
+            <span class="inline-block bg-pink-100 text-pink-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded">Automation</span>
+          </div>
+        </a>
+        <a href="project-gimbal.html" class="block bg-white rounded-lg shadow-lg overflow-hidden transform hover:scale-105 transition duration-300 hover:shadow-xl">
+          <div class="p-6">
+            <h3 class="text-2xl font-semibold mb-3">Servo Actuated 3-Axis Gimbal</h3>
+            <p class="text-gray-600 mb-4">Co-designed and built a 3-axis gimbal using Arduino, MPU6050 IMU, servo motors, and 3D printing for stabilization.</p>
+            <span class="inline-block bg-blue-100 text-blue-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded">Arduino</span>
+            <span class="inline-block bg-gray-100 text-gray-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded">IMU</span>
+            <span class="inline-block bg-green-100 text-green-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded">3D Printing</span>
+          </div>
+        </a>
+        <a href="project-ml-finance.html" class="block bg-white rounded-lg shadow-lg overflow-hidden transform hover:scale-105 transition duration-300 hover:shadow-xl">
+          <div class="p-6">
+            <h3 class="text-2xl font-semibold mb-3">ML: Bitcoin Market Analysis</h3>
+            <p class="text-gray-600 mb-4">Investigated correlation between Twitter volume and Bitcoin fluctuations using BART model, Python, and Pandas.</p>
+            <span class="inline-block bg-orange-100 text-orange-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded">Python</span>
+            <span class="inline-block bg-teal-100 text-teal-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded">Machine Learning</span>
+            <span class="inline-block bg-yellow-100 text-yellow-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded">Pandas</span>
+          </div>
+        </a>
+        <a href="project-zumo.html" class="block bg-white rounded-lg shadow-lg overflow-hidden transform hover:scale-105 transition duration-300 hover:shadow-xl">
+          <div class="p-6">
+            <h3 class="text-2xl font-semibold mb-3">Zumo Robot Object Detection</h3>
+            <p class="text-gray-600 mb-4">Developed algorithm for Zumo robot navigation, obstacle detection (IR/Reflectance), and counting.</p>
+            <span class="inline-block bg-blue-100 text-blue-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded">Arduino C++</span>
+            <span class="inline-block bg-red-100 text-red-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded">Robotics</span>
+            <span class="inline-block bg-gray-100 text-gray-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded">Sensors</span>
+          </div>
+        </a>
+        <a href="project-deforestation.html" class="block bg-white rounded-lg shadow-lg overflow-hidden transform hover:scale-105 transition duration-300 hover:shadow-xl">
+          <div class="p-6">
+            <h3 class="text-2xl font-semibold mb-3">Deforestation Analysis</h3>
+            <p class="text-gray-600 mb-4">Researched causes, consequences, and solutions for deforestation in Turkey's Black Sea region, proposing an "Industrial Forest Project".</p>
+            <span class="inline-block bg-green-100 text-green-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded">Research</span>
+            <span class="inline-block bg-purple-100 text-purple-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded">Analysis</span>
+            <span class="inline-block bg-yellow-100 text-yellow-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded">Sustainability</span>
+          </div>
+        </a>
+      </div>
+    </section>
+
+    <!-- Experience Section -->
+    <section id="experience" class="mb-20 scroll-mt-20">
+      <h2 class="text-4xl font-bold text-center mb-10 font-pacifico">Experience</h2>
+      <div class="space-y-8">
+        <div class="bg-white p-6 rounded-lg shadow-lg flex flex-col md:flex-row-reverse gap-6 items-center">
+          <img src="images/beko-logo.jpg" alt="BEKO Logo" class="w-40 h-auto object-contain flex-shrink-0 md:ml-6">
+          <div class="flex-grow">
+            <h3 class="text-2xl font-semibold mb-1">Intern, R&D Advanced Sensor Technologies</h3>
+            <p class="text-lg text-blue-700 mb-2">BEKO R&D</p>
+            <p class="text-sm text-gray-500 mb-3">July 2024 – Aug 2024 | Istanbul, TURKEY</p>
+            <ul class="list-disc list-inside text-gray-600 space-y-1">
+              <li>Contributed to developing a gap/floor detection system for robot vacuums using STM ToF sensors.</li>
+              <li>Implemented sensor-based power management for optimized cleaning and obstacle avoidance.</li>
+              <li>Gained hands-on experience with sensor integration, data analysis, and R&D processes.</li>
             </ul>
-             <button id="mobile-menu-button" class="md:hidden text-gray-600 hover:text-blue-600 focus:outline-none">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
-            </button>
-        </nav>
-         <div id="mobile-menu" class="hidden md:hidden px-6 pb-4">
-            <ul class="flex flex-col space-y-2">
-                 <li><a href="#about" class="block text-gray-600 hover:text-blue-600 transition duration-300">About</a></li>
-                 <li><a href="#projects" class="block text-gray-600 hover:text-blue-600 transition duration-300">Projects</a></li>
-                 <li><a href="#experience" class="block text-gray-600 hover:text-blue-600 transition duration-300">Experience</a></li>
-                 <li><a href="#skills" class="block text-gray-600 hover:text-blue-600 transition duration-300">Skills</a></li>
-                 <li><a href="#contact" class="block text-gray-600 hover:text-blue-600 transition duration-300">Contact</a></li>
+          </div>
+        </div>
+        <div class="bg-white p-6 rounded-lg shadow-lg">
+          <h3 class="text-2xl font-semibold mb-1">Undergraduate Assistant</h3>
+          <p class="text-lg text-blue-700 mb-2">Özyeğin University, Faculty of Engineering</p>
+          <p class="text-sm text-gray-500 mb-3">Mar 2023 – June 2023 | Istanbul, TURKEY</p>
+          <ul class="list-disc list-inside text-gray-600 space-y-1">
+            <li>Provided hardware support for Autonomous Driving course (NVIDIA Jetson Nano vehicles).</li>
+            <li>Assisted teams with hardware assembly and troubleshooting.</li>
+          </ul>
+        </div>
+        <div class="bg-white p-6 rounded-lg shadow-lg">
+          <h3 class="text-2xl font-semibold mb-1">Part-timer, Student Services</h3>
+          <p class="text-lg text-blue-700 mb-2">Özyeğin University</p>
+          <p class="text-sm text-gray-500 mb-3">June 2023 – Sep 2023 | Istanbul, TURKEY</p>
+          <ul class="list-disc list-inside text-gray-600 space-y-1">
+            <li>Assisted students with administrative inquiries (transfers, applications, enrollment).</li>
+            <li>Developed Power Automate workflow for course assignments, reducing processing time by ~50%.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section id="skills" class="mb-20 scroll-mt-20">
+      <h2 class="text-4xl font-bold text-center mb-10 font-pacifico">Skills</h2>
+      <div class="bg-white p-8 rounded-lg shadow-lg">
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          <div>
+            <h4 class="text-xl font-semibold mb-3 border-b pb-1 border-blue-200">Languages</h4>
+            <ul class="list-disc list-inside text-gray-600">
+              <li>Turkish (Native)</li>
+              <li>English (Fluent)</li>
+              <li>German (Beginner)</li>
             </ul>
+          </div>
+          <div>
+            <h4 class="text-xl font-semibold mb-3 border-b pb-1 border-blue-200">Programming</h4>
+            <ul class="list-disc list-inside text-gray-600">
+              <li>Python</li>
+              <li>Java</li>
+              <li>C / C++</li>
+              <li>MATLAB</li>
+              <li>Arduino C/C++</li>
+            </ul>
+          </div>
+          <div>
+            <h4 class="text-xl font-semibold mb-3 border-b pb-1 border-blue-200">Software & Tools</h4>
+            <ul class="list-disc list-inside text-gray-600">
+              <li>LTSpice</li>
+              <li>MATLAB/Simulink</li>
+              <li>PowerWorld</li>
+              <li>KiCad</li>
+              <li>MS Office</li>
+              <li>Power Automate</li>
+              <li>Schneider EcoStruxure</li>
+              <li>NI LabVIEW</li>
+            </ul>
+          </div>
+          <div>
+            <h4 class="text-xl font-semibold mb-3 border-b pb-1 border-blue-200">Hardware</h4>
+            <ul class="list-disc list-inside text-gray-600">
+              <li>STM ToF Sensors</li>
+              <li>STM32 Boards</li>
+              <li>NVIDIA Jetson Nano</li>
+              <li>Arduino</li>
+              <li>Raspberry Pi</li>
+              <li>Lab Equipment</li>
+            </ul>
+          </div>
+          <div>
+            <h4 class="text-xl font-semibold mb-3 border-b pb-1 border-blue-200">Areas of Interest</h4>
+            <ul class="list-disc list-inside text-gray-600">
+              <li>Power & Energy</li>
+              <li>Sustainable Tech</li>
+              <li>Electric Vehicles</li>
+              <li>Electronics Design</li>
+              <li>Control Systems</li>
+              <li>Automation & Robotics</li>
+            </ul>
+          </div>
         </div>
-    </header>
+      </div>
+    </section>
 
-    <main class="container mx-auto px-6 py-12">
+    <!-- Contact Section -->
+    <section id="contact" class="text-center scroll-mt-20">
+      <h2 class="text-4xl font-bold mb-6 font-pacifico">Get In Touch</h2>
+      <p class="text-lg text-gray-600 mb-8">Feel free to reach out! You can find me here:</p>
+      <div class="flex justify-center space-x-6">
+        <a href="https://linkedin.com/in/kubilayulucay" target="_blank" class="text-blue-600 hover:text-blue-800 transition duration-300 text-4xl transform hover:scale-110" aria-label="LinkedIn">
+          <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+          </svg>
+        </a>
+        <a href="mailto:kubilay.ulucay@ozu.edu.tr" class="text-red-600 hover:text-red-800 transition duration-300 text-4xl transform hover:scale-110" aria-label="Email">
+          <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M0 3v18h24v-18h-24zm21.518 2l-9.518 7.713-9.518-7.713h19.036zm-19.518 14v-11.817l10 8.104 10-8.104v11.817h-20z"/>
+          </svg>
+        </a>
+      </div>
+    </section>
+  </main>
 
-        <section id="hero" class="text-center mb-20 pt-10">
-             <img src="images/profile.jpg" alt="Kubilay Ulucay" class="w-36 h-36 rounded-full object-cover mx-auto mb-6 shadow-lg border-4 border-white">
-             <h1 class="text-5xl md:text-6xl font-bold mb-4 animate-fade-in-down font-pacifico">Seyit Kubilay Ulucay</h1>
-             <p class="text-xl md:text-2xl text-gray-600 mb-8 animate-fade-in-up">Electrical & Electronics Engineer | CS Minor | Trying not to short-circuit my career goals.</p>
-            <a href="S_KubilayUlucay_CV_2025.pdf" target="_blank"
-               class="inline-block bg-blue-600 text-white font-semibold py-3 px-8 rounded-lg shadow-md hover:bg-blue-700 transition duration-300 transform hover:scale-105">
-               View My CV
-            </a>
-        </section>
+  <!-- ===== Footer ===== -->
+  <footer class="bg-gray-800 text-gray-300 py-6 mt-20 relative">
+    <div class="container mx-auto px-6 text-center">
+      <p>&copy; <span id="current-year"></span> Seyit Kubilay Ulucay. Built with HTML, Tailwind CSS, and a dash of JavaScript.</p>
+    </div>
+    <img
+      id="easter-egg-cat"
+      src="images/peek-cat.gif"
+      alt="Peeking Cat"
+      class="absolute bottom-0 right-4 w-16 h-auto opacity-50 hover:opacity-100 transition-opacity duration-300"
+      title="Meow?"
+    >
+  </footer>
 
-        <section id="about" class="mb-20 scroll-mt-20">
-            <h2 class="text-4xl font-bold text-center mb-10 font-pacifico">About Me</h2>
-            <div class="bg-white p-8 rounded-lg shadow-lg">
-                <div>
-                    <p class="text-lg leading-relaxed mb-4">
-                        Hello! I'm Kubilay, an Electrical and Electronics Engineering student at Özyeğin University with a minor in Computer Science, expecting to graduate in 2025. I have a passion for bridging the gap between hardware and software, particularly in areas like power systems, sustainable technologies, electric vehicles, and robotics.
-                    </p>
-                    <p class="text-lg leading-relaxed mb-4">
-                        I thrive on hands-on projects, from designing custom motors and analyzing wind turbine grids to developing automation logic and diving into machine learning for financial analysis. My internship at BEKO R&D honed my skills in sensor integration and R&D processes within a corporate setting.
-                    </p>
-                    <p class="text-lg leading-relaxed">
-                        Beyond academics, I've been actively involved in the IEEE Özyeğin University Student Branch, growing from crew member to Chairman and now President of the Supervisory Board, significantly boosting our activities and membership. I'm always eager to learn, solve problems, and contribute to innovative projects. Located right here in beautiful İstanbul!
-                    </p>
-                </div>
-            </div>
-        </section>
-
-        <section id="projects" class="mb-20 scroll-mt-20">
-            <h2 class="text-4xl font-bold text-center mb-10 font-pacifico">Projects</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-
-                <a href="project-motor.html" class="block bg-white rounded-lg shadow-lg overflow-hidden transform hover:scale-105 transition duration-300 hover:shadow-xl">
-                    <div class="p-6">
-                        <h3 class="text-2xl font-semibold mb-3">Remote-Controlled Axial Flux Motor</h3>
-                        <p class="text-gray-600 mb-4">Designed, built, and tested a custom electric axial flux motor with hand-wired coils and NRF24 remote control.</p>
-                        <span class="inline-block bg-blue-100 text-blue-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded">Arduino</span>
-                        <span class="inline-block bg-green-100 text-green-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded">3D Printing</span>
-                        <span class="inline-block bg-yellow-100 text-yellow-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded">Custom PCB</span>
-                    </div>
-                </a>
-                <a href="project-turbine.html" class="block bg-white rounded-lg shadow-lg overflow-hidden transform hover:scale-105 transition duration-300 hover:shadow-xl">
-                    <div class="p-6">
-                        <h3 class="text-2xl font-semibold mb-3">Wind Turbine Grid Integration</h3>
-                        <p class="text-gray-600 mb-4">Analyzed impact and cost-effectiveness of wiring configurations for wind turbine grid integration using PowerWorld Simulator.</p>
-                        <span class="inline-block bg-purple-100 text-purple-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded">PowerWorld</span>
-                        <span class="inline-block bg-red-100 text-red-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded">Analysis</span>
-                    </div>
-                </a>
-                <a href="project-plc.html" class="block bg-white rounded-lg shadow-lg overflow-hidden transform hover:scale-105 transition duration-300 hover:shadow-xl">
-                    <div class="p-6">
-                        <h3 class="text-2xl font-semibold mb-3">PLC Automation Systems</h3>
-                        <p class="text-gray-600 mb-4">Developed automation logic for a simulated traffic light system and a functional toy claw machine using Schneider EcoStruxure.</p>
-                        <span class="inline-block bg-indigo-100 text-indigo-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded">PLC</span>
-                        <span class="inline-block bg-pink-100 text-pink-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded">Automation</span>
-                    </div>
-                </a>
-                 <a href="project-gimbal.html" class="block bg-white rounded-lg shadow-lg overflow-hidden transform hover:scale-105 transition duration-300 hover:shadow-xl">
-                    <div class="p-6">
-                        <h3 class="text-2xl font-semibold mb-3">Servo Actuated 3-Axis Gimbal</h3>
-                        <p class="text-gray-600 mb-4">Co-designed and built a 3-axis gimbal using Arduino, MPU6050 IMU, servo motors, and 3D printing for stabilization.</p>
-                        <span class="inline-block bg-blue-100 text-blue-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded">Arduino</span>
-                        <span class="inline-block bg-gray-100 text-gray-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded">IMU</span>
-                        <span class="inline-block bg-green-100 text-green-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded">3D Printing</span>
-                     </div>
-                </a>
-                 <a href="project-ml-finance.html" class="block bg-white rounded-lg shadow-lg overflow-hidden transform hover:scale-105 transition duration-300 hover:shadow-xl">
-                    <div class="p-6">
-                        <h3 class="text-2xl font-semibold mb-3">ML: Bitcoin Market Analysis</h3>
-                        <p class="text-gray-600 mb-4">Investigated correlation between Twitter volume and Bitcoin fluctuations using BART model, Python, and Pandas.</p>
-                        <span class="inline-block bg-orange-100 text-orange-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded">Python</span>
-                        <span class="inline-block bg-teal-100 text-teal-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded">Machine Learning</span>
-                        <span class="inline-block bg-yellow-100 text-yellow-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded">Pandas</span>
-                     </div>
-                </a>
-                 <a href="project-zumo.html" class="block bg-white rounded-lg shadow-lg overflow-hidden transform hover:scale-105 transition duration-300 hover:shadow-xl">
-                    <div class="p-6">
-                        <h3 class="text-2xl font-semibold mb-3">Zumo Robot Object Detection</h3>
-                        <p class="text-gray-600 mb-4">Developed algorithm for Zumo robot navigation, obstacle detection (IR/Reflectance), and counting.</p>
-                         <span class="inline-block bg-blue-100 text-blue-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded">Arduino C++</span>
-                         <span class="inline-block bg-red-100 text-red-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded">Robotics</span>
-                         <span class="inline-block bg-gray-100 text-gray-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded">Sensors</span>
-                     </div>
-                </a>
-                 <a href="project-deforestation.html" class="block bg-white rounded-lg shadow-lg overflow-hidden transform hover:scale-105 transition duration-300 hover:shadow-xl">
-                     <div class="p-6">
-                        <h3 class="text-2xl font-semibold mb-3">Deforestation Analysis</h3>
-                        <p class="text-gray-600 mb-4">Researched causes, consequences, and solutions for deforestation in Turkey's Black Sea region, proposing an "Industrial Forest Project".</p>
-                        <span class="inline-block bg-green-100 text-green-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded">Research</span>
-                        <span class="inline-block bg-purple-100 text-purple-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded">Analysis</span>
-                        <span class="inline-block bg-yellow-100 text-yellow-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded">Sustainability</span>
-                    </div>
-                </a>
-                </div>
-        </section>
-
-        <section id="experience" class="mb-20 scroll-mt-20">
-            <h2 class="text-4xl font-bold text-center mb-10 font-pacifico">Experience</h2>
-            <div class="space-y-8">
-                <div class="bg-white p-6 rounded-lg shadow-lg flex flex-col md:flex-row-reverse gap-6 items-center">
-                     <img src="images/beko-logo.jpg" alt="BEKO Logo" class="w-40 h-auto object-contain flex-shrink-0 md:ml-6">
-                     <div class="flex-grow">
-                        <h3 class="text-2xl font-semibold mb-1">Intern, R&D Advanced Sensor Technologies</h3>
-                        <p class="text-lg text-blue-700 mb-2">BEKO R&D</p>
-                        <p class="text-sm text-gray-500 mb-3">July 2024 – Aug 2024 | Istanbul, TURKEY</p>
-                        <ul class="list-disc list-inside text-gray-600 space-y-1">
-                            <li>Contributed to developing a gap/floor detection system for robot vacuums using STM ToF sensors.</li>
-                            <li>Implemented sensor-based power management for optimized cleaning and obstacle avoidance.</li>
-                            <li>Gained hands-on experience with sensor integration, data analysis, and R&D processes.</li>
-                        </ul>
-                    </div>
-                </div>
-                 <div class="bg-white p-6 rounded-lg shadow-lg">
-                    <h3 class="text-2xl font-semibold mb-1">Undergraduate Assistant</h3>
-                    <p class="text-lg text-blue-700 mb-2">Özyeğin University, Faculty of Engineering</p>
-                    <p class="text-sm text-gray-500 mb-3">Mar 2023 – June 2023 | Istanbul, TURKEY</p>
-                     <ul class="list-disc list-inside text-gray-600 space-y-1">
-                        <li>Provided hardware support for Autonomous Driving course (NVIDIA Jetson Nano vehicles).</li>
-                        <li>Assisted teams with hardware assembly and troubleshooting.</li>
-                    </ul>
-                </div>
-                 <div class="bg-white p-6 rounded-lg shadow-lg">
-                     <h3 class="text-2xl font-semibold mb-1">Part-timer, Student Services</h3>
-                    <p class="text-lg text-blue-700 mb-2">Özyeğin University</p>
-                    <p class="text-sm text-gray-500 mb-3">June 2023 – Sep 2023 | Istanbul, TURKEY</p>
-                     <ul class="list-disc list-inside text-gray-600 space-y-1">
-                        <li>Assisted students with administrative inquiries (transfers, applications, enrollment).</li>
-                        <li>Developed Power Automate workflow for course assignments, reducing processing time by ~50%.</li>
-                    </ul>
-                </div>
-            </div>
-        </section>
-
-        <section id="skills" class="mb-20 scroll-mt-20">
-            <h2 class="text-4xl font-bold text-center mb-10 font-pacifico">Skills</h2>
-            <div class="bg-white p-8 rounded-lg shadow-lg">
-                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                    <div>
-                        <h4 class="text-xl font-semibold mb-3 border-b pb-1 border-blue-200">Languages</h4>
-                        <ul class="list-disc list-inside text-gray-600">
-                            <li>Turkish (Native)</li>
-                            <li>English (Fluent)</li>
-                            <li>German (Beginner)</li>
-                        </ul>
-                    </div>
-                    <div>
-                        <h4 class="text-xl font-semibold mb-3 border-b pb-1 border-blue-200">Programming</h4>
-                        <ul class="list-disc list-inside text-gray-600">
-                            <li>Python</li>
-                            <li>Java</li>
-                            <li>C / C++</li>
-                            <li>MATLAB</li>
-                            <li>Arduino C/C++</li>
-                        </ul>
-                    </div>
-                    <div>
-                        <h4 class="text-xl font-semibold mb-3 border-b pb-1 border-blue-200">Software & Tools</h4>
-                        <ul class="list-disc list-inside text-gray-600">
-                            <li>LTSpice</li>
-                            <li>MATLAB/Simulink</li>
-                            <li>PowerWorld</li>
-                            <li>KiCad</li>
-                            <li>MS Office</li>
-                            <li>Power Automate</li>
-                            <li>Schneider EcoStruxure</li>
-                            <li>NI LabVIEW</li>
-                        </ul>
-                    </div>
-                    <div>
-                        <h4 class="text-xl font-semibold mb-3 border-b pb-1 border-blue-200">Hardware</h4>
-                        <ul class="list-disc list-inside text-gray-600">
-                            <li>STM ToF Sensors</li>
-                            <li>STM32 Boards</li>
-                            <li>NVIDIA Jetson Nano</li>
-                            <li>Arduino</li>
-                            <li>Raspberry Pi</li>
-                            <li>Lab Equipment</li>
-                        </ul>
-                    </div>
-                     <div>
-                        <h4 class="text-xl font-semibold mb-3 border-b pb-1 border-blue-200">Areas of Interest</h4>
-                        <ul class="list-disc list-inside text-gray-600">
-                            <li>Power & Energy</li>
-                            <li>Sustainable Tech</li>
-                            <li>Electric Vehicles</li>
-                            <li>Electronics Design</li>
-                            <li>Control Systems</li>
-                            <li>Automation & Robotics</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section id="contact" class="text-center scroll-mt-20">
-            <h2 class="text-4xl font-bold mb-6 font-pacifico">Get In Touch</h2>
-            <p class="text-lg text-gray-600 mb-8">Feel free to reach out! You can find me here:</p>
-            <div class="flex justify-center space-x-6">
-                <a href="https://linkedin.com/in/kubilayulucay" target="_blank" class="text-blue-600 hover:text-blue-800 transition duration-300 text-4xl transform hover:scale-110" aria-label="LinkedIn">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="currentColor"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
-                </a>
-                <a href="mailto:kubilay.ulucay@ozu.edu.tr" class="text-red-600 hover:text-red-800 transition duration-300 text-4xl transform hover:scale-110" aria-label="Email">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="currentColor"><path d="M0 3v18h24v-18h-24zm21.518 2l-9.518 7.713-9.518-7.713h19.036zm-19.518 14v-11.817l10 8.104 10-8.104v11.817h-20z"/></svg>
-                </a>
-                 </div>
-        </section>
-
-    </main>
-
-    <footer class="bg-gray-800 text-gray-300 py-6 mt-20 relative">
-        <div class="container mx-auto px-6 text-center">
-            <p>&copy; <span id="current-year"></span> Seyit Kubilay Ulucay. Built with HTML, Tailwind CSS, and a dash of JavaScript.</p>
-        </div>
-
-        <img id="easter-egg-cat" src="images/peek-cat.gif" alt="Peeking Cat" class="absolute bottom-0 right-4 w-16 h-auto opacity-50 hover:opacity-100 transition-opacity duration-300" title="Meow?">
-        </footer>
-
-    <script src="script.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
