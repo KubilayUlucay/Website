@@ -1,67 +1,63 @@
-/* Import Google Font (alternative to link tag, but link tag is often better for performance) */
-/* @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap'); */
+/* Import Google Fonts */
+/* @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Pacifico&display=swap'); */
 
-/* Apply smooth scrolling when clicking navigation links */
+/* Apply smooth scrolling */
 html {
     scroll-behavior: smooth;
   }
   
+  /* Define font families */
+  :root {
+    --font-sans: 'Poppins', sans-serif;
+    --font-display: 'Pacifico', cursive;
+  }
+  
   body {
-    /* Apply the font imported via <link> tag or @import */
-    font-family: 'Poppins', sans-serif;
+    font-family: var(--font-sans);
+    overflow-x: hidden; /* Prevent horizontal scroll */
   }
   
-  /* Basic animation keyframes */
+  /* Apply Pacifico font */
+  .font-pacifico {
+    font-family: var(--font-display);
+  }
+  
+  /* Animation keyframes */
   @keyframes fadeInDown {
-    from {
-      opacity: 0;
-      transform: translateY(-20px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
   }
-  
   @keyframes fadeInUp {
-    from {
-      opacity: 0;
-      transform: translateY(20px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
   }
   
-  /* Apply animations using Tailwind's 'animate-*' utility convention (optional, can be done directly in HTML) */
-  .animate-fade-in-down {
-    animation: fadeInDown 0.8s ease-out forwards;
-  }
+  /* Apply animations */
+  .animate-fade-in-down { animation: fadeInDown 0.8s ease-out forwards; }
+  .animate-fade-in-up { animation: fadeInUp 0.8s ease-out 0.2s forwards; opacity: 0; }
   
-  .animate-fade-in-up {
-    animation: fadeInUp 0.8s ease-out 0.2s forwards; /* Added delay */
-    opacity: 0; /* Start hidden before animation */
-  }
+  /* Style for the simple blue dot cursor follower (commented out) */
+  /* #cursor-follower { ... } */
+  /* a:hover ~ #cursor-follower, ... { ... } */
   
-  /* Style for the custom cursor follower */
-  #cursor-follower {
-    /* Base styles are set with Tailwind classes in HTML */
-    /* Add transition for smoother scaling/color changes if needed */
-     transition: transform 0.15s ease-out, background-color 0.2s ease, width 0.2s ease, height 0.2s ease, opacity 0.2s ease;
-  }
-  
-  /* Example: Scale up cursor follower when hovering over links or buttons */
-  a:hover ~ #cursor-follower,
-  button:hover ~ #cursor-follower,
-  .hover\:scale-105:hover ~ #cursor-follower { /* Target elements that scale on hover */
-     transform: translate(-50%, -50%) scale(2.5);
-     background-color: rgba(59, 130, 246, 0.3); /* Lighter blue with transparency */
-  }
-  
-  /* Ensure sections have enough top margin/padding to account for sticky header height */
+  /* Ensure sections have scroll margin for sticky header */
   section {
-      /* scroll-mt-20 is added via Tailwind in HTML, which is roughly 5rem or 80px */
-      /* Adjust this value if your header height changes */
+      /* scroll-mt-20 is added via Tailwind in HTML */
   }
+  
+  /* Original Easter Egg Cat Styling (in footer) */
+  #easter-egg-cat {
+    /* Tailwind classes handle positioning (absolute), opacity, transition */
+    /* Add any additional specific styles here if needed */
+  }
+  
+  /* NEW Chasing Cat Styling */
+  #chasing-cat {
+      /* Tailwind classes handle fixed position, size, z-index, pointer-events, opacity */
+      /* We use JS to set left/top via transform */
+      transition: transform 0.1s linear; /* Smooth position changes */
+      /* Ensure it's centered on its coordinates */
+      transform: translate(-50%, -50%);
+  }
+  
   

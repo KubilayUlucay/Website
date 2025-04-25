@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project: [Project Name] | Kubilay Ulucay</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Pacifico&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💡</text></svg>">
+</head>
+<body class="bg-gray-100 text-gray-800 font-poppins selection:bg-blue-200 selection:text-blue-900">
+
+    <header class="bg-white shadow-md sticky top-0 z-40">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+             {/* Link back to the main page */}
+            <a href="index.html" class="text-3xl font-pacifico text-gray-800 hover:text-blue-600 transition duration-300">Kubilay Ulucay</a>
+             {/* Simplified nav or link back */}
+             <a href="index.html#projects" class="text-gray-600 hover:text-blue-600 transition duration-300">&larr; Back to Projects</a>
+        </nav>
+    </header>
+
+    <main class="container mx-auto px-6 py-12">
+
+        <section class="bg-white p-8 rounded-lg shadow-lg">
+            <h1 class="text-4xl md:text-5xl font-bold mb-6 font-pacifico">[Project Name]</h1>
+
+            <div class="mb-8">
+                <h2 class="text-2xl font-semibold mb-3">Overview</h2>
+                <p class="text-lg leading-relaxed text-gray-700">
+                    Briefly describe the project goal and what you did. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                </p>
+            </div>
+
+             <div class="mb-8 text-center">
+                <img src="https://placehold.co/600x400/EBF4FF/7F9CF5?text=Project+Image" alt="[Project Name]" class="max-w-full h-auto rounded-lg shadow-md mx-auto">
+                 {/* Replace with actual project image if available */}
+            </div>
+
+            <div class="mb-8">
+                <h2 class="text-2xl font-semibold mb-3">Key Features & Technologies</h2>
+                 <ul class="list-disc list-inside text-lg text-gray-700 space-y-2">
+                    <li>Feature 1: Description of the feature. (e.g., Custom motor design)</li>
+                    <li>Feature 2: Another key aspect. (e.g., Wireless control implementation)</li>
+                    <li>Technology Used: Arduino, NRF24, AutoCAD, 3D Printing, etc.</li>
+                    <li>Challenge Overcome: Describe a specific challenge and how you solved it.</li>
+                </ul>
+            </div>
+
+            <div class="mb-8">
+                <h2 class="text-2xl font-semibold mb-3">Outcomes & Results</h2>
+                 <p class="text-lg leading-relaxed text-gray-700">
+                    What was the result of the project? Was it successful? What did you learn? Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                </p>
+            </div>
+
+            <div class="mt-10 text-center">
+                 <a href="index.html#projects" class="inline-block bg-gray-500 text-white font-semibold py-2 px-6 rounded-lg shadow-md hover:bg-gray-600 transition duration-300">Back to Projects</a>
+            </div>
+
+        </section>
+
+    </main>
+
+    <footer class="bg-gray-800 text-gray-300 py-6 mt-20 relative">
+        <div class="container mx-auto px-6 text-center">
+            <p>&copy; <span id="current-year"></span> Seyit Kubilay Ulucay.</p>
+        </div>
+         {/* You can keep or remove the cat from project pages */}
+         <img id="easter-egg-cat" src="https://placehold.co/80x80/000000/FFFFFF?text=Cat+GIF" alt="Peeking Cat" class="absolute bottom-0 right-4 w-16 h-auto opacity-50 hover:opacity-100 transition-opacity duration-300" title="Meow?">
+    </footer>
+
+    <script>
+        // Simple script for footer year on project pages
+        const currentYearSpan = document.getElementById('current-year');
+        if (currentYearSpan) {
+            currentYearSpan.textContent = new Date().getFullYear();
+        }
+    </script>
+</body>
+</html>
