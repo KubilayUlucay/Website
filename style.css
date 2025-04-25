@@ -1,0 +1,67 @@
+/* Import Google Font (alternative to link tag, but link tag is often better for performance) */
+/* @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap'); */
+
+/* Apply smooth scrolling when clicking navigation links */
+html {
+    scroll-behavior: smooth;
+  }
+  
+  body {
+    /* Apply the font imported via <link> tag or @import */
+    font-family: 'Poppins', sans-serif;
+  }
+  
+  /* Basic animation keyframes */
+  @keyframes fadeInDown {
+    from {
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  /* Apply animations using Tailwind's 'animate-*' utility convention (optional, can be done directly in HTML) */
+  .animate-fade-in-down {
+    animation: fadeInDown 0.8s ease-out forwards;
+  }
+  
+  .animate-fade-in-up {
+    animation: fadeInUp 0.8s ease-out 0.2s forwards; /* Added delay */
+    opacity: 0; /* Start hidden before animation */
+  }
+  
+  /* Style for the custom cursor follower */
+  #cursor-follower {
+    /* Base styles are set with Tailwind classes in HTML */
+    /* Add transition for smoother scaling/color changes if needed */
+     transition: transform 0.15s ease-out, background-color 0.2s ease, width 0.2s ease, height 0.2s ease, opacity 0.2s ease;
+  }
+  
+  /* Example: Scale up cursor follower when hovering over links or buttons */
+  a:hover ~ #cursor-follower,
+  button:hover ~ #cursor-follower,
+  .hover\:scale-105:hover ~ #cursor-follower { /* Target elements that scale on hover */
+     transform: translate(-50%, -50%) scale(2.5);
+     background-color: rgba(59, 130, 246, 0.3); /* Lighter blue with transparency */
+  }
+  
+  /* Ensure sections have enough top margin/padding to account for sticky header height */
+  section {
+      /* scroll-mt-20 is added via Tailwind in HTML, which is roughly 5rem or 80px */
+      /* Adjust this value if your header height changes */
+  }
+  
