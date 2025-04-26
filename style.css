@@ -1,42 +1,124 @@
-/* Google Fonts (if you want to @import here) */
-/* @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Pacifico&display=swap'); */
-
-/* Smooth scroll */
-html { scroll-behavior: smooth; }
-
-/* Font families */
-:root {
-  --font-sans: 'Poppins', sans-serif;
-  --font-display: 'Pacifico', cursive;
+/* ===== SMOOTH SCROLLING ===== */
+html {
+  scroll-behavior: smooth;
 }
+/* ============================ */
+
+/* Define CSS Variables for accent colors */
+:root {
+  --accent1: #FF61E1; /* Pink */
+  --accent2: #FFB400; /* Yellow */
+  --accent3: #00C2FF; /* Blue */
+}
+
+/* Base body font */
 body {
-  font-family: var(--font-sans);
+  font-family: 'Rubik', sans-serif;
+  /* Fix potential overflow issues caused by absolutely positioned elements like blobs */
   overflow-x: hidden;
 }
-.font-pacifico { font-family: var(--font-display); }
 
-/* Fade animations */
-@keyframes fadeInDown { from { opacity:0; transform:translateY(-20px);} to{opacity:1;transform:translateY(0);} }
-@keyframes fadeInUp   { from { opacity:0; transform:translateY(20px);}  to{opacity:1;transform:translateY(0);} }
-.animate-fade-in-down { animation: fadeInDown 0.8s ease-out forwards; }
-.animate-fade-in-up   { animation: fadeInUp 0.8s ease-out 0.2s forwards; opacity:0; }
+/* Headings font */
+h1,h2,h3,h4 {
+  font-family: 'Montserrat', sans-serif;
+}
 
-/* Nav links */
-.nav-link { @apply text-gray-600 hover:text-blue-600 transition; }
+/* Navigation Link Styles */
+.nav-link {
+  color: #4B5563; /* Tailwind gray-600 */
+  transition: color .3s ease-in-out; /* Smooth color transition on hover */
+}
+.nav-link:hover {
+  color: var(--accent1); /* Change color to accent1 on hover */
+}
 
-/* Easter-egg cat */
-#easter-egg-cat { /* styling handled by Tailwind */ }
+/* Button Pop Effect */
+.btn-pop {
+  /* Smooth transition for transform (scaling) and background color */
+  transition: transform .2s ease-out, background-color .3s ease-in-out;
+}
+.btn-pop:hover {
+  transform: scale(1.05); /* Slightly enlarge button on hover */
+}
 
-/* ===== Chasing Cat ===== */
-#chasing-cat-img {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 64px;    /* w-16 */
-  height: 64px;   /* h-16 */
-  transform-origin: center center;
-  opacity: 0;
-  transition: transform 0.1s linear, opacity 0.2s ease-in-out;
+/* Header Styles */
+header {
+  background: white; /* Default white background */
+  /* Smooth transition for background color and backdrop filter */
+  transition: background-color .3s ease-in-out, backdrop-filter .3s ease-in-out;
+}
+/* Styles for the header when scrolled */
+header.scrolled {
+  /* Semi-transparent white background */
+  background: rgba(255, 255, 255, 0.8);
+  /* Apply blur effect */
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px); /* Include vendor prefix for Safari */
+}
+
+/* Blob Styles */
+.blob {
+  fill: currentColor; /* Use the 'color' property to set the fill */
+  opacity: .2; /* Make blobs semi-transparent */
+  /* Smooth transitions for transform, opacity, and fill color */
+  transition: transform .3s ease-in-out, opacity .3s ease-in-out, color .3s ease-in-out;
+  /* Prevents blobs from capturing mouse events */
   pointer-events: none;
-  image-rendering: pixelated;
+}
+/* Set specific colors for blobs in different sections */
+#hero .blob { color: var(--accent1); }
+#projects .blob { color: var(--accent2); }
+/* Add more rules here if you have blobs in other sections with different colors */
+
+/* Optional: Blob hover effect (if you want blobs to react) */
+/* Note: Blobs have pointer-events: none, so direct hover won't work.
+   You'd need to apply hover to the parent section if interaction is desired. */
+/*
+section:hover .blob {
+  transform: scale(1.1) rotate(5deg);
+  opacity: .3;
+}
+*/
+
+/* Floating Animation for Blobs */
+@keyframes float {
+  0%, 100% { transform: translateY(0); } /* Start and end position */
+  50% { transform: translateY(-15px); } /* Mid-point position (moves up) */
+}
+.animate-blob {
+  /* Apply the float animation */
+  animation: float 6s ease-in-out infinite; /* 6 seconds duration, smooth easing, infinite loop */
+}
+
+/* Fade-In Animations (used via Tailwind classes but defined here for clarity) */
+@keyframes fadeInDown {
+  from { opacity: 0; transform: translateY(-20px); }
+  to   { opacity: 1; transform: translateY(0);   }
+}
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0);   }
+}
+/* Classes to apply these animations (managed by Tailwind and JS) */
+.animate-fade-in-down { animation: fadeInDown .8s ease-out forwards; }
+.animate-fade-in-up   { animation: fadeInUp .8s ease-out .2s forwards; opacity:0; } /* Start hidden */
+
+/* Scroll Margin for Sections */
+/* Adds space above sections when navigating via #links, preventing overlap by sticky header */
+section[id] {
+  scroll-margin-top: 80px; /* Adjust this value based on your actual sticky header height */
+  /* Prevent content within sections (like blobs) from causing horizontal scroll */
+  overflow: hidden;
+  position: relative; /* Needed for absolutely positioned children like blobs */
+}
+
+/* Profile Picture Hover Transition */
+#profile-picture {
+  /* Smoothly animate the transform property over 0.5 seconds */
+  transition: transform 0.5s ease-in-out;
+  /* Ensure the picture stays above other elements like blobs */
+  position: relative;
+  z-index: 10;
+  /* Change cursor to pointer to indicate interactivity */
+  cursor: pointer;
 }
