@@ -238,7 +238,7 @@ document.addEventListener("DOMContentLoaded", () => {
           { text: "Hi All!", fontFamily: "'Honk', system-ui" } // Example custom font
       ];
       let currentStyleIndex = 0; // Index of the currently displayed style
-      const changeInterval = 3000; // Time (ms) between style changes (3 seconds)
+      const changeInterval = 1000; // Time (ms) between style changes (3 seconds)
       const glitchDuration = 200;  // Duration (ms) to show the glitch text
   
       // Function to apply a specific style from the array
@@ -281,7 +281,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const profilePic = document.getElementById('profile-picture');
     if (profilePic) {
         // Configuration for the hover effect
-        const hoverScale = 1.15; // Scale factor on hover (1.15 = 115%)
+        const hoverScale = 1.35; // Scale factor on hover (1.15 = 115%)
         const flipAngle = 360;   // Degrees to rotate around the Y-axis on hover
         const maxTilt = 10;      // Maximum tilt angle (degrees) based on mouse position
         // NOTE: transitionDuration is now defined purely in CSS
