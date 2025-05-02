@@ -144,7 +144,9 @@ document.addEventListener("DOMContentLoaded", () => {
               const maxDistance = 100;
               if (distance < maxDistance) {
                   opacityValue = 1 - (distance / maxDistance);
-                  const rgbaColor = lineColorBase.replace(')', `, ${opacityValue.toFixed(2)})`).replace('rgb(', 'rgba(');
+                  // Ensure rgbaColor construction handles potential missing alpha in lineColorBase
+                  let baseColor = lineColorBase.startsWith('rgba') ? lineColorBase.substring(0, lineColorBase.lastIndexOf(',')) : lineColorBase.replace('rgb', 'rgba').replace(')', ', 1');
+                  const rgbaColor = `${baseColor.substring(0, baseColor.lastIndexOf(','))}, ${opacityValue.toFixed(2)})`;
                   ctx.strokeStyle = rgbaColor; ctx.lineWidth = 0.5;
                   ctx.beginPath(); ctx.moveTo(particles[a].x, particles[a].y); ctx.lineTo(particles[b].x, particles[b].y);
                   ctx.stroke(); ctx.closePath();
@@ -152,6 +154,7 @@ document.addEventListener("DOMContentLoaded", () => {
           }
       }
   }
+
 
   window.drawCanvasBackground = () => {
       if (!ctx || !canvas) { return; }
@@ -188,8 +191,17 @@ document.addEventListener("DOMContentLoaded", () => {
       if (!animating || catWalkFrames.length === 0) return;
       const dxMouse = mouseX - catX;
       if (Math.abs(dxMouse) > 2) { scaleX = dxMouse > 0 ? 1 : -1; }
-      const targetX = mouseX - scaleX * (catElement.offsetWidth / 2);
+
+      // --- ADJUSTED TARGET CALCULATION ---
+      // Offset multiplier: 0.6 means the cursor targets a point 60% from the leading edge
+      // Increase towards 1.0 to have cursor closer to the leading edge (nose)
+      // Decrease towards 0.5 to have cursor closer to the center
+      const offsetMultiplier = 0.6;
+      const targetX = mouseX - (catElement.offsetWidth * offsetMultiplier) * scaleX;
+      // Keep vertical target centered
       const targetY = mouseY - (catElement.offsetHeight / 2);
+      // --- END ADJUSTMENT ---
+
       const dx = targetX - catX; const dy = targetY - catY;
       const dist = Math.hypot(dx, dy); const moving = dist > 5;
       if (dist > 1) { catX += dx * speed; catY += dy * speed; }
@@ -278,9 +290,6 @@ document.addEventListener("DOMContentLoaded", () => {
   /* --- Hi All! Font Changing Animation --- */
   const fontText = document.getElementById('font-change-text');
   if (fontText) {
-    // FIX: Removed the duplicate placeholder comment line that caused the error.
-    // const styles = [ /* ... styles array ... */ ]; // <<< THIS LINE WAS REMOVED
-
     // This is the correct declaration
     const styles = [
       { text: "Hi All!", fontFamily: "'Rubik', sans-serif" },
