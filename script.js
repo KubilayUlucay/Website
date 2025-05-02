@@ -1,348 +1,347 @@
-// Wait for the HTML document to be fully loaded and parsed
 document.addEventListener("DOMContentLoaded", () => {
 
-  // --- Chasing Cat Logic ---
-  const cat = document.getElementById("chasing-cat-img");
-  if (cat) {
-    // Initial mouse and cat positions (center of the screen)
-    let mouseX = window.innerWidth / 2;
-    let mouseY = window.innerHeight / 2;
-    let catX = mouseX;
-    let catY = mouseY;
+  /* ===== THEME TOGGLE ===== */
+  const themeToggleButton = document.getElementById('theme-toggle');
+  const body = document.body;
+  const sunIcon = '<i class="fas fa-sun"></i>'; // Font Awesome sun icon
+  const moonIcon = '<i class="fas fa-moon"></i>'; // Font Awesome moon icon
 
-    // Configuration for cat movement and animation
-    const speed = 0.08;        // How fast the cat follows (lower is slower)
-    const followDelay = 100;   // Milliseconds delay before the cat starts following
-    let followTimeout = null;  // Timeout ID for the delay
-    let scaleX = 1;            // Horizontal direction (-1 for left, 1 for right)
-    let animating = false;     // Flag to track if the animation loop is running
-    // --- Using original image paths ---
-    const idleFrame = "images/cat-3.png"; // Original idle cat image
-    const walkFrames = [       // Original array of images for walking animation
-        "images/cat-1.png", "images/cat-2.png",
-        "images/cat-4.png", "images/cat-5.png",
-        "images/cat-6.png", "images/cat-7.png",
-        "images/cat-8.png"
-    ];
-    // ---------------------------------
-    let walkIndex = 0;         // Current frame index in walkFrames
-    let lastFrameTime = 0;     // Timestamp of the last frame change
-    let frameInterval = 100;   // Milliseconds between walk animation frames (Adjust as needed)
+  // --- Cat Image Variables (will be updated by theme) ---
+  let catIdleFrame = '';
+  let catWalkFrames = [];
+  const catElement = document.getElementById("chasing-cat-img"); // Get cat element once
 
-    // Main animation loop function
+  // --- Function to update cat images based on theme ---
+  const updateCatImages = (theme) => {
+    if (theme === 'dark') {
+      // Use white cat for dark theme
+      catIdleFrame = "images/white-cat-1.png"; // Assuming white-cat-3 is idle
+      catWalkFrames = [
+        "images/white-cat-4.png",
+        "images/white-cat-5.png", "images/white-cat-6.png", "images/white-cat-7.png",
+        "images/white-cat-8.png", "images/white-cat-9.png", "images/white-cat-10.png"
+      ];
+    } else {
+      // Use black cat for light theme
+      catIdleFrame = "images/cat-v1.png"; // Assuming cat-v3 is idle for black cat
+      catWalkFrames = [
+        "images/cat-v2.png", "images/cat-v4.png",
+        "images/cat-v5.png", "images/cat-v6.png", "images/cat-v7.png",
+        "images/cat-v8.png", "images/cat-v9.png", "images/cat-v10.png"
+      ];
+    }
+
+    // If the cat element exists and is currently visible (or just loaded), update its src
+    if (catElement && catElement.style.opacity !== "0") {
+        const currentSrcFilename = catElement.src.split('/').pop();
+        const newIdleFilename = catIdleFrame.split('/').pop();
+        if (currentSrcFilename !== newIdleFilename) {
+             catElement.src = catIdleFrame;
+        }
+    }
+    // console.log(`Cat images updated for ${theme} theme. Idle: ${catIdleFrame}`);
+  };
+
+
+  // Function to apply the theme
+  const applyTheme = (theme) => {
+    // console.log(`Applying theme: ${theme}`);
+    if (theme === 'dark') {
+      body.classList.add('dark-theme');
+      if (themeToggleButton) themeToggleButton.innerHTML = sunIcon;
+    } else {
+      body.classList.remove('dark-theme');
+      if (themeToggleButton) themeToggleButton.innerHTML = moonIcon;
+    }
+    updateCatImages(theme); // Update cat images based on the new theme
+    if (window.drawCanvasBackground) {
+        setTimeout(window.drawCanvasBackground, 0); // Redraw canvas
+    }
+  };
+
+  // Function to toggle the theme
+  const toggleTheme = () => {
+    const currentTheme = body.classList.contains('dark-theme') ? 'light' : 'dark';
+    localStorage.setItem('theme', currentTheme);
+    applyTheme(currentTheme);
+  };
+
+  // Add event listener(s) to button(s)
+  if (themeToggleButton) {
+    themeToggleButton.addEventListener('click', toggleTheme);
+  }
+
+  // Check local storage on load - Apply theme *before* initializing canvas AND cat
+  const savedTheme = localStorage.getItem('theme') || 'light';
+  if (savedTheme === 'dark') {
+    body.classList.add('dark-theme');
+    if (themeToggleButton) themeToggleButton.innerHTML = sunIcon;
+  } else {
+    if (themeToggleButton) themeToggleButton.innerHTML = moonIcon;
+  }
+  updateCatImages(savedTheme); // Set initial cat images
+
+
+  /* ===== ANIMATED CANVAS BACKGROUND ===== */
+  const canvas = document.getElementById('background-canvas');
+  let ctx;
+  let particles = [];
+  let animationFrameId;
+
+  const getCssVariable = (variableName) => getComputedStyle(document.body).getPropertyValue(variableName).trim();
+
+  class Particle {
+    constructor(x, y, radius, dx, dy) {
+      this.x = x; this.y = y; this.radius = radius; this.dx = dx; this.dy = dy;
+      this.color = getCssVariable('--particle-color');
+    }
+    updateColor() { this.color = getCssVariable('--particle-color'); }
+    draw() {
+      if (!ctx) return;
+      ctx.beginPath(); ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
+      ctx.fillStyle = this.color; ctx.fill(); ctx.closePath();
+    }
+    update() {
+      if (!canvas) return;
+      if (this.x + this.radius > canvas.width || this.x - this.radius < 0) { this.dx = -this.dx; }
+      if (this.y + this.radius > canvas.height || this.y - this.radius < 0) { this.dy = -this.dy; }
+      this.x += this.dx; this.y += this.dy; this.draw();
+    }
+  }
+
+  function initParticles() {
+    if (!canvas || !ctx) return;
+    particles = []; canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+    let numberOfParticles = Math.floor((canvas.width * canvas.height) / 15000);
+    numberOfParticles = Math.max(20, Math.min(numberOfParticles, 100));
+    const currentParticleColor = getCssVariable('--particle-color');
+    for (let i = 0; i < numberOfParticles; i++) {
+      const radius = Math.random() * 1.5 + 0.5;
+      const x = Math.random() * (canvas.width - radius * 2) + radius;
+      const y = Math.random() * (canvas.height - radius * 2) + radius;
+      const dx = (Math.random() - 0.5) * 0.5; const dy = (Math.random() - 0.5) * 0.5;
+      const newParticle = new Particle(x, y, radius, dx, dy);
+      newParticle.color = currentParticleColor; particles.push(newParticle);
+    }
+  }
+
+  function animateParticles() {
+    if (animationFrameId) { cancelAnimationFrame(animationFrameId); }
+    animationFrameId = requestAnimationFrame(animateParticles);
+    if (!ctx || !canvas) return;
+    const bgColor = getCssVariable('--canvas-bg');
+    ctx.fillStyle = bgColor; ctx.fillRect(0, 0, canvas.width, canvas.height);
+    particles.forEach(particle => { particle.update(); });
+    connectParticles();
+  }
+
+  function connectParticles() {
+      if (!ctx || particles.length === 0) return;
+      let opacityValue = 0.2; const lineColorBase = getCssVariable('--particle-color');
+      for (let a = 0; a < particles.length; a++) {
+          for (let b = a + 1; b < particles.length; b++) {
+              const distance = Math.hypot(particles[a].x - particles[b].x, particles[a].y - particles[b].y);
+              const maxDistance = 100;
+              if (distance < maxDistance) {
+                  opacityValue = 1 - (distance / maxDistance);
+                  const rgbaColor = lineColorBase.replace(')', `, ${opacityValue.toFixed(2)})`).replace('rgb(', 'rgba(');
+                  ctx.strokeStyle = rgbaColor; ctx.lineWidth = 0.5;
+                  ctx.beginPath(); ctx.moveTo(particles[a].x, particles[a].y); ctx.lineTo(particles[b].x, particles[b].y);
+                  ctx.stroke(); ctx.closePath();
+              }
+          }
+      }
+  }
+
+  window.drawCanvasBackground = () => {
+      if (!ctx || !canvas) { return; }
+      const newParticleColor = getCssVariable('--particle-color');
+      particles.forEach(particle => particle.color = newParticleColor);
+      const bgColor = getCssVariable('--canvas-bg');
+      ctx.fillStyle = bgColor; ctx.fillRect(0, 0, canvas.width, canvas.height);
+      particles.forEach(particle => particle.draw()); connectParticles();
+  };
+
+  window.addEventListener('resize', () => {
+    clearTimeout(window.resizeTimeout);
+    window.resizeTimeout = setTimeout(() => {
+        if (canvas && ctx) { initParticles(); window.drawCanvasBackground(); }
+    }, 100);
+  });
+
+  if (canvas) {
+      ctx = canvas.getContext('2d');
+      if (ctx) { initParticles(); animateParticles(); }
+      else { console.error("Failed to get 2D context for canvas."); }
+  } else { console.log("Background canvas not found."); }
+
+
+  /* --- Cat Following Mouse --- */
+  if (catElement) {
+    let mouseX = window.innerWidth / 2; let mouseY = window.innerHeight / 2;
+    let catX = mouseX, catY = mouseY;
+    const speed = 0.08; const followDelay = 100;
+    let followTimeout = null; let scaleX = 1; let animating = false;
+    let walkIndex = 0, lastFrameTime = 0, frameInterval = 100;
+
     function loop(currentTime) {
-      // Stop the loop if animation is not active
-      if (!animating) return;
-
-      // Calculate distance between mouse and cat
+      if (!animating || catWalkFrames.length === 0) return;
       const dxMouse = mouseX - catX;
-      const dyMouse = mouseY - catY;
-
-      // Determine cat's horizontal direction based on mouse position
-      if (Math.abs(dxMouse) > 2) {
-          scaleX = dxMouse > 0 ? 1 : -1; // Point right if mouse is right, else left
-      }
-
-      // Calculate the target position for the cat (slightly behind/offset from the cursor)
-      const targetX = mouseX - scaleX * (cat.offsetWidth / 2); // Offset horizontally based on direction
-      const targetY = mouseY - (cat.offsetHeight / 2);       // Center vertically on the cursor
-
-      // Calculate vector from cat to target position
-      const dx = targetX - catX;
-      const dy = targetY - catY;
-      const dist = Math.hypot(dx, dy); // Calculate distance to target
-      const moving = dist > 5;         // Check if the cat needs to move significantly
-
-      // Move the cat towards the target position using the speed factor
-      if (dist > 1) { // Only move if not already very close
-        catX += dx * speed;
-        catY += dy * speed;
-      }
-
-      // Apply the calculated position and direction to the cat image via CSS transform
-      cat.style.transform = `translate(${catX.toFixed(2)}px, ${catY.toFixed(2)}px) scaleX(${scaleX})`;
-
-      // Handle walking animation
+      if (Math.abs(dxMouse) > 2) { scaleX = dxMouse > 0 ? 1 : -1; }
+      const targetX = mouseX - scaleX * (catElement.offsetWidth / 2);
+      const targetY = mouseY - (catElement.offsetHeight / 2);
+      const dx = targetX - catX; const dy = targetY - catY;
+      const dist = Math.hypot(dx, dy); const moving = dist > 5;
+      if (dist > 1) { catX += dx * speed; catY += dy * speed; }
+      catElement.style.transform = `translate(${catX.toFixed(2)}px, ${catY.toFixed(2)}px) scaleX(${scaleX})`;
       if (moving) {
-        // If moving and enough time has passed since the last frame change
-        if (currentTime - lastFrameTime > frameInterval) {
-          walkIndex = (walkIndex + 1) % walkFrames.length; // Cycle through walk frames
-          cat.src = walkFrames[walkIndex];                 // Update cat image source
-          lastFrameTime = currentTime;                     // Record the time of this frame change
-        }
+         if (currentTime - lastFrameTime > frameInterval) {
+             walkIndex = (walkIndex + 1) % catWalkFrames.length;
+             catElement.src = catWalkFrames[walkIndex];
+             lastFrameTime = currentTime;
+         }
       } else {
-        // If not moving significantly, show the idle frame
-        if (cat.src !== idleFrame) { // Only change if not already idle
-            cat.src = idleFrame;
-        }
-        walkIndex = 0; // Reset walk animation cycle
+        const currentSrcFilename = catElement.src.split('/').pop();
+        const idleFilename = catIdleFrame.split('/').pop();
+         if (catElement.src && currentSrcFilename !== idleFilename) {
+            catElement.src = catIdleFrame;
+         }
+        walkIndex = 0;
       }
-
-      // Request the next frame, continuing the loop
       requestAnimationFrame(loop);
     }
 
-    // Function to start the cat following animation
     function startFollowing() {
-        if (animating) return; // Don't start if already running
-        animating = true;
-        cat.style.opacity = "0.9"; // Make cat visible (assuming CSS transition)
-        cat.src = idleFrame;       // Start with the idle image
-        lastFrameTime = performance.now(); // Get current time for frame timing
-        requestAnimationFrame(loop); // Start the animation loop
+      if (animating) return; animating = true; catElement.style.opacity = "0.9";
+      catElement.src = catIdleFrame; lastFrameTime = performance.now();
+      requestAnimationFrame(loop);
     }
-
-    // Function to stop the cat following animation
     function stopFollowing() {
-        animating = false;
-        cat.style.opacity = "0"; // Hide the cat (assuming CSS transition)
-        // Clear any pending start timeout
-        if (followTimeout) {
-            clearTimeout(followTimeout);
-            followTimeout = null;
-        }
+      animating = false; catElement.style.opacity = "0";
+      if (followTimeout) { clearTimeout(followTimeout); }
     }
-
-    // Event listener for mouse movement within the document
     document.addEventListener("mousemove", e => {
-      // Update mouse coordinates
-      mouseX = e.clientX;
-      mouseY = e.clientY;
-      // Start the following animation after a short delay (debouncing)
-      if (!animating) {
-          if (followTimeout) clearTimeout(followTimeout); // Clear previous timeout
-          // Set a new timeout to start following
-          followTimeout = setTimeout(startFollowing, followDelay);
-      }
+      mouseX = e.clientX; mouseY = e.clientY;
+      if (!animating) { if (followTimeout) clearTimeout(followTimeout); followTimeout = setTimeout(startFollowing, followDelay); }
     });
-
-    // Event listener for when the mouse leaves the document window
     document.addEventListener("mouseleave", stopFollowing);
+    document.addEventListener("mouseenter", e => { mouseX = e.clientX; mouseY = e.clientY; });
+    catElement.style.transform = `translate(${catX}px, ${catY}px) scaleX(${scaleX})`;
+  } // end if(catElement)
 
-    // Event listener for when the mouse enters the document window
-    document.addEventListener("mouseenter", e => {
-        // Update mouse position immediately in case it was outside
-        mouseX = e.clientX;
-        mouseY = e.clientY;
-        // Note: We don't automatically start following on mouseenter,
-        // we wait for the mousemove event and its delay.
-    });
 
-    // Set initial cat position (centered but hidden by initial style/opacity)
-    cat.style.transform = `translate(${catX}px, ${catY}px) scaleX(${scaleX})`;
-  } // End of Chasing Cat Logic
-
-  // --- Header Scroll Blur ---
+  /* --- Header Blur on Scroll --- */
   const header = document.querySelector("header");
   if (header) {
-    // Add scroll event listener to the window
     window.addEventListener("scroll", () => {
-      // Check if the page has been scrolled down more than 50 pixels
-      if (window.scrollY > 50) {
-        header.classList.add("scrolled"); // Add 'scrolled' class to header
-      } else {
-        header.classList.remove("scrolled"); // Remove 'scrolled' class
-      }
+      if (window.scrollY > 50) { header.classList.add("scrolled"); }
+      else { header.classList.remove("scrolled"); }
     });
-  } // End of Header Scroll Blur
+  }
 
-  // --- Mobile Menu Toggle ---
+
+  /* --- Mobile Menu Toggle --- */
   const mobileMenuButton = document.getElementById("mobile-menu-button");
   const mobileMenu = document.getElementById("mobile-menu");
   if (mobileMenuButton && mobileMenu) {
-    // Toggle menu visibility when the button is clicked
-    mobileMenuButton.addEventListener("click", (e) => {
-        e.stopPropagation(); // Prevent this click from closing the menu immediately
-        mobileMenu.classList.toggle("hidden"); // Tailwind class to show/hide
-    });
-
-    // Add event listeners to each link within the mobile menu
-    mobileMenu.querySelectorAll("a").forEach(link => {
-        link.addEventListener("click", () => {
-            // Hide the menu when a link is clicked
-            mobileMenu.classList.add("hidden");
-        });
-    });
-
-    // Add event listener to the whole document to close the menu if clicked outside
+    mobileMenuButton.addEventListener("click", (e) => { e.stopPropagation(); mobileMenu.classList.toggle("hidden"); });
+    mobileMenu.querySelectorAll("a").forEach(link => { link.addEventListener("click", () => { mobileMenu.classList.add("hidden"); }); });
     document.addEventListener('click', (event) => {
-        // Check if the menu is visible AND the click was outside the menu AND outside the button
-        if (!mobileMenu.classList.contains('hidden') &&
-            !mobileMenu.contains(event.target) &&
-            !mobileMenuButton.contains(event.target)) {
-            mobileMenu.classList.add('hidden'); // Hide the menu
+        if (!mobileMenu.classList.contains('hidden') && !mobileMenu.contains(event.target) && !mobileMenuButton.contains(event.target)) {
+            mobileMenu.classList.add('hidden');
         }
     });
-  } // End of Mobile Menu Toggle
+  }
 
-  // --- Scroll Reveal Animation for Sections ---
+
+  /* --- Scroll Reveal Sections --- */
   const sectionsToReveal = document.querySelectorAll("section");
   if (sectionsToReveal.length > 0) {
-    // Initially hide sections (except hero) and prepare for transition
-    sectionsToReveal.forEach(sec => {
-      if (sec.id !== "hero") { // Don't hide or transform the hero section initially
-        sec.classList.add("opacity-0", "translate-y-5", "transition-all", "duration-700", "ease-out");
-      }
-    });
+      sectionsToReveal.forEach(sec => { if (sec.id !== "hero") { sec.classList.add("opacity-0", "translate-y-5", "transition-all", "duration-700", "ease-out"); } });
+      const intersectionObserver = new IntersectionObserver((entries, observer) => {
+          entries.forEach(entry => {
+              if (entry.isIntersecting) {
+                  entry.target.classList.remove("opacity-0", "translate-y-5"); entry.target.classList.add("opacity-100", "translate-y-0");
+                  observer.unobserve(entry.target);
+              }
+          });
+      }, { threshold: 0.1 });
+      sectionsToReveal.forEach(sec => { if (sec.id !== "hero") { intersectionObserver.observe(sec); } });
+  }
 
-    // Configure the Intersection Observer
-    const observerOptions = {
-      root: null, // Observe intersections relative to the viewport
-      rootMargin: '0px', // No margin around the viewport
-      threshold: 0.1 // Trigger when 10% of the section is visible
-    };
 
-    // Callback function for the observer
-    const observerCallback = (entries, observer) => {
-      entries.forEach(entry => {
-        // When a section becomes intersecting (visible)
-        if (entry.isIntersecting) {
-          // Remove the initial hidden/transformed classes to trigger the transition
-          entry.target.classList.remove("opacity-0", "translate-y-5");
-          entry.target.classList.add("opacity-100", "translate-y-0"); // Ensure final state classes are present
-          // Stop observing this section once it has been revealed
-          observer.unobserve(entry.target);
-        }
-      });
-    };
-
-    // Create the Intersection Observer instance
-    const intersectionObserver = new IntersectionObserver(observerCallback, observerOptions);
-
-    // Start observing all sections except the hero section
-    sectionsToReveal.forEach(sec => {
-      if (sec.id !== "hero") {
-        intersectionObserver.observe(sec);
-      }
-    });
-  } // End of Scroll Reveal
-
-  // --- Current Year in Footer ---
+  /* --- Footer Year --- */
   const yearEl = document.getElementById("current-year");
-  if (yearEl) {
-    // Set the text content to the current year
-    yearEl.textContent = new Date().getFullYear();
-  } // End of Current Year
+  if (yearEl) { yearEl.textContent = new Date().getFullYear(); }
 
-  // --- Automatic Font Cycling & Glitch Logic for "Hi All!" Text ---
+
+  /* --- Hi All! Font Changing Animation --- */
   const fontText = document.getElementById('font-change-text');
   if (fontText) {
-    // Define the different styles (text content and font family)
+    // FIX: Removed the duplicate placeholder comment line that caused the error.
+    // const styles = [ /* ... styles array ... */ ]; // <<< THIS LINE WAS REMOVED
+
+    // This is the correct declaration
     const styles = [
-        { text: "Hi All!", fontFamily: "'Rubik', sans-serif" },
-        { text: "Hi All!", fontFamily: "'Montserrat', sans-serif" },
-        { text: "H̶̢̭̓i̸͈̓̂ ̵̥́̊A̴̪̎̒l̴̹̪̆ļ̵̼̊!̶̰̅", fontFamily: "'Rubik', sans-serif" }, // Predefined glitch text
-        { text: "Hi All!", fontFamily: "'Courier New', monospace" },
-        { text: "Hi All!", fontFamily: "cursive" },
-        { text: "Hi All!", fontFamily: "fantasy" },
-        { text: "Hi All!", fontFamily: "'Honk', system-ui" } // Example custom font
+      { text: "Hi All!", fontFamily: "'Rubik', sans-serif" },
+      { text: "Hi All!", fontFamily: "'Montserrat', sans-serif" },
+      { text: "H̶̢̭̓i̸͈̓̂ ̵̥́̊A̴̪̎̒l̴̹̪̆ļ̵̼̊!̶̰̅", fontFamily: "'Rubik', sans-serif" }, // Glitch style
+      { text: "Hi All!", fontFamily: "'Courier New', monospace" },
+      { text: "Hi All!", fontFamily: "cursive" },
+      { text: "Hi All!", fontFamily: "fantasy" },
+      { text: "Hi All!", fontFamily: "'Honk', system-ui" } // Honk font
     ];
-    let currentStyleIndex = 0; // Index of the currently displayed style
-    const changeInterval = 3000; // Time (ms) between style changes (3 seconds)
-    const glitchDuration = 200;  // Duration (ms) to show the glitch text
+    let currentStyleIndex = 0;
+    const changeInterval = 750;
+    const glitchDuration = 150;
 
-    // Function to apply a specific style from the array
     function applyStyle(index) {
-        if (index >= 0 && index < styles.length) {
-            fontText.textContent = styles[index].text;
-            fontText.style.fontFamily = styles[index].fontFamily;
-        }
+      if (index >= 0 && index < styles.length) {
+          fontText.textContent = styles[index].text;
+          fontText.style.fontFamily = styles[index].fontFamily;
+      }
     }
-
-    // Apply the initial style when the page loads
-    applyStyle(currentStyleIndex);
-
-    // Function to change to the next style in the cycle
-    function changeStyle() {
-        const nextStyleIndex = (currentStyleIndex + 1) % styles.length; // Calculate the next index, looping back to 0
-
-        // Check if the *next* style is the predefined glitch text
-        // We identify it by checking for the combining character '̶'
-        if (styles[nextStyleIndex].text.includes('̶')) {
-             applyStyle(nextStyleIndex); // Show the glitch text immediately
-             // Set a timeout to switch to the style *after* the glitch
-             setTimeout(() => {
-                 const afterGlitchIndex = (nextStyleIndex + 1) % styles.length; // Index after the glitch
-                 applyStyle(afterGlitchIndex);
-                 currentStyleIndex = afterGlitchIndex; // Update the current index to the post-glitch style
-             }, glitchDuration); // Wait for the glitch duration
-        } else {
-            // If the next style is not the glitch text, apply it normally
+    applyStyle(currentStyleIndex); // Apply initial style
+    setInterval(() => {
+        const nextStyleIndex = (currentStyleIndex + 1) % styles.length;
+        if (styles[nextStyleIndex].text.includes('̶')) { // Check if glitch
             applyStyle(nextStyleIndex);
-            currentStyleIndex = nextStyleIndex; // Update the current index
+            setTimeout(() => {
+                const afterGlitchIndex = (nextStyleIndex + 1) % styles.length;
+                applyStyle(afterGlitchIndex);
+                currentStyleIndex = afterGlitchIndex;
+            }, glitchDuration);
+        } else { // Normal style change
+            applyStyle(nextStyleIndex);
+            currentStyleIndex = nextStyleIndex;
         }
-    }
+    }, changeInterval);
+  } // end if(fontText)
 
-    // Set an interval to call changeStyle repeatedly
-    setInterval(changeStyle, changeInterval);
-  } // End of Font Cycling
 
-  // --- Profile Picture Hover Effect (Flip, Scale, Tilt) ---
+  /* === Profile Picture Zoom and Tilt === */
   const profilePic = document.getElementById('profile-picture');
   if (profilePic) {
-      // Configuration for the hover effect
-      const hoverScale = 1.5; // Scale factor on hover (1.15 = 115%)
-      const flipAngle = 360;   // Degrees to rotate around the Y-axis on hover
-      const maxTilt = 10;      // Maximum tilt angle (degrees) based on mouse position
-
-      let handleMouseMove = null; // Variable to store the mousemove event listener function
-      let isHovering = false;     // Flag to track if mouse is currently over the element
-
-      // Event listener for when the mouse enters the profile picture area
-      profilePic.addEventListener('mouseenter', () => {
-          isHovering = true;
-          // --- MODIFICATION START ---
-          // Ensure transition is enabled (revert to CSS value)
-          profilePic.style.transition = '';
-          // Apply the target transform state (scale and flip)
-          // The CSS transition defined in style.css handles the animation
-          profilePic.style.transform = `perspective(1000px) scale(${hoverScale}) rotateY(${flipAngle}deg)`;
-          // --- MODIFICATION END ---
-
-          // Define the function that handles mouse movement *while* hovering
-          handleMouseMove = (event) => {
-              if (!isHovering) return; // Exit if mouse has left
-
-              const rect = profilePic.getBoundingClientRect(); // Get picture's position and size
-              const centerX = rect.left + rect.width / 2;
-              const centerY = rect.top + rect.height / 2;
-
-              // Calculate mouse position relative to the center of the picture
-              const offsetX = (event.clientX - centerX) / (rect.width / 2);
-              const offsetY = (event.clientY - centerY) / (rect.height / 2);
-
-              // Calculate tilt angles based on mouse offset
-              const rotateY_tilt = Math.max(-1, Math.min(1, offsetX)) * maxTilt;
-              const rotateX_tilt = Math.max(-1, Math.min(1, -offsetY)) * maxTilt; // Invert Y for natural tilt
-
-              // --- MODIFICATION START ---
-              // Temporarily disable transition for immediate tilt update
-              profilePic.style.transition = 'none';
-              // Apply the combined transform including the base flip/scale AND the tilt.
-              profilePic.style.transform = `perspective(1000px) rotateX(${rotateX_tilt}deg) rotateY(${rotateY_tilt + flipAngle}deg) scale(${hoverScale})`;
-              // --- MODIFICATION END ---
-          };
-
-          // Add the mousemove listener
-          profilePic.addEventListener('mousemove', handleMouseMove);
+      let isHovering = false;
+       profilePic.addEventListener('mouseenter', () => {
+          isHovering = true; profilePic.classList.add('hovering');
+          profilePic.style.transform = 'scale(1.2) rotateX(0deg) rotateY(0deg)';
       });
-
-      // Event listener for when the mouse leaves the profile picture area
-      profilePic.addEventListener('mouseleave', () => {
-          isHovering = false;
-          // --- MODIFICATION START ---
-          // Ensure transition is enabled for the exit animation
-          profilePic.style.transition = '';
-          // Reset the transform style. The CSS transition handles animating back smoothly.
-          profilePic.style.transform = ''; // Resets to the default state (scale(1) rotateY(0deg))
-          // --- MODIFICATION END ---
-
-          // Remove the mousemove listener if it was added
-          if (handleMouseMove) {
-              profilePic.removeEventListener('mousemove', handleMouseMove);
-              handleMouseMove = null; // Clear the stored function reference
-          }
+       profilePic.addEventListener('mousemove', (e) => {
+          if (!isHovering) return;
+          const rect = profilePic.getBoundingClientRect();
+          const x = e.clientX - rect.left; const y = e.clientY - rect.top;
+          const centerX = rect.width / 2; const centerY = rect.height / 2;
+          let normalizedX = (x - centerX) / centerX; let normalizedY = (y - centerY) / centerY;
+          normalizedX = Math.max(-1, Math.min(1, normalizedX)); normalizedY = Math.max(-1, Math.min(1, normalizedY));
+          const rotateX = -normalizedY * 30; const rotateY = normalizedX * 30;
+          profilePic.style.transform = `scale(1.5) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
       });
-  } // End of Profile Picture Hover Effect
+       profilePic.addEventListener('mouseleave', () => {
+          isHovering = false; profilePic.classList.remove('hovering');
+          profilePic.style.transform = 'scale(1) rotateX(0deg) rotateY(0deg)';
+      });
+  }
+  /* === End of Profile Picture Code === */
 
-}); // End of DOMContentLoaded listener
+}); // End DOMContentLoaded

@@ -2,123 +2,244 @@
 html {
   scroll-behavior: smooth;
 }
-/* ============================ */
 
-/* Define CSS Variables for accent colors */
+/* ===== THEME VARIABLES ===== */
 :root {
-  --accent1: #FF61E1; /* Pink */
-  --accent2: #FFB400; /* Yellow */
-  --accent3: #00C2FF; /* Blue */
+  /* Accent Colors (Keep these consistent across themes or define dark versions) */
+  --accent1: #FF61E1;
+  --accent2: #FFB400;
+  --accent3: #00C2FF;
+
+  /* Light Theme (Default) */
+  --bg-color: #f8fafc; /* Very light gray (Tailwind slate-50) */
+  --text-color: #1f2937; /* Dark gray (Tailwind gray-800) */
+  --text-color-secondary: #4b5563; /* Medium gray (Tailwind gray-600) */
+  --card-bg: #ffffff; /* White */
+  --card-border: #e5e7eb; /* Light gray border (Tailwind gray-200) */
+  --header-bg: rgba(255, 255, 255, 0.8); /* Semi-transparent white */
+  --footer-bg: #1f2937; /* Dark Gray (Tailwind gray-800) */
+  --footer-text: #d1d5db; /* Light Gray (Tailwind gray-300) */
+  --link-color: #4b5563; /* Medium gray (Tailwind gray-600) */
+  --link-hover-color: var(--accent1);
+  --shadow-color: rgba(0, 0, 0, 0.15); /* Shadow for cards */
+  --tag-bg: #e5e7eb; /* Tailwind gray-200 */
+  --tag-text: #374151; /* Tailwind gray-700 */
+
+  /* Canvas Colors - Light Theme */
+  --canvas-bg: #f8fafc;
+  --particle-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black */
 }
 
-/* Base body font */
+/* Dark Theme */
+body.dark-theme {
+  --bg-color: #111827; /* Very dark blue/gray (Tailwind gray-900) */
+  --text-color: #f3f4f6; /* Light gray (Tailwind gray-100) */
+  --text-color-secondary: #9ca3af; /* Medium gray (Tailwind gray-400) */
+  --card-bg: #1f2937; /* Dark gray (Tailwind gray-800) */
+  --card-border: #374151; /* Medium-dark gray (Tailwind gray-700) */
+  --header-bg: rgba(31, 41, 55, 0.8); /* Semi-transparent dark gray (gray-800) */
+  --footer-bg: #030712; /* Almost black (Tailwind gray-950) */
+  --footer-text: #9ca3af; /* Medium gray (Tailwind gray-400) */
+  --link-color: #9ca3af; /* Medium gray (Tailwind gray-400) */
+  --link-hover-color: var(--accent1);
+  --shadow-color: rgba(0, 0, 0, 0.9); /* Darker shadow */
+  --tag-bg: #374151; /* Tailwind gray-700 */
+  --tag-text: #d1d5db; /* Tailwind gray-300 */
+
+  /* Canvas Colors - Dark Theme */
+  --canvas-bg: #111827;
+  /* UPDATED: Brighter particle/line color for dark theme */
+  --particle-color: rgba(255, 255, 255, 1); /* More opaque white */
+  /* Alternative: Try fully opaque white: */
+  /* --particle-color: rgba(255, 255, 255, 1); */
+  /* Alternative: Try a light gray: */
+  /* --particle-color: rgba(209, 213, 219, 0.8); */ /* Tailwind gray-300 at 80% opacity */
+}
+
+/* ===== Base Body Styles ===== */
 body {
+  /* Use CSS variables for background and text color */
+  background-color: var(--bg-color);
+  color: var(--text-color);
   font-family: 'Rubik', sans-serif;
-  /* Fix potential overflow issues caused by absolutely positioned elements like blobs */
   overflow-x: hidden;
+  /* Smooth transition for color changes */
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-/* Headings font */
-h1,h2,h3,h4 {
+/* ===== Canvas Background Styles ===== */
+#background-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -10; /* Place behind all content */
+  /* Background color set via JS using --canvas-bg variable */
+  display: block; /* Remove potential extra space below canvas */
+}
+
+
+/* ===== Heading Fonts ===== */
+h1, h2, h3, h4 {
   font-family: 'Montserrat', sans-serif;
+  /* Headings inherit body text color by default */
 }
 
-/* Navigation Link Styles */
+/* ===== Link Styles ===== */
 .nav-link {
-  color: #4B5563; /* Tailwind gray-600 */
-  transition: color .3s ease-in-out; /* Smooth color transition on hover */
+  color: var(--link-color);
+  transition: color .3s ease-in-out;
 }
 .nav-link:hover {
-  color: var(--accent1); /* Change color to accent1 on hover */
+  color: var(--link-hover-color);
 }
 
-/* Button Pop Effect */
+/* Section Subtitles */
+.section-subtitle {
+    color: var(--text-color-secondary);
+}
+
+/* ===== Button Pop Effect ===== */
 .btn-pop {
-  /* Smooth transition for transform (scaling) and background color */
   transition: transform .2s ease-out, background-color .3s ease-in-out;
 }
 .btn-pop:hover {
-  transform: scale(1.05); /* Slightly enlarge button on hover */
+  transform: scale(1.05);
 }
 
-/* Header Styles */
+/* ===== Header Styles ===== */
 header {
-  background: white; /* Default white background */
-  /* Smooth transition for background color and backdrop filter */
+  /* Use variable for background */
+  background: var(--header-bg);
   transition: background-color .3s ease-in-out, backdrop-filter .3s ease-in-out;
 }
-/* Styles for the header when scrolled */
 header.scrolled {
-  /* Semi-transparent white background */
-  background: rgba(255, 255, 255, 0.8);
   /* Apply blur effect */
   backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px); /* Include vendor prefix for Safari */
+}
+/* Mobile Menu Background */
+#mobile-menu {
+    background-color: var(--card-bg); /* Use card background for mobile menu */
+    border-top: 1px solid var(--card-border); /* Add a separator */
 }
 
-/* Blob Styles */
-.blob {
-  fill: currentColor; /* Use the 'color' property to set the fill */
-  opacity: .2; /* Make blobs semi-transparent */
-  /* Smooth transitions for transform, opacity, and fill color */
-  transition: transform .3s ease-in-out, opacity .3s ease-in-out, color .3s ease-in-out;
-  /* Prevents blobs from capturing mouse events */
-  pointer-events: none;
+/* Theme Toggle Button */
+#theme-toggle {
+    background-color: var(--card-bg);
+    color: var(--text-color-secondary);
+    border: 1px solid var(--card-border);
 }
-/* Set specific colors for blobs in different sections */
-#hero .blob { color: var(--accent1); }
-#projects .blob { color: var(--accent2); }
-/* Add more rules here if you have blobs in other sections with different colors */
-
-/* Optional: Blob hover effect (if you want blobs to react) */
-/* Note: Blobs have pointer-events: none, so direct hover won't work.
-   You'd need to apply hover to the parent section if interaction is desired. */
-/*
-section:hover .blob {
-  transform: scale(1.1) rotate(5deg);
-  opacity: .3;
-}
-*/
-
-/* Floating Animation for Blobs */
-@keyframes float {
-  0%, 100% { transform: translateY(0); } /* Start and end position */
-  50% { transform: translateY(-15px); } /* Mid-point position (moves up) */
-}
-.animate-blob {
-  /* Apply the float animation */
-  animation: float 6s ease-in-out infinite; /* 6 seconds duration, smooth easing, infinite loop */
+#theme-toggle:hover {
+    color: var(--text-color);
 }
 
-/* Fade-In Animations (used via Tailwind classes but defined here for clarity) */
+
+/* ===== Card Styles ===== */
+.card-bg {
+    background-color: var(--card-bg);
+    color: var(--text-color); /* Default text color within cards */
+    /* Added subtle border */
+    border: 1px solid var(--card-border);
+    /* Shadow uses variable, slightly stronger in light mode now */
+    box-shadow: 0 5px 15px -3px var(--shadow-color), 0 4px 6px -4px var(--shadow-color);
+    transition: background-color 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+.card-title {
+    color: var(--text-color); /* Explicitly set title color if needed */
+}
+.card-text {
+    color: var(--text-color-secondary); /* Use secondary text color for paragraphs */
+}
+.card-subtitle {
+    color: var(--text-color-secondary);
+    opacity: 0.8; /* Slightly lighter */
+}
+
+/* ===== Skills Section Styles ===== */
+.skill-category-title {
+    /* Color set via inline Tailwind classes + dark: overrides in HTML */
+    /* Border color uses variables */
+    border-color: var(--card-border);
+}
+.interest-tag {
+    background-color: var(--tag-bg);
+    color: var(--tag-text);
+    padding: 0.25rem 0.75rem; /* Equivalent to px-3 py-1 */
+    border-radius: 9999px; /* Equivalent to rounded-full */
+    font-size: 0.875rem; /* Equivalent to text-sm */
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* ===== Contact Icon Styles ===== */
+.contact-icon {
+    /* Color set via inline Tailwind classes + dark: overrides in HTML */
+    transition: color .3s ease-in-out, transform .2s ease-out;
+    display: inline-block; /* Needed for transform */
+}
+.contact-icon:hover {
+    transform: scale(1.1); /* Scale on hover */
+}
+
+/* ===== Footer Styles ===== */
+.footer-bg {
+    background-color: var(--footer-bg);
+    transition: background-color 0.3s ease;
+}
+.footer-text {
+    color: var(--footer-text);
+    transition: color 0.3s ease;
+}
+
+
+/* ===== Fade Animations (Used in Hero Section) ===== */
 @keyframes fadeInDown {
   from { opacity: 0; transform: translateY(-20px); }
-  to   { opacity: 1; transform: translateY(0);   }
+  to { opacity: 1; transform: translateY(0); }
 }
 @keyframes fadeInUp {
   from { opacity: 0; transform: translateY(20px); }
-  to   { opacity: 1; transform: translateY(0);   }
+  to { opacity: 1; transform: translateY(0); }
 }
-/* Classes to apply these animations (managed by Tailwind and JS) */
-.animate-fade-in-down { animation: fadeInDown .8s ease-out forwards; }
-.animate-fade-in-up   { animation: fadeInUp .8s ease-out .2s forwards; opacity:0; } /* Start hidden */
+.animate-fade-in-down {
+  animation: fadeInDown .8s ease-out forwards;
+}
+.animate-fade-in-up {
+  animation: fadeInUp .8s ease-out .2s forwards;
+  opacity: 0; /* Start hidden */
+}
 
-/* Scroll Margin for Sections */
-/* Adds space above sections when navigating via #links, preventing overlap by sticky header */
+/* ===== Section Scroll Margin ===== */
 section[id] {
-  scroll-margin-top: 80px; /* Adjust this value based on your actual sticky header height */
-  /* Prevent content within sections (like blobs) from causing horizontal scroll */
+  scroll-margin-top: 140px; /* Adjust based on sticky header height */
   overflow: hidden;
-  position: relative; /* Needed for absolutely positioned children like blobs */
+  position: relative;
 }
 
-/* Profile Picture Hover Transition */
+/* ===== Profile Picture Hover Effects ===== */
 #profile-picture {
-  /* Smoothly animate the transform property over 0.5 seconds */
-  transition: transform 0.5s ease-in-out;
-  /* Ensure the picture stays above other elements like blobs */
+  transition: transform 0.8s ease;
   position: relative;
   z-index: 10;
-  /* Change cursor to pointer to indicate interactivity */
   cursor: pointer;
+  transform-style: preserve-3d;
+  perspective: 1000px;
+  /* Border color set via variable in HTML */
+  border-color: var(--bg-color); /* Match background */
+  transition: transform 0.8s ease, border-color 0.3s ease; /* Add border transition */
 }
+#profile-picture.hovering {
+  transition: transform 0.2s ease; /* Faster tilt */
+}
+
+/* ===== Tailwind Dark Mode Helper ===== */
+/* This tells Tailwind to use the .dark-theme class instead of prefers-color-scheme */
+/* Add this if you see Tailwind dark: prefixes not working as expected */
+/* script src="https://cdn.tailwindcss.com?plugins=typography"></script> */
+/* <script> */
+/* tailwind.config = { darkMode: 'class', theme: { extend: {} } } */
+/* </script> */
+/* NOTE: It's often better to rely on CSS variables as done above rather than */
+/* solely on Tailwind's dark: prefixes when implementing a manual toggle. */
+/* However, some utility classes might still need dark: overrides directly in HTML. */
+
