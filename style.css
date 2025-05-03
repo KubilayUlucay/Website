@@ -1,245 +1,146 @@
 /* ===== SMOOTH SCROLLING ===== */
-html {
-  scroll-behavior: smooth;
-}
+html { scroll-behavior: smooth; }
 
 /* ===== THEME VARIABLES ===== */
 :root {
-  /* Accent Colors (Keep these consistent across themes or define dark versions) */
-  --accent1: #FF61E1;
-  --accent2: #FFB400;
-  --accent3: #00C2FF;
-
-  /* Light Theme (Default) */
-  --bg-color: #f8fafc; /* Very light gray (Tailwind slate-50) */
-  --text-color: #1f2937; /* Dark gray (Tailwind gray-800) */
-  --text-color-secondary: #4b5563; /* Medium gray (Tailwind gray-600) */
-  --card-bg: #ffffff; /* White */
-  --card-border: #e5e7eb; /* Light gray border (Tailwind gray-200) */
-  --header-bg: rgba(255, 255, 255, 0.8); /* Semi-transparent white */
-  --footer-bg: #1f2937; /* Dark Gray (Tailwind gray-800) */
-  --footer-text: #d1d5db; /* Light Gray (Tailwind gray-300) */
-  --link-color: #4b5563; /* Medium gray (Tailwind gray-600) */
-  --link-hover-color: var(--accent1);
-  --shadow-color: rgba(0, 0, 0, 0.15); /* Shadow for cards */
-  --tag-bg: #e5e7eb; /* Tailwind gray-200 */
-  --tag-text: #374151; /* Tailwind gray-700 */
-
-  /* Canvas Colors - Light Theme */
-  --canvas-bg: #f8fafc;
-  --particle-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black */
+  /* Accent Colors */
+  --accent1: #FF61E1; --accent2: #FFB400; --accent3: #00C2FF;
+  /* Light Theme */
+  --bg-color: #f8fafc; --text-color: #1f2937; --text-color-secondary: #4b5563;
+  --card-bg: #ffffff; --card-border: #e5e7eb; --header-bg: rgba(255, 255, 255, 0.8);
+  --footer-bg: #1f2937; --footer-text: #d1d5db; --link-color: #4b5563;
+  --link-hover-color: var(--accent1); --shadow-color: rgba(0, 0, 0, 0.15);
+  --tag-bg: #e5e7eb; --tag-text: #374151; --canvas-bg: #f8fafc;
+  --particle-color: rgba(0, 0, 0, 0.5);
+  /* UPDATED: Control colors for header context */
+  --control-icon-color: #4b5563; /* Match nav links */
+  --control-hover-icon-color: var(--accent1); /* Match nav link hover */
+  --slider-track: #d1d5db; /* Lighter track */
+  --slider-thumb: #4b5563; /* Darker thumb */
+  --slider-thumb-hover: var(--accent1);
 }
-
 /* Dark Theme */
 body.dark-theme {
-  --bg-color: #111827; /* Very dark blue/gray (Tailwind gray-900) */
-  --text-color: #f3f4f6; /* Light gray (Tailwind gray-100) */
-  --text-color-secondary: #9ca3af; /* Medium gray (Tailwind gray-400) */
-  --card-bg: #1f2937; /* Dark gray (Tailwind gray-800) */
-  --card-border: #374151; /* Medium-dark gray (Tailwind gray-700) */
-  --header-bg: rgba(31, 41, 55, 0.8); /* Semi-transparent dark gray (gray-800) */
-  --footer-bg: #030712; /* Almost black (Tailwind gray-950) */
-  --footer-text: #9ca3af; /* Medium gray (Tailwind gray-400) */
-  --link-color: #9ca3af; /* Medium gray (Tailwind gray-400) */
-  --link-hover-color: var(--accent1);
-  --shadow-color: rgba(0, 0, 0, 0.9); /* Darker shadow */
-  --tag-bg: #374151; /* Tailwind gray-700 */
-  --tag-text: #d1d5db; /* Tailwind gray-300 */
-
-  /* Canvas Colors - Dark Theme */
-  --canvas-bg: #111827;
-  /* UPDATED: Brighter particle/line color for dark theme */
-  --particle-color: rgba(255, 255, 255, 1); /* More opaque white */
-  /* Alternative: Try fully opaque white: */
-  /* --particle-color: rgba(255, 255, 255, 1); */
-  /* Alternative: Try a light gray: */
-  /* --particle-color: rgba(209, 213, 219, 0.8); */ /* Tailwind gray-300 at 80% opacity */
+  --bg-color: #111827; --text-color: #f3f4f6; --text-color-secondary: #9ca3af;
+  --card-bg: #1f2937; --card-border: #374151; --header-bg: rgba(31, 41, 55, 0.8);
+  --footer-bg: #030712; --footer-text: #9ca3af; --link-color: #9ca3af;
+  --link-hover-color: var(--accent1); --shadow-color: rgba(0, 0, 0, 0.5);
+  --tag-bg: #374151; --tag-text: #d1d5db; --canvas-bg: #111827;
+  --particle-color: rgba(255, 255, 255, 0.8);
+  /* UPDATED: Control colors for header context */
+  --control-icon-color: #9ca3af; /* Match nav links */
+  --control-hover-icon-color: var(--accent1);
+  --slider-track: #374151; /* Darker track */
+  --slider-thumb: #9ca3af; /* Lighter thumb */
+  --slider-thumb-hover: var(--accent1);
 }
 
 /* ===== Base Body Styles ===== */
-body {
-  /* Use CSS variables for background and text color */
-  background-color: var(--bg-color);
-  color: var(--text-color);
-  font-family: 'Rubik', sans-serif;
-  overflow-x: hidden;
-  /* Smooth transition for color changes */
-  transition: background-color 0.3s ease, color 0.3s ease;
-}
+body { background-color: var(--bg-color); color: var(--text-color); font-family: 'Rubik', sans-serif; overflow-x: hidden; transition: background-color 0.3s ease, color 0.3s ease; }
 
 /* ===== Canvas Background Styles ===== */
-#background-canvas {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: -10; /* Place behind all content */
-  /* Background color set via JS using --canvas-bg variable */
-  display: block; /* Remove potential extra space below canvas */
-}
-
+#background-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -10; display: block; }
 
 /* ===== Heading Fonts ===== */
-h1, h2, h3, h4 {
-  font-family: 'Montserrat', sans-serif;
-  /* Headings inherit body text color by default */
-}
+h1, h2, h3, h4 { font-family: 'Montserrat', sans-serif; }
 
 /* ===== Link Styles ===== */
-.nav-link {
-  color: var(--link-color);
-  transition: color .3s ease-in-out;
-}
-.nav-link:hover {
-  color: var(--link-hover-color);
-}
-
-/* Section Subtitles */
-.section-subtitle {
-    color: var(--text-color-secondary);
-}
+.nav-link { color: var(--link-color); transition: color .3s ease-in-out; }
+.nav-link:hover { color: var(--link-hover-color); }
+.section-subtitle { color: var(--text-color-secondary); }
 
 /* ===== Button Pop Effect ===== */
-.btn-pop {
-  transition: transform .2s ease-out, background-color .3s ease-in-out;
-}
-.btn-pop:hover {
-  transform: scale(1.05);
-}
+.btn-pop { transition: transform .2s ease-out, background-color .3s ease-in-out; }
+.btn-pop:hover { transform: scale(1.05); }
 
 /* ===== Header Styles ===== */
-header {
-  /* Use variable for background */
-  background: var(--header-bg);
-  transition: background-color .3s ease-in-out, backdrop-filter .3s ease-in-out;
-}
-header.scrolled {
-  /* Apply blur effect */
-  backdrop-filter: blur(10px);
-}
-/* Mobile Menu Background */
-#mobile-menu {
-    background-color: var(--card-bg); /* Use card background for mobile menu */
-    border-top: 1px solid var(--card-border); /* Add a separator */
-}
+header { background: var(--header-bg); transition: background-color .3s ease-in-out, backdrop-filter .3s ease-in-out; }
+header.scrolled { backdrop-filter: blur(10px); }
+#mobile-menu { background-color: var(--card-bg); border-top: 1px solid var(--card-border); }
 
-/* Theme Toggle Button */
-#theme-toggle {
-    background-color: var(--card-bg);
-    color: var(--text-color-secondary);
-    border: 1px solid var(--card-border);
+/* Combined styles for Nav Icon Buttons (Theme Toggle, Volume Toggle) */
+.nav-icon-button {
+    background-color: transparent; /* No background */
+    border: none;
+    color: var(--control-icon-color); /* Use control icon color */
+    width: 2rem; /* 32px */
+    height: 2rem; /* 32px */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: color 0.2s ease, background-color 0.2s ease;
 }
-#theme-toggle:hover {
-    color: var(--text-color);
+.nav-icon-button:hover {
+    color: var(--control-hover-icon-color);
+    background-color: rgba(128, 128, 128, 0.1); /* Faint background on hover */
+}
+.nav-icon-button:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px var(--accent1); /* Focus ring */
+}
+.nav-icon-button i { /* Target FontAwesome icons */
+    font-size: 1rem; /* Adjust icon size */
 }
 
 
 /* ===== Card Styles ===== */
-.card-bg {
-    background-color: var(--card-bg);
-    color: var(--text-color); /* Default text color within cards */
-    /* Added subtle border */
-    border: 1px solid var(--card-border);
-    /* Shadow uses variable, slightly stronger in light mode now */
-    box-shadow: 0 5px 15px -3px var(--shadow-color), 0 4px 6px -4px var(--shadow-color);
-    transition: background-color 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
-}
-.card-title {
-    color: var(--text-color); /* Explicitly set title color if needed */
-}
-.card-text {
-    color: var(--text-color-secondary); /* Use secondary text color for paragraphs */
-}
-.card-subtitle {
-    color: var(--text-color-secondary);
-    opacity: 0.8; /* Slightly lighter */
-}
+.card-bg { background-color: var(--card-bg); color: var(--text-color); border: 1px solid var(--card-border); box-shadow: 0 5px 15px -3px var(--shadow-color), 0 4px 6px -4px var(--shadow-color); transition: background-color 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease; }
+.card-title { color: var(--text-color); }
+.card-text { color: var(--text-color-secondary); }
+.card-subtitle { color: var(--text-color-secondary); opacity: 0.8; }
 
 /* ===== Skills Section Styles ===== */
-.skill-category-title {
-    /* Color set via inline Tailwind classes + dark: overrides in HTML */
-    /* Border color uses variables */
-    border-color: var(--card-border);
-}
-.interest-tag {
-    background-color: var(--tag-bg);
-    color: var(--tag-text);
-    padding: 0.25rem 0.75rem; /* Equivalent to px-3 py-1 */
-    border-radius: 9999px; /* Equivalent to rounded-full */
-    font-size: 0.875rem; /* Equivalent to text-sm */
-    transition: background-color 0.3s ease, color 0.3s ease;
-}
+.skill-category-title { border-color: var(--card-border); }
+.interest-tag { background-color: var(--tag-bg); color: var(--tag-text); padding: 0.25rem 0.75rem; border-radius: 9999px; font-size: 0.875rem; transition: background-color 0.3s ease, color 0.3s ease; }
 
 /* ===== Contact Icon Styles ===== */
-.contact-icon {
-    /* Color set via inline Tailwind classes + dark: overrides in HTML */
-    transition: color .3s ease-in-out, transform .2s ease-out;
-    display: inline-block; /* Needed for transform */
-}
-.contact-icon:hover {
-    transform: scale(1.1); /* Scale on hover */
-}
+.contact-icon { transition: color .3s ease-in-out, transform .2s ease-out; display: inline-block; }
+.contact-icon:hover { transform: scale(1.1); }
 
 /* ===== Footer Styles ===== */
-.footer-bg {
-    background-color: var(--footer-bg);
-    transition: background-color 0.3s ease;
-}
-.footer-text {
-    color: var(--footer-text);
-    transition: color 0.3s ease;
-}
+.footer-bg { background-color: var(--footer-bg); transition: background-color 0.3s ease; }
+.footer-text { color: var(--footer-text); transition: color 0.3s ease; }
 
+/* ===== HEADER MUSIC CONTROLS STYLES ===== */
+#music-controls { color: var(--control-icon-color); } /* Inherited by button */
 
-/* ===== Fade Animations (Used in Hero Section) ===== */
-@keyframes fadeInDown {
-  from { opacity: 0; transform: translateY(-20px); }
-  to { opacity: 1; transform: translateY(0); }
+/* Volume Slider Styles (Adjusted for Header) */
+.volume-slider {
+  -webkit-appearance: none; appearance: none;
+  width: 80px; /* Slightly shorter for header */
+  height: 6px; /* Slightly thinner track */
+  background: var(--slider-track);
+  border-radius: 3px; outline: none; cursor: pointer;
+  transition: background-color 0.3s ease;
+  vertical-align: middle; /* Align with button */
 }
-@keyframes fadeInUp {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
+.volume-slider::-webkit-slider-thumb {
+  -webkit-appearance: none; appearance: none;
+  width: 14px; height: 14px; /* Slightly smaller thumb */
+  background: var(--slider-thumb);
+  border-radius: 50%; cursor: pointer;
+  transition: background-color 0.3s ease;
 }
-.animate-fade-in-down {
-  animation: fadeInDown .8s ease-out forwards;
+.volume-slider:hover::-webkit-slider-thumb { background: var(--slider-thumb-hover); }
+.volume-slider::-moz-range-thumb {
+  width: 14px; height: 14px; background: var(--slider-thumb);
+  border-radius: 50%; cursor: pointer; border: none;
+  transition: background-color 0.3s ease;
 }
-.animate-fade-in-up {
-  animation: fadeInUp .8s ease-out .2s forwards;
-  opacity: 0; /* Start hidden */
-}
+.volume-slider:hover::-moz-range-thumb { background: var(--slider-thumb-hover); }
+/* ===== END HEADER MUSIC CONTROLS STYLES ===== */
+
+/* ===== Fade Animations ===== */
+@keyframes fadeInDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+.animate-fade-in-down { animation: fadeInDown .8s ease-out forwards; }
+.animate-fade-in-up { animation: fadeInUp .8s ease-out .2s forwards; opacity: 0; }
 
 /* ===== Section Scroll Margin ===== */
-section[id] {
-  scroll-margin-top: 140px; /* Adjust based on sticky header height */
-  overflow: hidden;
-  position: relative;
-}
+section[id] { scroll-margin-top: 140px; overflow: hidden; position: relative; }
 
 /* ===== Profile Picture Hover Effects ===== */
-#profile-picture {
-  transition: transform 0.8s ease;
-  position: relative;
-  z-index: 10;
-  cursor: pointer;
-  transform-style: preserve-3d;
-  perspective: 1000px;
-  /* Border color set via variable in HTML */
-  border-color: var(--bg-color); /* Match background */
-  transition: transform 0.8s ease, border-color 0.3s ease; /* Add border transition */
-}
-#profile-picture.hovering {
-  transition: transform 0.2s ease; /* Faster tilt */
-}
-
-/* ===== Tailwind Dark Mode Helper ===== */
-/* This tells Tailwind to use the .dark-theme class instead of prefers-color-scheme */
-/* Add this if you see Tailwind dark: prefixes not working as expected */
-/* script src="https://cdn.tailwindcss.com?plugins=typography"></script> */
-/* <script> */
-/* tailwind.config = { darkMode: 'class', theme: { extend: {} } } */
-/* </script> */
-/* NOTE: It's often better to rely on CSS variables as done above rather than */
-/* solely on Tailwind's dark: prefixes when implementing a manual toggle. */
-/* However, some utility classes might still need dark: overrides directly in HTML. */
-
+#profile-picture { transition: transform 0.8s ease, border-color 0.3s ease; position: relative; z-index: 10; cursor: pointer; transform-style: preserve-3d; perspective: 1000px; border-color: var(--bg-color); }
+#profile-picture.hovering { transition: transform 0.2s ease; }
