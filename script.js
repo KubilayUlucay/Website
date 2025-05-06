@@ -95,7 +95,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const speed = 0.08;
     const followDelay = 100;
     let followTimeout = null;
-    let scaleX = 1; // 1 for facing right, -1 for facing left
+    let scaleX = 1; 
     let animating = false;
     let walkIndex = 0, lastFrameTime = 0, frameInterval = 100;
 
@@ -103,52 +103,29 @@ document.addEventListener("DOMContentLoaded", () => {
       if (!animating || catWalkFrames.length === 0) return;
 
       const deltaMouseX = mouseX - catX;
-      // Determine cat direction (flip) only if there's significant movement towards the mouse
-      // This threshold helps prevent instant flipping if mouse is only slightly past center of cat
-      if ( (scaleX === 1 && deltaMouseX < -catElement.offsetWidth / 3) || // If facing right and mouse is significantly to the left
-           (scaleX === -1 && deltaMouseX > catElement.offsetWidth / 3) ) { // If facing left and mouse is significantly to the right
-          scaleX *= -1; // Flip direction
+      if ( (scaleX === 1 && deltaMouseX < -catElement.offsetWidth / 3) || 
+           (scaleX === -1 && deltaMouseX > catElement.offsetWidth / 3) ) { 
+          scaleX *= -1; 
       }
-
 
       const catBodyWidth = catElement.offsetWidth;
-      // spaceMultiplier determines how much of the cat's width is used as spacing.
-      // desiredSpace is the gap you want between the cursor and the cat's leading edge.
-      const spaceMultiplier = 0.3; // User adjusted this to 0.3
+      const spaceMultiplier = 0.3; 
       let desiredSpace = (catBodyWidth * spaceMultiplier);
 
-      // User's specific adjustments from previous turn
-      if (scaleX === 1) { // Cat facing right (mouse moves left to right)
-          desiredSpace -=10; // User's adjustment
-      } else { // Cat facing left (mouse moves right to left)
-          desiredSpace = (catBodyWidth * spaceMultiplier) + 40; // Apply the +40 offset only when moving right to left
+      if (scaleX === 1) { 
+          desiredSpace -=10; 
+      } else { 
+          desiredSpace = (catBodyWidth * spaceMultiplier) + 40; 
       }
 
-
       let targetX;
-      if (scaleX === 1) { // Cat facing right (mouse is to the right of cat's left edge)
-          // Target cat's left edge to be 'desiredSpace' to the left of the mouse cursor
+      if (scaleX === 1) { 
           targetX = mouseX - catBodyWidth - desiredSpace;
-      } else { // Cat facing left (mouse is to the left of cat's right edge)
-          // Target cat's left edge to be 'desiredSpace' to the left of the mouse cursor
-          // When scaleX is -1, the cat's visual right edge is at its CSS 'left' position.
-          // The cat's visual left edge is at 'left + catBodyWidth'.
-          // We want the visual left edge (which is catX + catBodyWidth when drawn)
-          // to be 'desiredSpace' to the left of the mouse.
-          // So, (catX_target + catBodyWidth) = mouseX - desiredSpace
-          // catX_target = mouseX - catBodyWidth - desiredSpace (This was the original logic for scaleX=1)
-          // For scaleX = -1, we want the *actual* left rendering point (catX) to be such that
-          // its *apparent* left side (which is effectively its right side due to flipping)
-          // is 'desiredSpace' from the cursor.
-          // Let's re-evaluate:
-          // If cat faces left (scaleX = -1), its "nose" is on its CSS left.
-          // We want this nose to be 'desiredSpace' to the left of the mouse.
-          // So, targetX = mouseX - desiredSpace.
-          targetX = mouseX+70 - desiredSpace; // Corrected for scaleX = -1
+      } else { 
+          targetX = mouseX + 70 - desiredSpace; 
       }
 
       const targetY = mouseY - (catElement.offsetHeight / 2);
-
       const dx = targetX - catX;
       const dy = targetY - catY;
       const distance = Math.hypot(dx, dy);
@@ -239,15 +216,15 @@ document.addEventListener("DOMContentLoaded", () => {
   const volumeSlider = document.getElementById('volume-slider');
   let musicPlayer = null;
   let musicVolume = null;
-  let isAudioContextStarted = false; // Tracks if Tone.start() has been attempted
+  // let isAudioContextStarted = false; // Not strictly needed if we rely on Tone.context.state
   let isMusicSetup = false;      // Tracks if Tone.Player and Volume are created and audio loaded
-  let isMusicPlaying = false;
-  let previousVolumeBeforeMute = 50;
+  let isMusicPlaying = false;    // Tracks if music is currently playing
+  let previousVolumeBeforeMute = 50; // Default volume to restore to
   let hasUserInteracted = false; // Tracks the very first user gesture for audio
   const audioFilePath = "audio/song.mp3";
 
   async function initializeAudioAndSetupMusic() {
-      if (isMusicSetup) { // If already fully set up, just ensure context is running
+      if (isMusicSetup) {
           console.log("[Music] initializeAudioAndSetupMusic: Music already set up.");
           if (Tone.context && Tone.context.state === 'suspended') {
               console.log("[Music] AudioContext is suspended, attempting to resume...");
@@ -256,77 +233,62 @@ document.addEventListener("DOMContentLoaded", () => {
                   console.log("[Music] AudioContext resumed. State:", Tone.context.state);
               } catch (e) { console.error("[Music] Error resuming suspended AudioContext:", e); }
           }
-          // Ensure controls are enabled if they somehow got disabled
           if (volumeToggleButton && volumeToggleButton.disabled) volumeToggleButton.disabled = false;
           if (volumeSlider && volumeSlider.disabled) volumeSlider.disabled = false;
           return;
       }
       
-      // This function should only be triggered by a user gesture
       hasUserInteracted = true; 
 
       console.log("[Music] User interaction. Current Tone.context.state:", Tone.context?.state);
-      if (volumeToggleButton) volumeToggleButton.disabled = true; // Disable during init
+      if (volumeToggleButton) volumeToggleButton.disabled = true;
       if (volumeSlider) volumeSlider.disabled = true;
 
       try {
           if (!Tone.context || Tone.context.state !== 'running') {
               console.log("[Music] Attempting Tone.start()...");
-              await Tone.start(); // This initializes/resumes the AudioContext
+              await Tone.start(); 
               console.log("[Music] Tone.start() successful. AudioContext state:", Tone.context.state);
           } else {
               console.log("[Music] AudioContext already running.");
           }
-          isAudioContextStarted = true; // Mark that Tone.start() has been processed
+          // isAudioContextStarted = true; // Context started or was already running
 
           if (Tone.context.state === 'running') {
               console.log("[Music] AudioContext is running. Proceeding to create Tone objects.");
-
-              // Create Tone.js objects ONLY if context is running
-              musicVolume = new Tone.Volume(0).toDestination();
+              musicVolume = new Tone.Volume(0).toDestination(); // Initial actual volume to 0
               console.log("[Music] Tone.Volume created.");
 
-              if(volumeToggleButton) volumeToggleButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i>'; // Show spinner while loading file
+              if(volumeToggleButton) volumeToggleButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
 
               musicPlayer = new Tone.Player({
                   url: audioFilePath,
                   loop: true,
-                  autostart: false, // We will control start explicitly
+                  autostart: false, // IMPORTANT: Do not autostart
                   onload: () => {
                       console.log("[Music] Music file loaded successfully:", audioFilePath);
-                      isMusicSetup = true; // Crucial: Mark setup as complete ONLY after file loads
-                                           // and player is ready.
+                      isMusicSetup = true; // Mark setup as complete
                       if (volumeToggleButton) volumeToggleButton.disabled = false;
                       if (volumeSlider) volumeSlider.disabled = false;
 
                       const savedVolumePercent = localStorage.getItem('musicVolumePercent');
-                      const initialPercent = savedVolumePercent !== null ? parseFloat(savedVolumePercent) : 50;
-                      if (volumeSlider) volumeSlider.value = initialPercent;
-                      updateVolume(initialPercent); // Set initial volume and icon
-
-                      // Auto-play if initial volume was > 0
-                      if (initialPercent > 0) {
-                          // Context state should still be running here
-                          console.log("[Music] Attempting to start music post-load (initial volume > 0).");
-                          if (musicPlayer && Tone.context.state === 'running') {
-                              musicPlayer.start();
-                              isMusicPlaying = true;
-                              console.log("[Music] Music started successfully after load.");
-                          } else {
-                               console.warn("[Music] Music loaded, but couldn't start. Player or Context issue. State:", Tone.context?.state);
-                               updateVolume(0); // Visually mute
-                          }
-                      } else {
-                          console.log("[Music] Music loaded, initial volume is 0. Will not auto-play.");
-                          updateVolume(0); // Ensure icon is muted
-                      }
+                      const sliderInitialPercent = savedVolumePercent !== null ? parseFloat(savedVolumePercent) : 50; // Default slider to 50 or saved
+                      
+                      if (volumeSlider) volumeSlider.value = sliderInitialPercent;
+                      
+                      // Set Tone.Volume based on sliderInitialPercent, but DO NOT PLAY
+                      updateVolume(sliderInitialPercent); 
+                      
+                      // If sliderInitialPercent was 0, it's already effectively "muted" icon and volume.
+                      // If >0, icon and volume are set, but music is not started.
+                      console.log("[Music] Music loaded. Ready to be played on user command. isMusicPlaying:", isMusicPlaying); // Should be false
                   },
                   onerror: (error) => {
                       console.error("[Music] Error loading music file:", audioFilePath, error);
-                      isMusicSetup = false; // Ensure setup is marked as failed
+                      isMusicSetup = false; 
                       if (volumeToggleButton) {
                           volumeToggleButton.innerHTML = '<i class="fas fa-exclamation-triangle"></i>';
-                          volumeToggleButton.disabled = true; // Keep disabled
+                          volumeToggleButton.disabled = true; 
                       }
                       if (volumeSlider) volumeSlider.disabled = true;
                   }
@@ -334,16 +296,13 @@ document.addEventListener("DOMContentLoaded", () => {
               console.log("[Music] Tone.Player created and connect() called.");
           } else {
               console.error("[Music] AudioContext not 'running' after Tone.start() attempt. State:", Tone.context.state);
-              // UI feedback for failure
               if (volumeToggleButton) {
                   volumeToggleButton.innerHTML = '<i class="fas fa-exclamation-triangle"></i>';
-                  // volumeToggleButton.disabled = true; // Already disabled
               }
-              // if (volumeSlider) volumeSlider.disabled = true; // Already disabled
           }
       } catch (e) {
           console.error("[Music] Error during initializeAudioAndSetupMusic:", e);
-          isMusicSetup = false; // Ensure setup is marked as failed
+          isMusicSetup = false; 
           if (volumeToggleButton) {
               volumeToggleButton.innerHTML = '<i class="fas fa-exclamation-triangle"></i>';
               volumeToggleButton.disabled = true;
@@ -354,6 +313,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function updateVolume(percentValue) {
     const sliderValue = parseFloat(percentValue);
+
+    // Capture the volume level if it's audible, before it might be set to 0 (mute)
+    if (sliderValue > 0) {
+        previousVolumeBeforeMute = sliderValue;
+    }
+
     const minDb = -50; const maxDb = 0;
     let db = (sliderValue <= 0) ? -Infinity : minDb + (sliderValue / 100) * (maxDb - minDb);
 
@@ -362,8 +327,8 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     if (volumeToggleButton) {
-        if (volumeToggleButton.innerHTML.includes('fa-spinner')) {
-            // Spinner is active, onload will set the correct icon
+        if (volumeToggleButton.innerHTML.includes('fa-spinner') || volumeToggleButton.innerHTML.includes('fa-exclamation-triangle')) {
+            // Spinner or error is active, onload or error handler will set the correct icon eventually
         } else if (sliderValue <= 0) {
             volumeToggleButton.innerHTML = '<i class="fas fa-volume-mute"></i>';
             volumeToggleButton.setAttribute('aria-label', 'Unmute background music');
@@ -376,110 +341,136 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
     localStorage.setItem('musicVolumePercent', sliderValue.toString());
-    if (sliderValue > 0) {
-        previousVolumeBeforeMute = sliderValue;
-    }
     // console.log(`[Music] Volume updated to ${sliderValue}%, dB: ${db}, previousVolumeBeforeMute: ${previousVolumeBeforeMute}`);
   }
 
 
   if (volumeToggleButton) {
     volumeToggleButton.addEventListener('click', async () => {
-      console.log("[Music] Volume toggle clicked. hasUserInteracted:", hasUserInteracted, "isMusicSetup:", isMusicSetup, "Player loaded:", musicPlayer?.loaded);
-      if (!hasUserInteracted || !isMusicSetup) { // If no interaction OR not fully setup (player not loaded)
-          await initializeAudioAndSetupMusic(); // This will handle the first interaction or re-attempt setup
-          // If it was the first interaction, initializeAudioAndSetupMusic's onload will handle initial play.
-          // If it was a re-attempt and succeeded, the next click will be a normal toggle.
-          // If it failed, controls remain disabled or show error.
-          return; 
-      }
+        console.log("[Music] Volume toggle clicked. hasUserInteracted:", hasUserInteracted, "isMusicSetup:", isMusicSetup, "Player loaded:", musicPlayer?.loaded);
+        
+        if (!hasUserInteracted || !isMusicSetup) { 
+            await initializeAudioAndSetupMusic(); 
+            // After init, if setup failed, the following checks will prevent errors
+        }
 
-      // From here, we assume isMusicSetup is true and musicPlayer is loaded.
-      if (!musicPlayer || !musicPlayer.loaded) {
-          console.error("[Music] Toggle clicked, but player is unexpectedly not loaded despite isMusicSetup=true. This shouldn't happen.");
-          // You might want to re-attempt initialization or show an error.
-          await initializeAudioAndSetupMusic(); // Try one more time.
-          return;
-      }
-      
-      if (Tone.context.state !== 'running') {
-          console.warn("[Music] AudioContext not running. Attempting to resume for playback via toggle.");
-          await initializeAudioAndSetupMusic(); // This will try to resume context
-          if (Tone.context.state !== 'running') {
-              console.error("[Music] Could not resume AudioContext. Cannot play/stop music via toggle.");
-              return;
-          }
-      }
+        if (!isMusicSetup || !musicPlayer || !musicPlayer.loaded) {
+            console.error("[Music] Toggle clicked, but music setup is not complete or player not loaded.");
+            if (volumeToggleButton && !volumeToggleButton.innerHTML.includes('fa-spinner')) { // Avoid overwriting spinner
+                 volumeToggleButton.innerHTML = '<i class="fas fa-exclamation-triangle"></i>';
+            }
+            return;
+        }
+        
+        // Ensure AudioContext is running
+        if (Tone.context.state !== 'running') {
+            console.warn("[Music] AudioContext not running. Attempting to resume for playback via toggle.");
+            try {
+                await Tone.start(); // Or Tone.context.resume()
+                if (Tone.context.state !== 'running') {
+                    console.error("[Music] Could not resume AudioContext. Cannot play/stop music via toggle.");
+                    return;
+                }
+                console.log("[Music] AudioContext resumed successfully for toggle.");
+            } catch (e) {
+                console.error("[Music] Error resuming AudioContext for toggle:", e);
+                return;
+            }
+        }
 
-      const currentSliderValue = volumeSlider ? parseFloat(volumeSlider.value) : 0;
-      if (isMusicPlaying) {
-          console.log("[Music] Music is playing, stopping and muting via toggle.");
-          musicPlayer.stop();
-          isMusicPlaying = false;
-          if (currentSliderValue > 0) { previousVolumeBeforeMute = currentSliderValue; }
-          if (volumeSlider) volumeSlider.value = 0;
-          updateVolume(0);
-      } else {
-          console.log("[Music] Music is stopped/muted, attempting to play via toggle.");
-          const restoreValue = previousVolumeBeforeMute > 0 ? previousVolumeBeforeMute : 50;
-          if (volumeSlider) volumeSlider.value = restoreValue;
-          updateVolume(restoreValue);
-          musicPlayer.start();
-          isMusicPlaying = true;
-          console.log("[Music] Music started via toggle.");
-      }
+        // Now, toggle play/stop
+        if (isMusicPlaying) {
+            console.log("[Music] Music is playing, stopping and muting via toggle.");
+            // Capture current volume BEFORE muting if it's > 0
+            if (volumeSlider && parseFloat(volumeSlider.value) > 0) {
+                previousVolumeBeforeMute = parseFloat(volumeSlider.value);
+            }
+            musicPlayer.stop();
+            isMusicPlaying = false;
+            if (volumeSlider) volumeSlider.value = 0; 
+            updateVolume(0); 
+        } else { // Music is not playing, so start it
+            console.log("[Music] Music is stopped/muted, attempting to play via toggle.");
+            
+            let playVolume = 50; // Default play volume
+            const sliderCurrentActual = volumeSlider ? parseFloat(volumeSlider.value) : 0;
+
+            if (sliderCurrentActual > 0) { // If slider is already unmuted, use its value
+                playVolume = sliderCurrentActual;
+            } else if (previousVolumeBeforeMute > 0) { // Otherwise, use the last known unmuted volume
+                playVolume = previousVolumeBeforeMute;
+            }
+            // If both are 0 (e.g. fresh start or muted then reloaded), it defaults to 50.
+
+            if (volumeSlider) volumeSlider.value = playVolume;
+            updateVolume(playVolume); 
+
+            musicPlayer.start();
+            isMusicPlaying = true;
+            console.log("[Music] Music started via toggle.");
+        }
     });
   }
 
   if (volumeSlider) {
     volumeSlider.addEventListener('input', async (e) => {
-      const newVolumePercent = parseFloat(e.target.value);
-      // console.log(`[Music] Volume slider input: ${newVolumePercent}%. hasUserInteracted: ${hasUserInteracted}, isMusicSetup: ${isMusicSetup}`);
-      
-      if (!hasUserInteracted || !isMusicSetup) {
-          await initializeAudioAndSetupMusic();
-          // After the above, if setup was successful, musicPlayer will be available.
-          // We still need to apply the current slider value.
-          if (isMusicSetup && musicPlayer && musicPlayer.loaded) {
-              updateVolume(newVolumePercent);
-          }
-          return; 
-      }
-      
-      // If we are here, setup is complete.
-      updateVolume(newVolumePercent);
+        const newVolumePercent = parseFloat(e.target.value);
+        
+        if (!hasUserInteracted || !isMusicSetup) {
+            await initializeAudioAndSetupMusic();
+            if (!isMusicSetup || !musicPlayer || !musicPlayer.loaded) {
+                console.error("[Music] Slider moved, but music setup failed post-init attempt.");
+                updateVolume(newVolumePercent); // Still update slider UI
+                return;
+            }
+        }
+        
+        // After the above, if setup was successful, musicPlayer will be available.
+        updateVolume(newVolumePercent);
 
-      if (!musicPlayer || !musicPlayer.loaded) {
-          console.error("[Music] Slider moved, but player is unexpectedly not loaded despite isMusicSetup=true.");
-          return;
-      }
+        if (!musicPlayer || !musicPlayer.loaded) {
+            console.error("[Music] Slider moved, but player is unexpectedly not loaded despite isMusicSetup=true.");
+            return;
+        }
 
-      if (Tone.context.state !== 'running') {
-          console.warn("[Music] Slider moved to play, but AudioContext not running. Attempting resume.");
-          await initializeAudioAndSetupMusic(); // This will try to resume context
-          if (Tone.context.state !== 'running') {
-              console.error("[Music] Could not resume AudioContext. Cannot play/stop music via slider.");
-              return;
-          }
-      }
+        // Ensure AudioContext is running
+        if (Tone.context.state !== 'running' && newVolumePercent > 0) { // Only try to resume if intending to play
+            console.warn("[Music] Slider moved to play, but AudioContext not running. Attempting resume.");
+            try {
+                await Tone.start(); // Or Tone.context.resume()
+                 if (Tone.context.state !== 'running') {
+                    console.error("[Music] Could not resume AudioContext. Cannot play/stop music via slider.");
+                    return;
+                }
+                console.log("[Music] AudioContext resumed successfully for slider.");
+            } catch (e) {
+                console.error("[Music] Error resuming AudioContext for slider:", e);
+                return;
+            }
+        }
 
-      if (newVolumePercent > 0 && !isMusicPlaying) {
-          musicPlayer.start();
-          isMusicPlaying = true;
-          console.log("[Music] Music started via slider unmute.");
-      } else if (newVolumePercent <= 0 && isMusicPlaying) {
-          musicPlayer.stop();
-          isMusicPlaying = false;
-          console.log("[Music] Music stopped via slider mute.");
-      }
+        if (newVolumePercent > 0 && !isMusicPlaying) {
+            if (Tone.context.state === 'running') { // Double check before starting
+                musicPlayer.start();
+                isMusicPlaying = true;
+                console.log("[Music] Music started via slider unmute.");
+            } else {
+                 console.warn("[Music] Slider unmute: Cannot start, AudioContext not running.");
+            }
+        } else if (newVolumePercent <= 0 && isMusicPlaying) {
+            musicPlayer.stop();
+            isMusicPlaying = false;
+            console.log("[Music] Music stopped via slider mute.");
+        }
     });
   }
 
-  // Set initial visual state of controls (disabled until ready)
+  // Set initial visual state of controls (disabled until ready/first interaction)
   if(volumeSlider && volumeToggleButton) {
       const initialVolumePercent = localStorage.getItem('musicVolumePercent') !== null
           ? parseFloat(localStorage.getItem('musicVolumePercent'))
-          : 50;
+          : 50; // Default slider display
+      
       // Set icon based on stored/default volume, but don't change dB level yet
       if (initialVolumePercent <= 0) {
           volumeToggleButton.innerHTML = '<i class="fas fa-volume-mute"></i>';
@@ -489,9 +480,12 @@ document.addEventListener("DOMContentLoaded", () => {
           volumeToggleButton.innerHTML = '<i class="fas fa-volume-up"></i>';
       }
       volumeSlider.value = initialVolumePercent;
-      volumeToggleButton.disabled = true; // Start disabled
-      volumeSlider.disabled = true;     // Start disabled
-      console.log("[Music] Initial visual state for controls set (disabled).");
+      
+      // Start controls as enabled to allow the first click for Tone.start()
+      // They will be temporarily disabled during the async loading process.
+      volumeToggleButton.disabled = false; 
+      volumeSlider.disabled = false;     
+      console.log("[Music] Initial visual state for controls set (enabled for first interaction).");
   }
 
 }); // End DOMContentLoaded
