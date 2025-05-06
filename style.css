@@ -17,7 +17,7 @@ html { scroll-behavior: smooth; }
   --control-hover-icon-color: var(--accent1); /* Match nav link hover */
   --slider-track: #d1d5db; /* Lighter track */
   --slider-thumb: #4b5563; /* Darker thumb */
-  --slider-thumb-hover: var(--accent1); /*45353*/
+  --slider-thumb-hover: var(--accent1);
 }
 /* Dark Theme */
 body.dark-theme {
@@ -142,16 +142,16 @@ header.scrolled { backdrop-filter: blur(10px); }
 section[id] { scroll-margin-top: 140px; /* Adjusted scroll margin */ overflow: hidden; position: relative; }
 
 
-/* ===== Profile Picture Hover Effects ===== */
+/* ===== Profile Picture Styles (No Hover Effects) ===== */
 #profile-picture {
-    transition: transform 0.8s ease, border-color 0.3s ease; /* Keep transition for tilt */
+    /* Removed transition related to transform as it's no longer animated by JS */
+    transition: border-color 0.3s ease; /* Keep border color transition for theme changes */
     position: relative;
     z-index: 10;
-    cursor: pointer;
-    transform-style: preserve-3d;
-    perspective: 1000px;
-    border-color: var(--bg-color); /* Ensure border color transitions with theme */
+    cursor: pointer; /* Keep cursor as pointer if it links somewhere or has other interactions */
+    /* Removed transform-style and perspective as they were for 3D tilt effect */
+    border-color: var(--bg-color);
 }
-#profile-picture.hovering {
-    transition: transform 0.2s ease; /* Quicker transition for responsive tilt */
-}
+
+/* Removed #profile-picture.hovering class as it's no longer used by JS */
+
