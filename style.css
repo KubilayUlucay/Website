@@ -17,7 +17,7 @@ html { scroll-behavior: smooth; }
   --control-hover-icon-color: var(--accent1); /* Match nav link hover */
   --slider-track: #d1d5db; /* Lighter track */
   --slider-thumb: #4b5563; /* Darker thumb */
-  --slider-thumb-hover: var(--accent1);
+  --slider-thumb-hover: var(--accent1); /*45353*/
 }
 /* Dark Theme */
 body.dark-theme {
