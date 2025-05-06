@@ -139,8 +139,19 @@ header.scrolled { backdrop-filter: blur(10px); }
 .animate-fade-in-up { animation: fadeInUp .8s ease-out .2s forwards; opacity: 0; }
 
 /* ===== Section Scroll Margin ===== */
-section[id] { scroll-margin-top: 140px; overflow: hidden; position: relative; }
+section[id] { scroll-margin-top: 140px; /* Adjusted scroll margin */ overflow: hidden; position: relative; }
+
 
 /* ===== Profile Picture Hover Effects ===== */
-#profile-picture { transition: transform 0.8s ease, border-color 0.3s ease; position: relative; z-index: 10; cursor: pointer; transform-style: preserve-3d; perspective: 1000px; border-color: var(--bg-color); }
-#profile-picture.hovering { transition: transform 0.2s ease; }
+#profile-picture {
+    transition: transform 0.8s ease, border-color 0.3s ease; /* Keep transition for tilt */
+    position: relative;
+    z-index: 10;
+    cursor: pointer;
+    transform-style: preserve-3d;
+    perspective: 1000px;
+    border-color: var(--bg-color); /* Ensure border color transitions with theme */
+}
+#profile-picture.hovering {
+    transition: transform 0.2s ease; /* Quicker transition for responsive tilt */
+}
