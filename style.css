@@ -12,12 +12,18 @@ html { scroll-behavior: smooth; }
   --link-hover-color: var(--accent1); --shadow-color: rgba(0, 0, 0, 0.15);
   --tag-bg: #e5e7eb; --tag-text: #374151; --canvas-bg: #f8fafc;
   --particle-color: rgba(0, 0, 0, 0.5);
-  /* UPDATED: Control colors for header context */
-  --control-icon-color: #4b5563; /* Match nav links */
-  --control-hover-icon-color: var(--accent1); /* Match nav link hover */
-  --slider-track: #d1d5db; /* Lighter track */
-  --slider-thumb: #4b5563; /* Darker thumb */
-  --slider-thumb-hover: var(--accent1);
+  --particle-line-color: rgba(0, 0, 0, 0.25);
+  --particle-line-glow-color: rgba(0, 191, 255, 0.5);
+  --particle-line-glow-blur: 5px;
+  --control-icon-color: #4b5563;
+  --control-hover-icon-color: var(--accent1);
+  --profile-glow-color: var(--accent2);
+  --profile-glow-blur: 15px;
+  --profile-glow-spread: 5px;
+  /* NEW: Volume Slider Colors - Light Theme */
+  --volume-slider-track-bg: #e5e7eb; /* Light gray track */
+  --volume-slider-thumb-bg: var(--accent1); /* Accent color for thumb */
+  --volume-slider-progress-bg: var(--accent1); /* Accent color for progress */
 }
 /* Dark Theme */
 body.dark-theme {
@@ -27,12 +33,18 @@ body.dark-theme {
   --link-hover-color: var(--accent1); --shadow-color: rgba(0, 0, 0, 0.5);
   --tag-bg: #374151; --tag-text: #d1d5db; --canvas-bg: #111827;
   --particle-color: rgba(255, 255, 255, 0.8);
-  /* UPDATED: Control colors for header context */
-  --control-icon-color: #9ca3af; /* Match nav links */
+  --particle-line-color: rgba(255, 255, 255, 0.3);
+  --particle-line-glow-color: rgba(135, 206, 250, 0.6);
+  --particle-line-glow-blur: 7px;
+  --control-icon-color: #9ca3af;
   --control-hover-icon-color: var(--accent1);
-  --slider-track: #374151; /* Darker track */
-  --slider-thumb: #9ca3af; /* Lighter thumb */
-  --slider-thumb-hover: var(--accent1);
+  --profile-glow-color: var(--accent3);
+  --profile-glow-blur: 18px;
+  --profile-glow-spread: 6px;
+  /* NEW: Volume Slider Colors - Dark Theme */
+  --volume-slider-track-bg: #374151; /* Darker gray track */
+  --volume-slider-thumb-bg: var(--accent1); /* Accent color for thumb */
+  --volume-slider-progress-bg: var(--accent1); /* Accent color for progress */
 }
 
 /* ===== Base Body Styles ===== */
@@ -58,13 +70,13 @@ header { background: var(--header-bg); transition: background-color .3s ease-in-
 header.scrolled { backdrop-filter: blur(10px); }
 #mobile-menu { background-color: var(--card-bg); border-top: 1px solid var(--card-border); }
 
-/* Combined styles for Nav Icon Buttons (Theme Toggle, Volume Toggle) */
+/* Styles for Nav Icon Buttons (Theme Toggle) */
 .nav-icon-button {
-    background-color: transparent; /* No background */
+    background-color: transparent;
     border: none;
-    color: var(--control-icon-color); /* Use control icon color */
-    width: 2rem; /* 32px */
-    height: 2rem; /* 32px */
+    color: var(--control-icon-color);
+    width: 2rem;
+    height: 2rem;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -74,16 +86,15 @@ header.scrolled { backdrop-filter: blur(10px); }
 }
 .nav-icon-button:hover {
     color: var(--control-hover-icon-color);
-    background-color: rgba(128, 128, 128, 0.1); /* Faint background on hover */
+    background-color: rgba(128, 128, 128, 0.1);
 }
 .nav-icon-button:focus {
     outline: none;
-    box-shadow: 0 0 0 2px var(--accent1); /* Focus ring */
+    box-shadow: 0 0 0 2px var(--accent1);
 }
-.nav-icon-button i { /* Target FontAwesome icons */
-    font-size: 1rem; /* Adjust icon size */
+.nav-icon-button i {
+    font-size: 1rem;
 }
-
 
 /* ===== Card Styles ===== */
 .card-bg { background-color: var(--card-bg); color: var(--text-color); border: 1px solid var(--card-border); box-shadow: 0 5px 15px -3px var(--shadow-color), 0 4px 6px -4px var(--shadow-color); transition: background-color 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease; }
@@ -103,35 +114,6 @@ header.scrolled { backdrop-filter: blur(10px); }
 .footer-bg { background-color: var(--footer-bg); transition: background-color 0.3s ease; }
 .footer-text { color: var(--footer-text); transition: color 0.3s ease; }
 
-/* ===== HEADER MUSIC CONTROLS STYLES ===== */
-#music-controls { color: var(--control-icon-color); } /* Inherited by button */
-
-/* Volume Slider Styles (Adjusted for Header) */
-.volume-slider {
-  -webkit-appearance: none; appearance: none;
-  width: 80px; /* Slightly shorter for header */
-  height: 6px; /* Slightly thinner track */
-  background: var(--slider-track);
-  border-radius: 3px; outline: none; cursor: pointer;
-  transition: background-color 0.3s ease;
-  vertical-align: middle; /* Align with button */
-}
-.volume-slider::-webkit-slider-thumb {
-  -webkit-appearance: none; appearance: none;
-  width: 14px; height: 14px; /* Slightly smaller thumb */
-  background: var(--slider-thumb);
-  border-radius: 50%; cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-.volume-slider:hover::-webkit-slider-thumb { background: var(--slider-thumb-hover); }
-.volume-slider::-moz-range-thumb {
-  width: 14px; height: 14px; background: var(--slider-thumb);
-  border-radius: 50%; cursor: pointer; border: none;
-  transition: background-color 0.3s ease;
-}
-.volume-slider:hover::-moz-range-thumb { background: var(--slider-thumb-hover); }
-/* ===== END HEADER MUSIC CONTROLS STYLES ===== */
-
 /* ===== Fade Animations ===== */
 @keyframes fadeInDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
 @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
@@ -139,19 +121,81 @@ header.scrolled { backdrop-filter: blur(10px); }
 .animate-fade-in-up { animation: fadeInUp .8s ease-out .2s forwards; opacity: 0; }
 
 /* ===== Section Scroll Margin ===== */
-section[id] { scroll-margin-top: 140px; /* Adjusted scroll margin */ overflow: hidden; position: relative; }
+section[id] { scroll-margin-top: 140px; overflow: hidden; position: relative; }
 
-
-/* ===== Profile Picture Styles (No Hover Effects) ===== */
+/* ===== Profile Picture Styles ===== */
 #profile-picture {
-    /* Removed transition related to transform as it's no longer animated by JS */
-    transition: border-color 0.3s ease; /* Keep border color transition for theme changes */
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
     position: relative;
     z-index: 10;
-    cursor: pointer; /* Keep cursor as pointer if it links somewhere or has other interactions */
-    /* Removed transform-style and perspective as they were for 3D tilt effect */
+    cursor: pointer;
     border-color: var(--bg-color);
+    box-shadow: 0 0 var(--profile-glow-blur) var(--profile-glow-spread) var(--profile-glow-color);
 }
 
-/* Removed #profile-picture.hovering class as it's no longer used by JS */
+/* Ensure the open button is not obscured if the panel closes over it due to z-index */
+#open-player-btn.hidden {
+    display: none;
+}
+
+/* ===== NEW: Volume Control Styling ===== */
+#volume-slider {
+    -webkit-appearance: none; /* Override default Wekbit/Blink appearance */
+    appearance: none;
+    width: 100%;
+    height: 8px; /* Height of the track */
+    background: var(--volume-slider-track-bg); /* Track background */
+    border-radius: 5px;
+    outline: none; /* Remove outline */
+    opacity: 0.7;
+    transition: opacity .2s;
+}
+
+#volume-slider:hover {
+    opacity: 1; /* Full opacity on hover */
+}
+
+/* Thumb (slider handle) for Webkit browsers (Chrome, Safari, Opera, Edge Chromium) */
+#volume-slider::-webkit-slider-thumb {
+    -webkit-appearance: none; /* Override default appearance */
+    appearance: none;
+    width: 18px; /* Width of the thumb */
+    height: 18px; /* Height of the thumb */
+    background: var(--volume-slider-thumb-bg); /* Thumb background */
+    border-radius: 50%; /* Circular thumb */
+    cursor: pointer;
+    border: 2px solid var(--card-bg); /* Optional: border to match card background for a "floating" effect */
+    box-shadow: 0 0 2px rgba(0,0,0,0.2); /* Subtle shadow for thumb */
+}
+
+/* Thumb (slider handle) for Firefox */
+#volume-slider::-moz-range-thumb {
+    width: 16px; /* Width of the thumb */
+    height: 16px; /* Height of the thumb */
+    background: var(--volume-slider-thumb-bg); /* Thumb background */
+    border-radius: 50%; /* Circular thumb */
+    cursor: pointer;
+    border: 2px solid var(--card-bg);
+    box-shadow: 0 0 2px rgba(0,0,0,0.2);
+}
+
+/* Styling the progress fill of the slider (the part of the track before the thumb) */
+/* This is a bit tricky and browser-dependent. The easiest way is to use a pseudo-element or a background gradient.
+   For simplicity and better cross-browser compatibility without complex JS, we'll style the thumb and track.
+   A true "progress fill" often requires more specific CSS or JS.
+   However, we can simulate it for Webkit. For Firefox, it's more complex.
+*/
+#volume-slider {
+  /* A common trick for Webkit to show progress: */
+  /* background: linear-gradient(to right, var(--volume-slider-progress-bg) 0%, var(--volume-slider-progress-bg) var(--volume-percent, 50%), var(--volume-slider-track-bg) var(--volume-percent, 50%), var(--volume-slider-track-bg) 100%); */
+  /* The above line needs JS to update --volume-percent. We will do this in script.js */
+}
+
+#mute-toggle-btn i {
+    font-size: 1rem; /* Adjust icon size if needed */
+    color: var(--control-icon-color); /* Use theme variable for icon color */
+}
+#mute-toggle-btn:hover i {
+    color: var(--control-hover-icon-color); /* Use theme variable for icon hover color */
+}
 
