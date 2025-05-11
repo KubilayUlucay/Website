@@ -3,81 +3,400 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Project: [Project Name] | Kubilay Ulucay</title>
+    <title>Project: Remote-Controlled Axial Flux Motor | Kubilay Ulucay</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Pacifico&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;700&family=Montserrat:wght@400;600;700&display=swap"
+        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Honk&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💡</text></svg>">
-</head>
-<body class="bg-gray-100 text-gray-800 font-poppins selection:bg-blue-200 selection:text-blue-900">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link
+        rel="icon"
+        href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💡</text></svg>">
+    <style>
+        /* Styles for project page elements */
+        .project-gallery img {
+            max-height: 400px; /* Limit height of gallery images */
+            object-fit: cover; /* Ensure images cover the area nicely */
+            width: 100%; /* Ensure gallery items take full width of their grid cell */
+        }
+        .slides-container {
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 aspect ratio for slides */
+            height: 0;
+            overflow: hidden;
+            max-width: 100%;
+            background: var(--card-border); /* Fallback background, matches card border */
+            border-radius: 0.5rem; /* Tailwind's rounded-lg */
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); /* Tailwind's shadow-md */
+            margin-bottom: 1.5rem; /* Spacing below the slides container */
+        }
+        .slides-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none; /* Remove border from iframe */
+        }
+        .main-project-image-container {
+            margin-bottom: 0.5rem; /* Spacing below the main image */
+            text-align: center; /* Center the image if it's narrower than container */
+        }
+        .main-project-image-container img {
+            max-height: 500px; /* Max height for the main project image */
+            width: auto; /* Maintain aspect ratio */
+            max-width: 100%; /* Ensure it doesn't overflow its container */
+            display: inline-block; /* Allows centering with text-align */
+            border-radius: 0.5rem; /* Rounded corners */
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); /* Subtle shadow */
+            border: 1px solid var(--card-border); /* Border consistent with theme */
+        }
 
-    <header class="bg-white shadow-md sticky top-0 z-40">
+        /* Styles for the fixed mini music player on project pages */
+        #project-page-music-player-panel {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 280px; /* Or your preferred width */
+            background-color: var(--card-bg); /* Use theme variable */
+            border: 1px solid var(--card-border); /* Use theme variable */
+            box-shadow: 0 5px 15px -3px var(--shadow-color), 0 4px 6px -4px var(--shadow-color); /* Use theme variable */
+            border-radius: 0.5rem; /* Tailwind's rounded-lg */
+            padding: 1rem;
+            z-index: 1000; /* Ensure it's above other content */
+            color: var(--text-color); /* Use theme variable */
+        }
+        /* Style for the title within the mini player */
+        #project-page-music-player-panel h4 {
+            font-family: 'Montserrat', sans-serif; /* Consistent heading font */
+            font-size: 0.9rem; /* Slightly smaller title */
+            margin-bottom: 0.5rem;
+            color: var(--text-color-secondary); /* Use theme variable */
+        }
+        /* Volume slider thumb styling will be inherited if class 'volume-slider-thumb' is used
+           and defined in the main style.css as previously discussed */
+    </style>
+</head>
+<body class="font-rubik selection:bg-blue-200 selection:text-blue-900">
+    <header class="sticky top-0 z-40 shadow-sm">
         <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
-             {/* Link back to the main page */}
-            <a href="index.html" class="text-3xl font-pacifico text-gray-800 hover:text-blue-600 transition duration-300">Kubilay Ulucay</a>
-             {/* Simplified nav or link back */}
-             <a href="index.html#projects" class="text-gray-600 hover:text-blue-600 transition duration-300">&larr; Back to Projects</a>
+            <a href="index.html" class="text-3xl font-montserrat nav-link flex-shrink-0 mr-6">
+                Kubilay Ulucay
+            </a>
+            <div class="flex items-center space-x-4">
+                <a href="index.html#projects" class="nav-link flex items-center">
+                    <i class="fas fa-arrow-left mr-2"></i> Back to Projects
+                </a>
+                </div>
         </nav>
     </header>
 
     <main class="container mx-auto px-6 py-12">
+        <section class="card-bg p-6 md:p-8 rounded-lg shadow-lg">
+            <h1 class="text-4xl md:text-5xl font-semibold mb-3 font-montserrat card-title">
+                Remote-Controlled Axial Flux Motor
+            </h1>
+            <p class="text-lg text-[var(--text-color-secondary)] mb-6">
+                A hands-on project involving the design, fabrication, and testing of a custom electric motor.
+            </p>
 
-        <section class="bg-white p-8 rounded-lg shadow-lg">
-            <h1 class="text-4xl md:text-5xl font-bold mb-6 font-pacifico">[Project Name]</h1>
+            <div class="mb-8 main-project-image-container">
+                <img src="images/projects/motor/overall-motor.jpeg" alt="Overall view of the Axial Flux Motor">
+                <p class="text-sm text-[var(--text-color-secondary)] mt-2"><i>Overall view of the completed motor prototype.</i></p>
+            </div>
 
             <div class="mb-8">
-                <h2 class="text-2xl font-semibold mb-3">Overview</h2>
-                <p class="text-lg leading-relaxed text-gray-700">
-                    Briefly describe the project goal and what you did. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                <h2 class="text-3xl font-semibold mb-4 card-title border-b pb-2 border-[var(--card-border)]">Project Overview</h2>
+                <p class="text-lg leading-relaxed mb-4 card-text">
+                    This project involved the complete lifecycle of creating a custom electric axial flux motor. The primary goal was to design a motor from scratch, fabricate its components including hand-wiring the coils, and integrate a remote control system using NRF24L01 transceivers for wireless operation. This endeavor aimed to provide practical experience in motor design principles, 3D printing for custom parts, and embedded systems programming for control.
+                </p>
+                <p class="text-lg leading-relaxed card-text">
+                    The axial flux topology was chosen for its potential for high torque density and compact form factor. The project served as an excellent learning platform for understanding electromagnetic principles, material selection, and the challenges of manual fabrication processes.
                 </p>
             </div>
 
-             <div class="mb-8 text-center">
-                <img src="https://placehold.co/600x400/EBF4FF/7F9CF5?text=Project+Image" alt="[Project Name]" class="max-w-full h-auto rounded-lg shadow-md mx-auto">
-                 {/* Replace with actual project image if available */}
-            </div>
-
             <div class="mb-8">
-                <h2 class="text-2xl font-semibold mb-3">Key Features & Technologies</h2>
-                 <ul class="list-disc list-inside text-lg text-gray-700 space-y-2">
-                    <li>Feature 1: Description of the feature. (e.g., Custom motor design)</li>
-                    <li>Feature 2: Another key aspect. (e.g., Wireless control implementation)</li>
-                    <li>Technology Used: Arduino, NRF24, AutoCAD, 3D Printing, etc.</li>
-                    <li>Challenge Overcome: Describe a specific challenge and how you solved it.</li>
+                <h2 class="text-3xl font-semibold mb-4 card-title border-b pb-2 border-[var(--card-border)]">Key Features & Technologies</h2>
+                <ul class="list-disc list-inside text-lg card-text space-y-3 pl-4">
+                    <li>
+                        <strong>Custom Motor Design:</strong> Designed an axial flux permanent magnet (AFPM) motor, including stator and rotor geometry, magnet placement, and coil winding specifications.
+                    </li>
+                    <li>
+                        <strong>Hand-Wired Coils:</strong> Manually wound copper coils for the stator, providing a deep understanding of motor construction.
+                    </li>
+                    <li>
+                        <strong>3D Printed Components:</strong> Utilized 3D printing (e.g., FDM with PLA/PETG) to create custom motor housing, rotor, and stator supports.
+                    </li>
+                    <li>
+                        <strong>NRF24 Remote Control:</strong> Implemented a wireless remote control system using Arduino microcontrollers and NRF24L01+ transceiver modules for motor speed and direction control.
+                    </li>
+                    <li>
+                        <strong>Custom PCB:</strong> Designed a compact PCB using KiCad for the motor driver and NRF24 module integration.
+                    </li>
+                    <li>
+                        <strong>Technologies Used:</strong>
+                        <ul class="list-disc list-inside ml-6 mt-1 space-y-1">
+                            <li>Microcontrollers: Arduino (e.g., Nano, Uno)</li>
+                            <li>Wireless Communication: NRF24L01+</li>
+                            <li>CAD Software: Autodesk Fusion 360, SolidWorks</li>
+                            <li>Slicing Software: Cura, PrusaSlicer</li>
+                            <li>Programming: Arduino C/C++</li>
+                            <li>Motor Control: L298N motor driver, Custom ESC (if applicable)</li>
+                        </ul>
+                    </li>
                 </ul>
             </div>
 
             <div class="mb-8">
-                <h2 class="text-2xl font-semibold mb-3">Outcomes & Results</h2>
-                 <p class="text-lg leading-relaxed text-gray-700">
-                    What was the result of the project? Was it successful? What did you learn? Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                <h2 class="text-3xl font-semibold mb-4 card-title border-b pb-2 border-[var(--card-border)]">Challenges & Solutions</h2>
+                <p class="text-lg leading-relaxed mb-2 card-text">
+                    During the project, several challenges were encountered and addressed:
+                </p>
+                <ul class="list-disc list-inside text-lg card-text space-y-2 pl-4">
+                    <li><strong>Challenge:</strong> Achieving precise alignment of the rotor and stator with 3D printed parts, critical for optimal motor performance.
+                        <br><span class="text-sm text-[var(--text-color-secondary)]"><strong>Solution:</strong> Implemented an iterative design process for the 3D models, incorporating adjustable mounting points and developing calibration jigs to ensure accurate assembly.</span>
+                    </li>
+                    <li><strong>Challenge:</strong> Ensuring reliable wireless communication with the NRF24 modules, especially in environments with potential RF interference.
+                        <br><span class="text-sm text-[var(--text-color-secondary)]"><strong>Solution:</strong> Developed a robust communication protocol with error checking and retransmission capabilities. Careful antenna placement and power supply decoupling for the NRF24 modules also improved signal integrity.</span>
+                    </li>
+                    <li><strong>Challenge:</strong> Overheating of motor driver components (e.g., L298N) when operating the motor at higher loads or for extended periods.
+                         <br><span class="text-sm text-[var(--text-color-secondary)]"><strong>Solution:</strong> Integrated heat sinks onto the motor driver IC and implemented current monitoring in the Arduino code to trigger a fault state or reduce power if overcurrent conditions were detected.</span>
+                    </li>
+                    <li><strong>Challenge:</strong> Optimizing the hand-winding process for the stator coils to achieve consistency and desired electrical characteristics.
+                         <br><span class="text-sm text-[var(--text-color-secondary)]"><strong>Solution:</strong> Created winding guides and templates using 3D printing, and meticulously counted turns and ensured uniform tension during the winding process.</span>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="mb-8">
+                <h2 class="text-3xl font-semibold mb-4 card-title border-b pb-2 border-[var(--card-border)]">Visual Gallery</h2>
+                <p class="text-lg leading-relaxed mb-4 card-text">
+                    A collection of images showcasing the design, components, and assembly process of the remote-controlled axial flux motor.
+                </p>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 project-gallery">
+                    <img src="images/projects/motor/motor_3d.jpg" alt="3D Model of the Motor" class="rounded-lg shadow-md border border-[var(--card-border)]">
+                    <img src="images/projects/motor/motoric.jfif" alt="Motor Internal Components" class="rounded-lg shadow-md border border-[var(--card-border)]">
+                    <img src="images/projects/motor/motor-inside-wiring.jpeg" alt="Motor Inside Wiring" class="rounded-lg shadow-md border border-[var(--card-border)]">
+                    <img src="images/projects/motor/refkumandaalici.jpeg" alt="Remote Control Receiver (Alici)" class="rounded-lg shadow-md border border-[var(--card-border)]">
+                    <img src="images/projects/motor/refkumandaverici.jpeg" alt="Remote Control Transmitter (Verici)" class="rounded-lg shadow-md border border-[var(--card-border)]">
+                    <img src="images/Projects/Motor/overall-motor.jpeg" alt="Motor Assembly Process" class="rounded-lg shadow-md border border-[var(--card-border)]">
+                </div>
+            </div>
+
+            <div class="mb-8">
+                <h2 class="text-3xl font-semibold mb-4 card-title border-b pb-2 border-[var(--card-border)]">Presentation Slides</h2>
+                <p class="text-lg leading-relaxed mb-4 card-text">
+                    For a more detailed overview, including design considerations and testing results, please view the project presentation slides embedded below.
+                </p>
+                <div class="slides-container">
+                    <iframe src="https://docs.google.com/presentation/d/e/2PACX-1vQUBwMfczfqOUSYRqaiwsZp53p_EiTMHzFyXLCIYR8RwIXHhLEea2tcqHZBJlwc2g/pubembed?start=false&loop=false&delayms=3000" frameborder="0" width="1280" height="749" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
+                </div>
+            </div>
+
+            <div class="mb-8">
+                <h2 class="text-3xl font-semibold mb-4 card-title border-b pb-2 border-[var(--card-border)]">Outcomes & Learning</h2>
+                <p class="text-lg leading-relaxed card-text">
+                    The project successfully resulted in a functional remote-controlled axial flux motor prototype that demonstrated the viability of the custom design and fabrication approach. Key learnings included a deeper understanding of electromagnetic field interactions within axial flux machines, and the nuances of implementing reliable wireless data transmission for real-time control applications. This project significantly enhanced my skills in iterative design, circuit integration, and hands-on fabrication techniques. It also provided valuable insights into importance of systematic testing and debugging.
                 </p>
             </div>
 
-            <div class="mt-10 text-center">
-                 <a href="index.html#projects" class="inline-block bg-gray-500 text-white font-semibold py-2 px-6 rounded-lg shadow-md hover:bg-gray-600 transition duration-300">Back to Projects</a>
+            <div class="mt-12 text-center">
+                <a href="index.html#projects" class="btn-pop inline-block bg-[var(--accent1)] hover:bg-[var(--accent2)] text-white font-semibold py-3 px-8 rounded-lg shadow-md transition">
+                    <i class="fas fa-arrow-left mr-2"></i> Back to All Projects
+                </a>
             </div>
-
         </section>
-
     </main>
 
-    <footer class="bg-gray-800 text-gray-300 py-6 mt-20 relative">
-        <div class="container mx-auto px-6 text-center">
-            <p>&copy; <span id="current-year"></span> Seyit Kubilay Ulucay.</p>
+    <div id="project-page-music-player-panel">
+        <h4>Music Player</h4>
+        <iframe id="project-soundcloud-iframe-player"
+            width="100%"
+            height="120" scrolling="no"
+            frameborder="no"
+            allow="autoplay"
+            src="https://w.soundcloud.com/player/?url=https%3A//soundcloud.com/seyit-kubilay-ulucay/sets/website&color=%23ff5500&auto_play=false&hide_related=true&show_comments=false&show_user=false&show_reposts=false&show_teaser=true&visual=false">
+        </iframe>
+        <div id="project-volume-controls-container" class="mt-2">
+            <div class="flex items-center space-x-2">
+                <button id="project-mute-toggle-btn" aria-label="Mute/Unmute" class="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
+                    <i class="fas fa-volume-up text-[var(--text-color-secondary)]"></i>
+                </button>
+                <input type="range" id="project-volume-slider" min="0" max="100" value="50" class="w-full h-2 rounded-lg appearance-none cursor-pointer volume-slider-thumb">
+            </div>
         </div>
-         {/* You can keep or remove the cat from project pages */}
-         <img id="easter-egg-cat" src="https://placehold.co/80x80/000000/FFFFFF?text=Cat+GIF" alt="Peeking Cat" class="absolute bottom-0 right-4 w-16 h-auto opacity-50 hover:opacity-100 transition-opacity duration-300" title="Meow?">
+    </div>
+
+    <footer class="footer-bg py-6 mt-20 relative font-rubik">
+        <div class="container mx-auto px-6 flex flex-col md:flex-row justify-center items-center">
+            <p class="footer-text text-center">
+                © <span id="current-year"></span> Seyit Kubilay Ulucay.
+            </p>
+        </div>
+        <img
+            id="easter-egg-cat"
+            src="images/peek-cat.gif" onerror="this.src='https://placehold.co/64x64/333/ccc?text=Peek'" alt="Peeking Cat"
+            class="absolute bottom-0 right-4 w-16 opacity-50 hover:opacity-100 transition-opacity cursor-pointer"
+            title="Meow?"
+        >
     </footer>
 
+    <script src="https://w.soundcloud.com/player/api.js"></script>
     <script>
-        // Simple script for footer year on project pages
-        const currentYearSpan = document.getElementById('current-year');
-        if (currentYearSpan) {
-            currentYearSpan.textContent = new Date().getFullYear();
-        }
+        // --- Footer Year & Basic Theme Application ---
+        const yearElement = document.getElementById("current-year");
+        if (yearElement) { yearElement.textContent = new Date().getFullYear(); }
+
+        // Function to apply theme based on localStorage
+        const applyProjectPageTheme = () => {
+            const savedTheme = localStorage.getItem('theme') || 'light'; // Default to light theme
+            if (savedTheme === 'dark') {
+                document.body.classList.add('dark-theme');
+            } else {
+                document.body.classList.remove('dark-theme');
+            }
+            // Update volume slider appearance if it exists and the function is defined
+            if (typeof updateProjectVolumeSliderAppearance === 'function') {
+                updateProjectVolumeSliderAppearance();
+            }
+        };
+        applyProjectPageTheme(); // Apply theme as soon as the script runs
+
+        // --- Music Player Logic for Project Pages ---
+        document.addEventListener('DOMContentLoaded', () => {
+            const projectSoundcloudIframe = document.getElementById('project-soundcloud-iframe-player');
+            const projectVolumeSlider = document.getElementById('project-volume-slider');
+            const projectMuteToggleButton = document.getElementById('project-mute-toggle-btn');
+            let projectScWidget = null;
+            let projectIsMuted = false;
+            let projectLastVolume = 50; // Default volume
+
+            // Function to update the visual appearance of the volume slider's progress
+            window.updateProjectVolumeSliderAppearance = () => {
+                if (!projectVolumeSlider) return;
+                const progressPercent = projectVolumeSlider.value;
+                // Helper to get CSS variables, ensuring body is available
+                const getProjectCssVariable = (varName) => document.body ? getComputedStyle(document.body).getPropertyValue(varName).trim() : null;
+
+                const progressColor = getProjectCssVariable('--volume-slider-progress-bg') || '#FF61E1'; // Fallback color
+                const trackColor = getProjectCssVariable('--volume-slider-track-bg') || '#e5e7eb'; // Fallback color
+                projectVolumeSlider.style.background = `linear-gradient(to right, ${progressColor} ${progressPercent}%, ${trackColor} ${progressPercent}%)`;
+            };
+
+            // Initialize SoundCloud widget if the iframe and SC API are available
+            if (projectSoundcloudIframe && typeof SC !== 'undefined') {
+                projectScWidget = SC.Widget(projectSoundcloudIframe);
+
+                projectScWidget.bind(SC.Widget.Events.READY, () => {
+                    console.log('SoundCloud Widget is ready on project page.');
+
+                    // Retrieve saved music state from localStorage
+                    const savedTrackURI = localStorage.getItem('soundcloudTrackURI');
+                    const savedTrackTimeStr = localStorage.getItem('soundcloudTrackTime');
+                    const savedVolumeStr = localStorage.getItem('soundcloudVolume');
+                    const savedMutedStr = localStorage.getItem('soundcloudMuted');
+                    const savedIsPlayingStr = localStorage.getItem('soundcloudIsPlaying');
+
+                    let playAfterLoad = savedIsPlayingStr === 'true'; // Determine if music should play on load
+
+                    // Set volume based on saved state or default
+                    if (savedVolumeStr !== null) {
+                        projectLastVolume = parseInt(savedVolumeStr, 10);
+                        projectVolumeSlider.value = projectLastVolume;
+                        projectScWidget.setVolume(projectLastVolume);
+                    } else {
+                         projectVolumeSlider.value = projectLastVolume; // Default 50
+                         projectScWidget.setVolume(projectLastVolume);
+                    }
+
+                    // Set mute state based on saved state
+                    if (savedMutedStr === 'true') {
+                        projectIsMuted = true;
+                        projectScWidget.setVolume(0); // Mute via API
+                        projectVolumeSlider.value = 0; // Reflect mute on slider
+                        projectMuteToggleButton.innerHTML = '<i class="fas fa-volume-mute text-[var(--text-color-secondary)]"></i>';
+                    } else {
+                        projectIsMuted = false;
+                        // Volume already set above
+                         projectMuteToggleButton.innerHTML = '<i class="fas fa-volume-up text-[var(--text-color-secondary)]"></i>';
+                    }
+                    updateProjectVolumeSliderAppearance(); // Update slider visuals
+
+                    // If a track URI was saved, load and attempt to resume it
+                    if (savedTrackURI) {
+                        console.log(`Attempting to load and resume: ${savedTrackURI} at ${savedTrackTimeStr}ms, play: ${playAfterLoad}`);
+                        projectScWidget.load(savedTrackURI, {
+                            auto_play: playAfterLoad, // SoundCloud API's auto_play for load
+                            callback: () => { // Callback after track is loaded
+                                console.log(`Track ${savedTrackURI} loaded.`);
+                                if (savedTrackTimeStr) {
+                                    const seekTime = parseInt(savedTrackTimeStr, 10);
+                                    console.log(`Seeking to ${seekTime}ms`);
+                                    projectScWidget.seekTo(seekTime); // Seek to saved position
+                                }
+                                // Additional check to play if auto_play in load didn't trigger
+                                if (playAfterLoad && projectScWidget.play) {
+                                   setTimeout(() => projectScWidget.play(), 250); // Small delay might improve reliability
+                                }
+                            }
+                        });
+                    } else {
+                        console.log("No saved track URI found to resume. Player will load default playlist view.");
+                    }
+                });
+                // Error handling for the widget
+                projectScWidget.bind(SC.Widget.Events.ERROR, (err) => { console.error("Project Page SC Widget Error:", err);});
+
+            }  else if (!projectSoundcloudIframe) {
+                console.log("SoundCloud iframe for project page music player not found.");
+            } else if (typeof SC === 'undefined') {
+                console.error("SoundCloud API (SC object) not loaded. Ensure api.js is included before this script.");
+            }
+
+            // Event listener for the volume slider input
+            if (projectVolumeSlider && projectScWidget) {
+                projectVolumeSlider.addEventListener('input', () => {
+                    const newVolume = parseInt(projectVolumeSlider.value, 10);
+                    projectScWidget.setVolume(newVolume);
+                    projectLastVolume = newVolume;
+                    projectIsMuted = newVolume === 0;
+                    // Persist changes to localStorage
+                    localStorage.setItem('soundcloudVolume', newVolume.toString());
+                    localStorage.setItem('soundcloudMuted', projectIsMuted.toString());
+                    projectMuteToggleButton.innerHTML = projectIsMuted ? '<i class="fas fa-volume-mute text-[var(--text-color-secondary)]"></i>' : '<i class="fas fa-volume-up text-[var(--text-color-secondary)]"></i>';
+                    updateProjectVolumeSliderAppearance();
+                });
+            }
+
+            // Event listener for the mute toggle button
+            if (projectMuteToggleButton && projectScWidget) {
+                projectMuteToggleButton.addEventListener('click', () => {
+                    projectIsMuted = !projectIsMuted;
+                    if (projectIsMuted) {
+                        projectScWidget.getVolume((currentVolume) => { // Get current volume before muting
+                            if(currentVolume > 0) projectLastVolume = currentVolume; // Store it
+                            projectScWidget.setVolume(0); // Mute
+                            projectVolumeSlider.value = 0;
+                            projectMuteToggleButton.innerHTML = '<i class="fas fa-volume-mute text-[var(--text-color-secondary)]"></i>';
+                        });
+                    } else {
+                        const restoreVolume = projectLastVolume > 0 ? projectLastVolume : 50; // Restore or default
+                        projectScWidget.setVolume(restoreVolume);
+                        projectVolumeSlider.value = restoreVolume;
+                        projectMuteToggleButton.innerHTML = '<i class="fas fa-volume-up text-[var(--text-color-secondary)]"></i>';
+                    }
+                    localStorage.setItem('soundcloudMuted', projectIsMuted.toString());
+                    if (!projectIsMuted) localStorage.setItem('soundcloudVolume', projectVolumeSlider.value); // Save volume if unmuted
+                    updateProjectVolumeSliderAppearance();
+                });
+            }
+             // Initial call to set slider gradient based on default/loaded value
+            updateProjectVolumeSliderAppearance();
+        });
     </script>
 </body>
 </html>

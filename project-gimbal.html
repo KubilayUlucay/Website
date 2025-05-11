@@ -3,81 +3,357 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Project: [Project Name] | Kubilay Ulucay</title>
+    <title>Project: Servo Actuated 3-Axis Gimbal | Kubilay Ulucay</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Pacifico&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💡</text></svg>">
-</head>
-<body class="bg-gray-100 text-gray-800 font-poppins selection:bg-blue-200 selection:text-blue-900">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;700&family=Montserrat:wght@400;600;700&display=swap"
+        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Honk&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css"> <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link
+        rel="icon"
+        href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💡</text></svg>">
+    <style>
+        /* Styles for project page elements */
+        .project-gallery img {
+            max-height: 400px;
+            object-fit: cover;
+            width: 100%;
+            border-radius: 0.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 0.5rem;
+            border: 1px solid var(--card-border);
+        }
+        .slides-container {
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 aspect ratio for slides */
+            height: 0;
+            overflow: hidden;
+            max-width: 100%;
+            background: var(--card-border);
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            margin-bottom: 1.5rem;
+        }
+        .slides-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        .main-project-image-container {
+            margin-bottom: 0.5rem;
+            text-align: center;
+        }
+        .main-project-image-container img {
+            max-height: 500px;
+            width: auto;
+            max-width: 100%;
+            display: inline-block;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            border: 1px solid var(--card-border);
+        }
 
-    <header class="bg-white shadow-md sticky top-0 z-40">
+        /* Styles for the fixed mini music player on project pages */
+        #project-page-music-player-panel {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 280px;
+            background-color: var(--card-bg);
+            border: 1px solid var(--card-border);
+            box-shadow: 0 5px 15px -3px var(--shadow-color), 0 4px 6px -4px var(--shadow-color);
+            border-radius: 0.5rem;
+            padding: 1rem;
+            z-index: 1000;
+            color: var(--text-color);
+        }
+        #project-page-music-player-panel h4 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-color-secondary);
+        }
+    </style>
+</head>
+<body class="font-rubik selection:bg-blue-200 selection:text-blue-900">
+    <header class="sticky top-0 z-40 shadow-sm">
         <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
-             {/* Link back to the main page */}
-            <a href="index.html" class="text-3xl font-pacifico text-gray-800 hover:text-blue-600 transition duration-300">Kubilay Ulucay</a>
-             {/* Simplified nav or link back */}
-             <a href="index.html#projects" class="text-gray-600 hover:text-blue-600 transition duration-300">&larr; Back to Projects</a>
+            <a href="index.html" class="text-3xl font-montserrat nav-link flex-shrink-0 mr-6">
+                Kubilay Ulucay
+            </a>
+            <div class="flex items-center space-x-4">
+                <a href="index.html#projects" class="nav-link flex items-center">
+                    <i class="fas fa-arrow-left mr-2"></i> Back to Projects
+                </a>
+            </div>
         </nav>
     </header>
 
     <main class="container mx-auto px-6 py-12">
+        <section class="card-bg p-6 md:p-8 rounded-lg shadow-lg">
+            <h1 class="text-4xl md:text-5xl font-semibold mb-3 font-montserrat card-title">
+                Servo Actuated 3-Axis Gimbal
+            </h1>
+            <p class="text-lg text-[var(--text-color-secondary)] mb-6">
+                Co-designed and built a 3-axis gimbal using Arduino, MPU6050 IMU, servo motors, and 3D printing for stabilization.
+            </p>
 
-        <section class="bg-white p-8 rounded-lg shadow-lg">
-            <h1 class="text-4xl md:text-5xl font-bold mb-6 font-pacifico">[Project Name]</h1>
+            <div class="mb-8 main-project-image-container">
+                <img src="images/Projects/gimball/stabilizer.jpeg" alt="Servo Actuated 3-Axis Gimbal">
+                <p class="text-sm text-[var(--text-color-secondary)] mt-2"><i>The assembled 3-axis servo-actuated gimbal.</i></p>
+            </div>
 
             <div class="mb-8">
-                <h2 class="text-2xl font-semibold mb-3">Overview</h2>
-                <p class="text-lg leading-relaxed text-gray-700">
-                    Briefly describe the project goal and what you did. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                <h2 class="text-3xl font-semibold mb-4 card-title border-b pb-2 border-[var(--card-border)]">Project Aim & Overview</h2>
+                <p class="text-lg leading-relaxed mb-4 card-text">
+                    The primary aim of this Mechatronics project (ME417) was to create a functional 3-axis servo-actuated gimbal capable of stabilizing an object (e.g., a camera or sensor). This was achieved by utilizing an MPU6050 Inertial Measurement Unit (IMU) to detect orientation changes and an Arduino Nano to process this data and control three servo motors (for Roll, Pitch, and Yaw axes) to counteract these movements.
+                </p>
+                 <p class="text-lg leading-relaxed card-text">
+                    The project involved mechanical design modifications, 3D printing of custom parts, electronic circuit assembly, and programming the control logic for stabilization.
                 </p>
             </div>
 
-             <div class="mb-8 text-center">
-                <img src="https://placehold.co/600x400/EBF4FF/7F9CF5?text=Project+Image" alt="[Project Name]" class="max-w-full h-auto rounded-lg shadow-md mx-auto">
-                 {/* Replace with actual project image if available */}
-            </div>
-
             <div class="mb-8">
-                <h2 class="text-2xl font-semibold mb-3">Key Features & Technologies</h2>
-                 <ul class="list-disc list-inside text-lg text-gray-700 space-y-2">
-                    <li>Feature 1: Description of the feature. (e.g., Custom motor design)</li>
-                    <li>Feature 2: Another key aspect. (e.g., Wireless control implementation)</li>
-                    <li>Technology Used: Arduino, NRF24, AutoCAD, 3D Printing, etc.</li>
-                    <li>Challenge Overcome: Describe a specific challenge and how you solved it.</li>
+                <h2 class="text-3xl font-semibold mb-4 card-title border-b pb-2 border-[var(--card-border)]">Design & Components</h2>
+                <p class="text-lg leading-relaxed mb-2 card-text">
+                    The initial gimbal design was sourced from an online model and subsequently modified to suit the project's specific requirements and available components. A key modification involved adapting the power system from Li-Po batteries to a 5V adapter for the Arduino and servos, due to cost considerations.
+                </p>
+                <h3 class="text-xl font-semibold my-3 card-title">Components Used:</h3>
+                <ul class="list-disc list-inside text-lg card-text space-y-1 pl-4">
+                    <li>Arduino Nano</li>
+                    <li>3 x Servo Motors (e.g., MG996R, TowerPro SG90 or similar)</li>
+                    <li>MPU6050 IMU (Accelerometer and Gyroscope)</li>
+                    <li>M3 Bolts and Nuts</li>
+                    <li>Pertinax copper sheet (for custom circuitry or mounting)</li>
+                    <li>Connection Cables</li>
+                    <li>5V Power Adapter</li>
+                    <li>3D Printed Parts (for gimbal structure)</li>
                 </ul>
             </div>
 
             <div class="mb-8">
-                <h2 class="text-2xl font-semibold mb-3">Outcomes & Results</h2>
-                 <p class="text-lg leading-relaxed text-gray-700">
-                    What was the result of the project? Was it successful? What did you learn? Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                <h2 class="text-3xl font-semibold mb-4 card-title border-b pb-2 border-[var(--card-border)]">Methodology</h2>
+                <p class="text-lg leading-relaxed mb-4 card-text">
+                    The project followed these key steps:
+                </p>
+                <ul class="list-disc list-inside text-lg card-text space-y-2 pl-4">
+                    <li><strong>Axis Definition:</strong> Established the three axes of rotation: Roll, Pitch, and Yaw.</li>
+                    <li><strong>IMU Calibration & Data Acquisition:</strong> Calibrated the MPU6050 IMU to obtain accurate raw data (accelerometer and gyroscope readings) via I²C communication with the Arduino Nano.</li>
+                    <li><strong>Data Processing:</strong> Processed the raw IMU data to determine the gimbal's current orientation and any deviations from the desired stable state. This often involves sensor fusion algorithms (e.g., Kalman filter, complementary filter) to combine accelerometer and gyroscope data effectively.</li>
+                    <li><strong>Servo Control:</strong> Mapped the processed orientation data to corresponding servo motor movements. The Arduino code calculated the necessary adjustments for each servo to counteract the detected motion and maintain stability.</li>
+                    <li><strong>Code Implementation:</strong> All control logic was programmed on the Arduino platform using C/C++. This included initializing the MPU6050, setting up interrupt routines for IMU data readiness, and controlling servo positions.</li>
+                </ul>
+            </div>
+
+            <div class="mb-8">
+                <h2 class="text-3xl font-semibold mb-4 card-title border-b pb-2 border-[var(--card-border)]">Visual Gallery</h2>
+                <p class="text-lg leading-relaxed mb-4 card-text">
+                    Images showcasing the gimbal's construction, wiring, and components.
+                </p>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 project-gallery">
+                    <img src="images/Projects/gimball/gimball-side.jpeg" alt="Gimbal Side View" class="rounded-lg shadow-md">
+                    <img src="images/Projects/gimball/wiring-top.jpeg" alt="Gimbal Wiring Top View" class="rounded-lg shadow-md">
+                    <img src="images/Projects/gimball/wiring-back.jpeg" alt="Gimbal Wiring Back View" class="rounded-lg shadow-md">
+                    <img src="images/Projects/gimball/stabilizer.jpeg" alt="Gimbal Stabilizer Unit" class="rounded-lg shadow-md">
+                    <img src="images/Projects/gimball/phone-data.jpeg" alt="Phone Data Graph for Gyroscope" class="rounded-lg shadow-md">
+                    <img src="images/Projects/gimball/cad-design.png" alt="CAD Design of Gimbal" class="rounded-lg shadow-md">
+                </div>
+            </div>
+
+            <div class="mb-8">
+                <h2 class="text-3xl font-semibold mb-4 card-title border-b pb-2 border-[var(--card-border)]">Presentation Slides</h2>
+                <p class="text-lg leading-relaxed mb-4 card-text">
+                    For a visual overview of the project, including design iterations and results, please view the presentation slides embedded below.
+                </p>
+                <div class="slides-container">
+                    <iframe src="https://docs.google.com/presentation/d/e/2PACX-1vSOQtBrknlNoPc2iNNSRVSQx8lvEyPBBdFtUIkCTbmbEVA2ZmFwvkVSIx2GFz4Z7Q/pubembed?start=false&loop=false&delayms=3000" frameborder="0" width="1280" height="749" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
+                </div>
+            </div>
+
+            <div class="mb-8">
+                <h2 class="text-3xl font-semibold mb-4 card-title border-b pb-2 border-[var(--card-border)]">Results & Observations</h2>
+                <p class="text-lg leading-relaxed card-text mb-2">
+                    The project faced an initial setback due to a defective MPU6050 sensor. To validate the stabilization concept and gather comparative data, gyroscope values from a smartphone placed on the stabilized platform were used.
+                </p>
+                <p class="text-lg leading-relaxed card-text mb-2">
+                    Two sets of data were collected:
+                    <ul class="list-disc list-inside text-lg card-text space-y-1 pl-4">
+                        <li><strong>Gimbal IMU Data:</strong> Values gathered from the MPU6050 mounted on the gimbal's base (holding part). Data collection was initiated manually via the Arduino.</li>
+                        <li><strong>Phone Gyroscope Data:</strong> Values from the smartphone's gyroscope on the stabilized platform.</li>
+                    </ul>
+                </p>
+                <p class="text-lg leading-relaxed card-text">
+                    A slight time difference existed between the two datasets due to the manual start of data collection. The "phone-data.jpeg" image (shown in the gallery) illustrates the gyroscope readings (x, y, z axes) obtained from the phone, demonstrating the attempts to stabilize against external movements. Further analysis would involve comparing these datasets to quantify the gimbal's stabilization performance.
                 </p>
             </div>
 
-            <div class="mt-10 text-center">
-                 <a href="index.html#projects" class="inline-block bg-gray-500 text-white font-semibold py-2 px-6 rounded-lg shadow-md hover:bg-gray-600 transition duration-300">Back to Projects</a>
+            <div class="mt-12 text-center">
+                <a href="index.html#projects" class="btn-pop inline-block bg-[var(--accent1)] hover:bg-[var(--accent2)] text-white font-semibold py-3 px-8 rounded-lg shadow-md transition">
+                    <i class="fas fa-arrow-left mr-2"></i> Back to All Projects
+                </a>
             </div>
-
         </section>
-
     </main>
 
-    <footer class="bg-gray-800 text-gray-300 py-6 mt-20 relative">
-        <div class="container mx-auto px-6 text-center">
-            <p>&copy; <span id="current-year"></span> Seyit Kubilay Ulucay.</p>
+    <div id="project-page-music-player-panel">
+        <h4>Music Player</h4>
+        <iframe id="project-soundcloud-iframe-player"
+            width="100%"
+            height="120" scrolling="no"
+            frameborder="no"
+            allow="autoplay"
+            src="https://w.soundcloud.com/player/?url=https%3A//soundcloud.com/seyit-kubilay-ulucay/sets/website&color=%23ff5500&auto_play=false&hide_related=true&show_comments=false&show_user=false&show_reposts=false&show_teaser=true&visual=false">
+        </iframe>
+        <div id="project-volume-controls-container" class="mt-2">
+            <div class="flex items-center space-x-2">
+                <button id="project-mute-toggle-btn" aria-label="Mute/Unmute" class="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
+                    <i class="fas fa-volume-up text-[var(--text-color-secondary)]"></i>
+                </button>
+                <input type="range" id="project-volume-slider" min="0" max="100" value="50" class="w-full h-2 rounded-lg appearance-none cursor-pointer volume-slider-thumb">
+            </div>
         </div>
-         {/* You can keep or remove the cat from project pages */}
-         <img id="easter-egg-cat" src="https://placehold.co/80x80/000000/FFFFFF?text=Cat+GIF" alt="Peeking Cat" class="absolute bottom-0 right-4 w-16 h-auto opacity-50 hover:opacity-100 transition-opacity duration-300" title="Meow?">
+    </div>
+
+    <footer class="footer-bg py-6 mt-20 relative font-rubik">
+        <div class="container mx-auto px-6 flex flex-col md:flex-row justify-center items-center">
+            <p class="footer-text text-center">
+                © <span id="current-year"></span> Seyit Kubilay Ulucay.
+            </p>
+        </div>
+        <img
+            id="easter-egg-cat"
+            src="images/peek-cat.gif" onerror="this.src='https://placehold.co/64x64/333/ccc?text=Peek'" alt="Peeking Cat"
+            class="absolute bottom-0 right-4 w-16 opacity-50 hover:opacity-100 transition-opacity cursor-pointer"
+            title="Meow?"
+        >
     </footer>
 
+    <script src="https://w.soundcloud.com/player/api.js"></script>
     <script>
-        // Simple script for footer year on project pages
-        const currentYearSpan = document.getElementById('current-year');
-        if (currentYearSpan) {
-            currentYearSpan.textContent = new Date().getFullYear();
-        }
+        // --- Footer Year & Basic Theme Application ---
+        const yearElement = document.getElementById("current-year");
+        if (yearElement) { yearElement.textContent = new Date().getFullYear(); }
+
+        const applyProjectPageTheme = () => {
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            if (savedTheme === 'dark') {
+                document.body.classList.add('dark-theme');
+            } else {
+                document.body.classList.remove('dark-theme');
+            }
+            if (typeof updateProjectVolumeSliderAppearance === 'function') {
+                updateProjectVolumeSliderAppearance();
+            }
+        };
+        applyProjectPageTheme();
+
+        // --- Music Player Logic for Project Pages ---
+        document.addEventListener('DOMContentLoaded', () => {
+            const projectSoundcloudIframe = document.getElementById('project-soundcloud-iframe-player');
+            const projectVolumeSlider = document.getElementById('project-volume-slider');
+            const projectMuteToggleButton = document.getElementById('project-mute-toggle-btn');
+            let projectScWidget = null;
+            let projectIsMuted = false;
+            let projectLastVolume = 50;
+
+            window.updateProjectVolumeSliderAppearance = () => {
+                if (!projectVolumeSlider) return;
+                const progressPercent = projectVolumeSlider.value;
+                const getProjectCssVariable = (varName) => document.body ? getComputedStyle(document.body).getPropertyValue(varName).trim() : null;
+                const progressColor = getProjectCssVariable('--volume-slider-progress-bg') || '#FF61E1';
+                const trackColor = getProjectCssVariable('--volume-slider-track-bg') || '#e5e7eb';
+                projectVolumeSlider.style.background = `linear-gradient(to right, ${progressColor} ${progressPercent}%, ${trackColor} ${progressPercent}%)`;
+            };
+
+            if (projectSoundcloudIframe && typeof SC !== 'undefined') {
+                projectScWidget = SC.Widget(projectSoundcloudIframe);
+                projectScWidget.bind(SC.Widget.Events.READY, () => {
+                    console.log('SoundCloud Widget is ready on project page.');
+                    const savedTrackURI = localStorage.getItem('soundcloudTrackURI');
+                    const savedTrackTimeStr = localStorage.getItem('soundcloudTrackTime');
+                    const savedVolumeStr = localStorage.getItem('soundcloudVolume');
+                    const savedMutedStr = localStorage.getItem('soundcloudMuted');
+                    const savedIsPlayingStr = localStorage.getItem('soundcloudIsPlaying');
+                    let playAfterLoad = savedIsPlayingStr === 'true';
+
+                    if (savedVolumeStr !== null) {
+                        projectLastVolume = parseInt(savedVolumeStr, 10);
+                        projectVolumeSlider.value = projectLastVolume;
+                        projectScWidget.setVolume(projectLastVolume);
+                    } else {
+                         projectVolumeSlider.value = projectLastVolume;
+                         projectScWidget.setVolume(projectLastVolume);
+                    }
+                    if (savedMutedStr === 'true') {
+                        projectIsMuted = true;
+                        projectScWidget.setVolume(0);
+                        projectVolumeSlider.value = 0;
+                        projectMuteToggleButton.innerHTML = '<i class="fas fa-volume-mute text-[var(--text-color-secondary)]"></i>';
+                    } else {
+                        projectIsMuted = false;
+                         projectMuteToggleButton.innerHTML = '<i class="fas fa-volume-up text-[var(--text-color-secondary)]"></i>';
+                    }
+                    updateProjectVolumeSliderAppearance();
+
+                    if (savedTrackURI) {
+                        projectScWidget.load(savedTrackURI, {
+                            auto_play: playAfterLoad,
+                            callback: () => {
+                                if (savedTrackTimeStr) {
+                                    projectScWidget.seekTo(parseInt(savedTrackTimeStr, 10));
+                                }
+                                if (playAfterLoad && projectScWidget.play) {
+                                   setTimeout(() => projectScWidget.play(), 250);
+                                }
+                            }
+                        });
+                    }
+                });
+                projectScWidget.bind(SC.Widget.Events.ERROR, (err) => { console.error("Project Page SC Widget Error:", err);});
+            }
+
+            if (projectVolumeSlider && projectScWidget) {
+                projectVolumeSlider.addEventListener('input', () => {
+                    const newVolume = parseInt(projectVolumeSlider.value, 10);
+                    projectScWidget.setVolume(newVolume);
+                    projectLastVolume = newVolume;
+                    projectIsMuted = newVolume === 0;
+                    localStorage.setItem('soundcloudVolume', newVolume.toString());
+                    localStorage.setItem('soundcloudMuted', projectIsMuted.toString());
+                    projectMuteToggleButton.innerHTML = projectIsMuted ? '<i class="fas fa-volume-mute text-[var(--text-color-secondary)]"></i>' : '<i class="fas fa-volume-up text-[var(--text-color-secondary)]"></i>';
+                    updateProjectVolumeSliderAppearance();
+                });
+            }
+
+            if (projectMuteToggleButton && projectScWidget) {
+                projectMuteToggleButton.addEventListener('click', () => {
+                    projectIsMuted = !projectIsMuted;
+                    if (projectIsMuted) {
+                        projectScWidget.getVolume((currentVolume) => {
+                            if(currentVolume > 0) projectLastVolume = currentVolume;
+                            projectScWidget.setVolume(0);
+                            projectVolumeSlider.value = 0;
+                            projectMuteToggleButton.innerHTML = '<i class="fas fa-volume-mute text-[var(--text-color-secondary)]"></i>';
+                        });
+                    } else {
+                        const restoreVolume = projectLastVolume > 0 ? projectLastVolume : 50;
+                        projectScWidget.setVolume(restoreVolume);
+                        projectVolumeSlider.value = restoreVolume;
+                        projectMuteToggleButton.innerHTML = '<i class="fas fa-volume-up text-[var(--text-color-secondary)]"></i>';
+                    }
+                    localStorage.setItem('soundcloudMuted', projectIsMuted.toString());
+                    if (!projectIsMuted) localStorage.setItem('soundcloudVolume', projectVolumeSlider.value);
+                    updateProjectVolumeSliderAppearance();
+                });
+            }
+            updateProjectVolumeSliderAppearance();
+        });
     </script>
 </body>
 </html>

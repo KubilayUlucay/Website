@@ -3,81 +3,318 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Project: [Project Name] | Kubilay Ulucay</title>
+    <title>Project: Wind Turbine Analysis with PowerWorld | Kubilay Ulucay</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Pacifico&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💡</text></svg>">
-</head>
-<body class="bg-gray-100 text-gray-800 font-poppins selection:bg-blue-200 selection:text-blue-900">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;700&family=Montserrat:wght@400;600;700&display=swap"
+        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Honk&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css"> <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link
+        rel="icon"
+        href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💡</text></svg>">
+    <style>
+        /* Styles for project page elements - can be in main style.css or here */
+        .slides-container { /* Kept for consistency if you add slides to other projects */
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            max-width: 100%;
+            background: var(--card-border);
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            margin-bottom: 1.5rem;
+        }
+        .slides-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        .document-button-container {
+            display: flex;
+            flex-wrap: wrap; /* Allow buttons to wrap on smaller screens */
+            gap: 1rem; /* Spacing between buttons */
+            justify-content: center; /* Center buttons if they don't fill the width */
+            margin-top: 1rem;
+            margin-bottom: 1rem;
+        }
 
-    <header class="bg-white shadow-md sticky top-0 z-40">
+        /* Styles for the fixed mini music player on project pages */
+        #project-page-music-player-panel {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 280px;
+            background-color: var(--card-bg);
+            border: 1px solid var(--card-border);
+            box-shadow: 0 5px 15px -3px var(--shadow-color), 0 4px 6px -4px var(--shadow-color);
+            border-radius: 0.5rem;
+            padding: 1rem;
+            z-index: 1000;
+            color: var(--text-color);
+        }
+        #project-page-music-player-panel h4 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-color-secondary);
+        }
+    </style>
+</head>
+<body class="font-rubik selection:bg-blue-200 selection:text-blue-900">
+    <header class="sticky top-0 z-40 shadow-sm">
         <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
-             {/* Link back to the main page */}
-            <a href="index.html" class="text-3xl font-pacifico text-gray-800 hover:text-blue-600 transition duration-300">Kubilay Ulucay</a>
-             {/* Simplified nav or link back */}
-             <a href="index.html#projects" class="text-gray-600 hover:text-blue-600 transition duration-300">&larr; Back to Projects</a>
+            <a href="index.html" class="text-3xl font-montserrat nav-link flex-shrink-0 mr-6">
+                Kubilay Ulucay
+            </a>
+            <div class="flex items-center space-x-4">
+                <a href="index.html#projects" class="nav-link flex items-center">
+                    <i class="fas fa-arrow-left mr-2"></i> Back to Projects
+                </a>
+            </div>
         </nav>
     </header>
 
     <main class="container mx-auto px-6 py-12">
-
-        <section class="bg-white p-8 rounded-lg shadow-lg">
-            <h1 class="text-4xl md:text-5xl font-bold mb-6 font-pacifico">[Project Name]</h1>
+        <section class="card-bg p-6 md:p-8 rounded-lg shadow-lg">
+            <h1 class="text-4xl md:text-5xl font-semibold mb-3 font-montserrat card-title">
+                Wind Turbine Grid Integration Analysis
+            </h1>
+            <p class="text-lg text-[var(--text-color-secondary)] mb-6">
+                Analyzing the impact and cost-effectiveness of wiring configurations for wind turbine grid integration using PowerWorld Simulator.
+            </p>
 
             <div class="mb-8">
-                <h2 class="text-2xl font-semibold mb-3">Overview</h2>
-                <p class="text-lg leading-relaxed text-gray-700">
-                    Briefly describe the project goal and what you did. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                <h2 class="text-3xl font-semibold mb-4 card-title border-b pb-2 border-[var(--card-border)]">Project Overview</h2>
+                <p class="text-lg leading-relaxed mb-4 card-text">
+                    This project was undertaken for a componay, a leading wind energy developer, to plan the optimal and lowest-costing design for integrating a new 200 MW wind farm into the existing Metropolis power grid. The scope involved evaluating various connection scenarios for Type 3 DFIG turbines, considering factors like substation interconnection points, conductor types, system losses, and overall cost-effectiveness over a 5-year period.
+                </p>
+                <p class="text-lg leading-relaxed card-text">
+                    The core of the project was to perform detailed simulations and analyses using PowerWorld Simulator to determine the most reliable and economically viable configuration for feeding the wind farm's output into two separate interconnection substations, adhering to company's technical and traditional requirements.
                 </p>
             </div>
 
-             <div class="mb-8 text-center">
-                <img src="https://placehold.co/600x400/EBF4FF/7F9CF5?text=Project+Image" alt="[Project Name]" class="max-w-full h-auto rounded-lg shadow-md mx-auto">
-                 {/* Replace with actual project image if available */}
-            </div>
-
             <div class="mb-8">
-                <h2 class="text-2xl font-semibold mb-3">Key Features & Technologies</h2>
-                 <ul class="list-disc list-inside text-lg text-gray-700 space-y-2">
-                    <li>Feature 1: Description of the feature. (e.g., Custom motor design)</li>
-                    <li>Feature 2: Another key aspect. (e.g., Wireless control implementation)</li>
-                    <li>Technology Used: Arduino, NRF24, AutoCAD, 3D Printing, etc.</li>
-                    <li>Challenge Overcome: Describe a specific challenge and how you solved it.</li>
+                <h2 class="text-3xl font-semibold mb-4 card-title border-b pb-2 border-[var(--card-border)]">Key Features & Technologies</h2>
+                <ul class="list-disc list-inside text-lg card-text space-y-3 pl-4">
+                    <li>
+                        <strong>Power System Simulation:</strong> Utilized PowerWorld Simulator for detailed modeling and analysis of the power grid and various wind farm integration scenarios.
+                    </li>
+                    <li>
+                        <strong>Cost-Benefit Analysis:</strong> Evaluated different transmission line configurations and conductor types based on initial costs and the cost of system losses over 5 years.
+                    </li>
+                    <li>
+                        <strong>System Loss Minimization:</strong> Investigated configurations to minimize power losses in the transmission system while integrating the new 200 MW wind farm.
+                    </li>
+                    <li>
+                        <strong>Contingency & Reliability Analysis:</strong> Considered reliability by requiring connection to two separate substations and ensuring conductor capacities were not exceeded.
+                    </li>
+                    <li>
+                        <strong>Technical Reporting:</strong> Documented 27 different experiments, their outcomes, and provided a final budgetary calculation and recommendation.
+                    </li>
+                    <li>
+                        <strong>Technologies Used:</strong>
+                        <ul class="list-disc list-inside ml-6 mt-1 space-y-1">
+                            <li>Software: PowerWorld Simulator</li>
+                            <li>Analysis Techniques: Load flow analysis, economic dispatch considerations (implied by cost analysis), transmission line parameter calculations.
+                            </li>
+                        </ul>
+                    </li>
                 </ul>
             </div>
 
             <div class="mb-8">
-                <h2 class="text-2xl font-semibold mb-3">Outcomes & Results</h2>
-                 <p class="text-lg leading-relaxed text-gray-700">
-                    What was the result of the project? Was it successful? What did you learn? Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                <h2 class="text-3xl font-semibold mb-4 card-title border-b pb-2 border-[var(--card-border)]">Project Documents</h2>
+                <p class="text-lg leading-relaxed mb-4 card-text">
+                    The detailed analysis, experimental results, and budgetary calculations for this project are available in the following reports:
+                </p>
+                <div class="document-button-container">
+                    <a href="documents/101-analysis.pdf" target="_blank" class="btn-pop inline-block bg-[var(--accent1)] hover:bg-[var(--accent2)] text-white font-semibold py-3 px-6 rounded-lg shadow-md transition">
+                        <i class="fas fa-file-pdf mr-2"></i> View Full Analysis Report
+                    </a>
+                    <a href="documents/101-experiments.pdf" target="_blank" class="btn-pop inline-block bg-[var(--accent1)] hover:bg-[var(--accent2)] text-white font-semibold py-3 px-6 rounded-lg shadow-md transition">
+                        <i class="fas fa-flask mr-2"></i> View All Experiments
+                    </a>
+                </div>
+            </div>
+
+            <div class="mb-8">
+                <h2 class="text-3xl font-semibold mb-4 card-title border-b pb-2 border-[var(--card-border)]">Outcomes & Learning</h2>
+                <p class="text-lg leading-relaxed card-text">
+                    The analysis concluded that connecting the companys' wind farm to the PETE and PAI substations using CONDOR type conductors (Experiment 9) presented the most economically viable and technically sound solution. This configuration offered the best balance between initial conductor costs and long-term system losses, resulting in the lowest overall cost over a 5-year scope while ensuring system stability and reliability.
+                </p>
+                <p class="text-lg leading-relaxed card-text mt-2">
+                    This project provided significant hands-on experience in power system analysis using industry-standard software. Key learnings included the complex interplay between conductor characteristics, transmission distances, system loading, and overall economic impact. It also reinforced the importance of meticulous data collection, systematic experimentation, and clear documentation in power engineering projects.
                 </p>
             </div>
 
-            <div class="mt-10 text-center">
-                 <a href="index.html#projects" class="inline-block bg-gray-500 text-white font-semibold py-2 px-6 rounded-lg shadow-md hover:bg-gray-600 transition duration-300">Back to Projects</a>
+            <div class="mt-12 text-center">
+                <a href="index.html#projects" class="btn-pop inline-block bg-[var(--accent1)] hover:bg-[var(--accent2)] text-white font-semibold py-3 px-8 rounded-lg shadow-md transition">
+                    <i class="fas fa-arrow-left mr-2"></i> Back to All Projects
+                </a>
             </div>
-
         </section>
-
     </main>
 
-    <footer class="bg-gray-800 text-gray-300 py-6 mt-20 relative">
-        <div class="container mx-auto px-6 text-center">
-            <p>&copy; <span id="current-year"></span> Seyit Kubilay Ulucay.</p>
+    <div id="project-page-music-player-panel">
+        <h4>Music Player</h4>
+        <iframe id="project-soundcloud-iframe-player"
+            width="100%"
+            height="120" scrolling="no"
+            frameborder="no"
+            allow="autoplay"
+            src="https://w.soundcloud.com/player/?url=https%3A//soundcloud.com/seyit-kubilay-ulucay/sets/website&color=%23ff5500&auto_play=false&hide_related=true&show_comments=false&show_user=false&show_reposts=false&show_teaser=true&visual=false">
+        </iframe>
+        <div id="project-volume-controls-container" class="mt-2">
+            <div class="flex items-center space-x-2">
+                <button id="project-mute-toggle-btn" aria-label="Mute/Unmute" class="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
+                    <i class="fas fa-volume-up text-[var(--text-color-secondary)]"></i>
+                </button>
+                <input type="range" id="project-volume-slider" min="0" max="100" value="50" class="w-full h-2 rounded-lg appearance-none cursor-pointer volume-slider-thumb">
+            </div>
         </div>
-         {/* You can keep or remove the cat from project pages */}
-         <img id="easter-egg-cat" src="https://placehold.co/80x80/000000/FFFFFF?text=Cat+GIF" alt="Peeking Cat" class="absolute bottom-0 right-4 w-16 h-auto opacity-50 hover:opacity-100 transition-opacity duration-300" title="Meow?">
+    </div>
+
+    <footer class="footer-bg py-6 mt-20 relative font-rubik">
+        <div class="container mx-auto px-6 flex flex-col md:flex-row justify-center items-center">
+            <p class="footer-text text-center">
+                © <span id="current-year"></span> Seyit Kubilay Ulucay.
+            </p>
+        </div>
+        <img
+            id="easter-egg-cat"
+            src="images/peek-cat.gif" onerror="this.src='https://placehold.co/64x64/333/ccc?text=Peek'" alt="Peeking Cat"
+            class="absolute bottom-0 right-4 w-16 opacity-50 hover:opacity-100 transition-opacity cursor-pointer"
+            title="Meow?"
+        >
     </footer>
 
+    <script src="https://w.soundcloud.com/player/api.js"></script>
     <script>
-        // Simple script for footer year on project pages
-        const currentYearSpan = document.getElementById('current-year');
-        if (currentYearSpan) {
-            currentYearSpan.textContent = new Date().getFullYear();
-        }
+        // --- Footer Year & Basic Theme Application ---
+        const yearElement = document.getElementById("current-year");
+        if (yearElement) { yearElement.textContent = new Date().getFullYear(); }
+
+        const applyProjectPageTheme = () => {
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            if (savedTheme === 'dark') {
+                document.body.classList.add('dark-theme');
+            } else {
+                document.body.classList.remove('dark-theme');
+            }
+            if (typeof updateProjectVolumeSliderAppearance === 'function') {
+                updateProjectVolumeSliderAppearance();
+            }
+        };
+        applyProjectPageTheme();
+
+        // --- Music Player Logic for Project Pages ---
+        document.addEventListener('DOMContentLoaded', () => {
+            const projectSoundcloudIframe = document.getElementById('project-soundcloud-iframe-player');
+            const projectVolumeSlider = document.getElementById('project-volume-slider');
+            const projectMuteToggleButton = document.getElementById('project-mute-toggle-btn');
+            let projectScWidget = null;
+            let projectIsMuted = false;
+            let projectLastVolume = 50;
+
+            window.updateProjectVolumeSliderAppearance = () => {
+                if (!projectVolumeSlider) return;
+                const progressPercent = projectVolumeSlider.value;
+                const getProjectCssVariable = (varName) => document.body ? getComputedStyle(document.body).getPropertyValue(varName).trim() : null;
+                const progressColor = getProjectCssVariable('--volume-slider-progress-bg') || '#FF61E1';
+                const trackColor = getProjectCssVariable('--volume-slider-track-bg') || '#e5e7eb';
+                projectVolumeSlider.style.background = `linear-gradient(to right, ${progressColor} ${progressPercent}%, ${trackColor} ${progressPercent}%)`;
+            };
+
+            if (projectSoundcloudIframe && typeof SC !== 'undefined') {
+                projectScWidget = SC.Widget(projectSoundcloudIframe);
+                projectScWidget.bind(SC.Widget.Events.READY, () => {
+                    console.log('SoundCloud Widget is ready on project page.');
+                    const savedTrackURI = localStorage.getItem('soundcloudTrackURI');
+                    const savedTrackTimeStr = localStorage.getItem('soundcloudTrackTime');
+                    const savedVolumeStr = localStorage.getItem('soundcloudVolume');
+                    const savedMutedStr = localStorage.getItem('soundcloudMuted');
+                    const savedIsPlayingStr = localStorage.getItem('soundcloudIsPlaying');
+                    let playAfterLoad = savedIsPlayingStr === 'true';
+
+                    if (savedVolumeStr !== null) {
+                        projectLastVolume = parseInt(savedVolumeStr, 10);
+                        projectVolumeSlider.value = projectLastVolume;
+                        projectScWidget.setVolume(projectLastVolume);
+                    } else {
+                         projectVolumeSlider.value = projectLastVolume;
+                         projectScWidget.setVolume(projectLastVolume);
+                    }
+                    if (savedMutedStr === 'true') {
+                        projectIsMuted = true;
+                        projectScWidget.setVolume(0);
+                        projectVolumeSlider.value = 0;
+                        projectMuteToggleButton.innerHTML = '<i class="fas fa-volume-mute text-[var(--text-color-secondary)]"></i>';
+                    } else {
+                        projectIsMuted = false;
+                         projectMuteToggleButton.innerHTML = '<i class="fas fa-volume-up text-[var(--text-color-secondary)]"></i>';
+                    }
+                    updateProjectVolumeSliderAppearance();
+
+                    if (savedTrackURI) {
+                        projectScWidget.load(savedTrackURI, {
+                            auto_play: playAfterLoad,
+                            callback: () => {
+                                if (savedTrackTimeStr) {
+                                    projectScWidget.seekTo(parseInt(savedTrackTimeStr, 10));
+                                }
+                                if (playAfterLoad && projectScWidget.play) {
+                                   setTimeout(() => projectScWidget.play(), 250);
+                                }
+                            }
+                        });
+                    }
+                });
+                projectScWidget.bind(SC.Widget.Events.ERROR, (err) => { console.error("Project Page SC Widget Error:", err);});
+            }
+
+            if (projectVolumeSlider && projectScWidget) {
+                projectVolumeSlider.addEventListener('input', () => {
+                    const newVolume = parseInt(projectVolumeSlider.value, 10);
+                    projectScWidget.setVolume(newVolume);
+                    projectLastVolume = newVolume;
+                    projectIsMuted = newVolume === 0;
+                    localStorage.setItem('soundcloudVolume', newVolume.toString());
+                    localStorage.setItem('soundcloudMuted', projectIsMuted.toString());
+                    projectMuteToggleButton.innerHTML = projectIsMuted ? '<i class="fas fa-volume-mute text-[var(--text-color-secondary)]"></i>' : '<i class="fas fa-volume-up text-[var(--text-color-secondary)]"></i>';
+                    updateProjectVolumeSliderAppearance();
+                });
+            }
+
+            if (projectMuteToggleButton && projectScWidget) {
+                projectMuteToggleButton.addEventListener('click', () => {
+                    projectIsMuted = !projectIsMuted;
+                    if (projectIsMuted) {
+                        projectScWidget.getVolume((currentVolume) => {
+                            if(currentVolume > 0) projectLastVolume = currentVolume;
+                            projectScWidget.setVolume(0);
+                            projectVolumeSlider.value = 0;
+                            projectMuteToggleButton.innerHTML = '<i class="fas fa-volume-mute text-[var(--text-color-secondary)]"></i>';
+                        });
+                    } else {
+                        const restoreVolume = projectLastVolume > 0 ? projectLastVolume : 50;
+                        projectScWidget.setVolume(restoreVolume);
+                        projectVolumeSlider.value = restoreVolume;
+                        projectMuteToggleButton.innerHTML = '<i class="fas fa-volume-up text-[var(--text-color-secondary)]"></i>';
+                    }
+                    localStorage.setItem('soundcloudMuted', projectIsMuted.toString());
+                    if (!projectIsMuted) localStorage.setItem('soundcloudVolume', projectVolumeSlider.value);
+                    updateProjectVolumeSliderAppearance();
+                });
+            }
+            updateProjectVolumeSliderAppearance();
+        });
     </script>
 </body>
 </html>

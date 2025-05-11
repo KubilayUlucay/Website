@@ -3,81 +3,633 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Project: [Project Name] | Kubilay Ulucay</title>
+    <title>Project: Zumo Robot Object Detection | Kubilay Ulucay</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Pacifico&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;700&family=Montserrat:wght@400;600;700&display=swap"
+        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Honk&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💡</text></svg>">
-</head>
-<body class="bg-gray-100 text-gray-800 font-poppins selection:bg-blue-200 selection:text-blue-900">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link
+        rel="icon"
+        href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💡</text></svg>">
+    <style>
+        /* Styles for project page elements */
+        .project-gallery img {
+            max-height: 400px;
+            object-fit: cover;
+            width: 100%;
+            border-radius: 0.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 0.5rem;
+            border: 1px solid var(--card-border);
+        }
+        .pdf-embed-container {
+            width: 100%;
+            height: 80vh;
+            border: 1px solid var(--card-border);
+            border-radius: 0.5rem;
+            overflow: hidden;
+            margin-top: 1rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+        .pdf-embed-container iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
 
-    <header class="bg-white shadow-md sticky top-0 z-40">
+        /* Styles for Collapsible Code Block */
+        .accordion-header {
+            background-color: var(--card-bg); /* Use card background for header */
+            color: var(--text-color);
+            cursor: pointer;
+            padding: 1rem; /* Consistent padding */
+            width: 100%;
+            text-align: left;
+            border: 1px solid var(--card-border);
+            border-radius: 0.5rem; /* Rounded corners for the header */
+            transition: background-color 0.3s ease;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 1.25rem; /* text-xl */
+            font-weight: 600; /* font-semibold */
+            font-family: 'Montserrat', sans-serif; /* Match other h2 */
+            margin-top: 2rem; /* Add some space above the accordion */
+        }
+        body.dark-theme .accordion-header {
+            background-color: #2d3748; /* Slightly different dark for accordion header */
+        }
+        .accordion-header:hover {
+            background-color: var(--card-border); /* Subtle hover effect */
+        }
+        body.dark-theme .accordion-header:hover {
+            background-color: #4a5568;
+        }
+        .accordion-header .arrow-icon {
+            transition: transform 0.3s ease;
+            font-size: 1rem; /* Adjust icon size */
+        }
+        .accordion-header.active .arrow-icon {
+            transform: rotate(90deg);
+        }
+        .accordion-content {
+            padding: 0; /* Padding will be on the code-block-container */
+            display: none; /* Hidden by default */
+            overflow: hidden;
+            background-color: transparent; /* Content bg is handled by code-block-container */
+            border: 1px solid var(--card-border);
+            border-top: none; /* Avoid double border with header */
+            border-radius: 0 0 0.5rem 0.5rem; /* Rounded bottom corners */
+            margin-bottom: 1.5rem; /* Spacing below the accordion */
+        }
+        .code-block-container {
+            background-color: var(--card-bg);
+            border: none; /* Border is now on accordion-content */
+            border-radius: 0; /* Inner container doesn't need rounding */
+            padding: 1rem;
+            overflow-x: auto;
+            box-shadow: none; /* Shadow is on accordion-content or main card */
+        }
+        body.dark-theme .code-block-container {
+             background-color: #1a202c;
+        }
+        .code-block-container pre {
+            margin: 0;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+        .code-block-container code {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.875rem;
+            color: var(--text-color);
+            line-height: 1.5; /* Improved line spacing for readability */
+        }
+        body.dark-theme .code-block-container code {
+            color: #e2e8f0; /* Lighter text for dark mode code */
+        }
+
+        /* Basic C++ Syntax Highlighting */
+        .code-block-container .cpp-keyword { color: #569cd6; font-weight: bold; } /* Blue for keywords */
+        body.dark-theme .code-block-container .cpp-keyword { color: #4fc1ff; }
+
+        .code-block-container .cpp-preprocessor { color: #c586c0; } /* Purple for #include, #define */
+        body.dark-theme .code-block-container .cpp-preprocessor { color: #c586c0; }
+
+        .code-block-container .cpp-comment { color: #6a9955; } /* Green for comments */
+        body.dark-theme .code-block-container .cpp-comment { color: #608b4e; }
+
+        .code-block-container .cpp-string { color: #ce9178; } /* Orange for strings */
+        body.dark-theme .code-block-container .cpp-string { color: #ce9178; }
+
+        .code-block-container .cpp-number { color: #b5cea8; } /* Light green for numbers */
+        body.dark-theme .code-block-container .cpp-number { color: #b5cea8; }
+
+        .code-block-container .cpp-function { color: #dcdcaa; } /* Yellow for function names (general) */
+        body.dark-theme .code-block-container .cpp-function { color: #dcdcaa; }
+
+
+        /* Styles for the fixed mini music player on project pages */
+        #project-page-music-player-panel {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 280px;
+            background-color: var(--card-bg);
+            border: 1px solid var(--card-border);
+            box-shadow: 0 5px 15px -3px var(--shadow-color), 0 4px 6px -4px var(--shadow-color);
+            border-radius: 0.5rem;
+            padding: 1rem;
+            z-index: 1000;
+            color: var(--text-color);
+        }
+        #project-page-music-player-panel h4 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-color-secondary);
+        }
+    </style>
+</head>
+<body class="font-rubik selection:bg-blue-200 selection:text-blue-900">
+    <header class="sticky top-0 z-40 shadow-sm">
         <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
-             {/* Link back to the main page */}
-            <a href="index.html" class="text-3xl font-pacifico text-gray-800 hover:text-blue-600 transition duration-300">Kubilay Ulucay</a>
-             {/* Simplified nav or link back */}
-             <a href="index.html#projects" class="text-gray-600 hover:text-blue-600 transition duration-300">&larr; Back to Projects</a>
+            <a href="index.html" class="text-3xl font-montserrat nav-link flex-shrink-0 mr-6">
+                Kubilay Ulucay
+            </a>
+            <div class="flex items-center space-x-4">
+                <a href="index.html#projects" class="nav-link flex items-center">
+                    <i class="fas fa-arrow-left mr-2"></i> Back to Projects
+                </a>
+            </div>
         </nav>
     </header>
 
     <main class="container mx-auto px-6 py-12">
-
-        <section class="bg-white p-8 rounded-lg shadow-lg">
-            <h1 class="text-4xl md:text-5xl font-bold mb-6 font-pacifico">[Project Name]</h1>
+        <section class="card-bg p-6 md:p-8 rounded-lg shadow-lg">
+            <h1 class="text-4xl md:text-5xl font-semibold mb-3 font-montserrat card-title">
+                Zumo Robot Object Detection & Counting
+            </h1>
+            <p class="text-lg text-[var(--text-color-secondary)] mb-6">
+                Developed an algorithm for Zumo robot navigation, obstacle detection (IR/Reflectance), and counting within a defined area.
+            </p>
 
             <div class="mb-8">
-                <h2 class="text-2xl font-semibold mb-3">Overview</h2>
-                <p class="text-lg leading-relaxed text-gray-700">
-                    Briefly describe the project goal and what you did. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                <h2 class="text-3xl font-semibold mb-4 card-title border-b pb-2 border-[var(--card-border)]">Project Abstract</h2>
+                <p class="text-lg leading-relaxed mb-4 card-text">
+                    This project focuses on the details of a system designed to diversify the usage of the Zumo robot, which is developed on an Arduino board. The system aims to enhance the performance exhibited by the robot in specific scenarios. Towards this goal, specific algorithms were incorporated to ensure the effective operation of the project. The uniqueness of the created algorithm is a notable advantage. The preferred code approach allows the system to detect, count, and notify the user of desired obstacles in a defined area using an infrared sensor, LED, and a buzzer, thereby increasing its functionality.
                 </p>
             </div>
 
-             <div class="mb-8 text-center">
-                <img src="https://placehold.co/600x400/EBF4FF/7F9CF5?text=Project+Image" alt="[Project Name]" class="max-w-full h-auto rounded-lg shadow-md mx-auto">
-                 {/* Replace with actual project image if available */}
-            </div>
-
             <div class="mb-8">
-                <h2 class="text-2xl font-semibold mb-3">Key Features & Technologies</h2>
-                 <ul class="list-disc list-inside text-lg text-gray-700 space-y-2">
-                    <li>Feature 1: Description of the feature. (e.g., Custom motor design)</li>
-                    <li>Feature 2: Another key aspect. (e.g., Wireless control implementation)</li>
-                    <li>Technology Used: Arduino, NRF24, AutoCAD, 3D Printing, etc.</li>
-                    <li>Challenge Overcome: Describe a specific challenge and how you solved it.</li>
+                <h2 class="text-3xl font-semibold mb-4 card-title border-b pb-2 border-[var(--card-border)]">Methodology & Proposed Solution</h2>
+                <p class="text-lg leading-relaxed card-text mb-2">
+                    The project aimed to enable the Zumo robot to count different numbers of obstacles within a circular area limited by white tape and notify the user via LED and buzzer signals. The core challenge was to develop an algorithm that could accurately scan the area and count objects, especially when objects might be lined up or difficult to distinguish from a single viewpoint.
+                </p>
+                <p class="text-lg leading-relaxed card-text mb-2">
+                    The proposed solution involved the following steps:
+                </p>
+                <ul class="list-disc list-inside text-lg card-text space-y-2 pl-4">
+                    <li><strong>Calibration:</strong> The robot starts with a calibration phase for its reflectance sensors.</li>
+                    <li><strong>Movement & Edge Detection:</strong> The robot moves forward until it detects the white boundary of the circular arena. If an obstacle is detected by the IR sensor during forward movement, the robot turns left to avoid it and then continues.</li>
+                    <li><strong>Scanning & Object Counting:</strong> Upon reaching the white edge, the robot performs a turn (left or right based on which side detected the edge). During this turn (the "detectionPeriod"), any objects detected by the IR sensor are counted.</li>
+                    <li><strong>Trial Repetition:</strong> This process of moving to the edge and scanning is repeated for a set number of trials (NUM_TRIALS = 10 in the code) from different points along the circle's edge to improve accuracy by observing objects from multiple perspectives.</li>
+                    <li><strong>Result Determination:</strong> After all trials, the maximum object count recorded in any single trial is taken as the final result.</li>
+                    <li><strong>Notification:</strong> The robot signals the final count by blinking an LED and sounding a buzzer for a number of times equal to the counted objects.</li>
                 </ul>
             </div>
 
             <div class="mb-8">
-                <h2 class="text-2xl font-semibold mb-3">Outcomes & Results</h2>
-                 <p class="text-lg leading-relaxed text-gray-700">
-                    What was the result of the project? Was it successful? What did you learn? Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                <h2 class="text-3xl font-semibold mb-4 card-title border-b pb-2 border-[var(--card-border)]">Visuals & Experiments</h2>
+                <p class="text-lg leading-relaxed mb-4 card-text">
+                    Images of the Zumo robot during testing and experimentation.
+                </p>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 project-gallery">
+                    <img src="images/Projects/zumo/zumo-on-mission.png" alt="Zumo Robot on Mission" class="rounded-lg shadow-md">
+                    <img src="images/Projects/zumo/zumo-on-black-surface.png" alt="Zumo Robot on Black Surface" class="rounded-lg shadow-md">
+                </div>
+            </div>
+
+            <div class="mb-8">
+                <h2 class="text-3xl font-semibold mb-4 card-title border-b pb-2 border-[var(--card-border)]">Full Project Report</h2>
+                <p class="text-lg leading-relaxed mb-4 card-text">
+                    The detailed methodology, experimental setup, results, and discussion are documented in the full project report, embedded below:
+                </p>
+                <div class="pdf-embed-container">
+                    <iframe src="zumo-report.pdf" title="Zumo Robot Project Report">
+                        Your browser does not support embedded PDFs. You can <a href="zumo-report.pdf" target="_blank">download the PDF to view it.</a>
+                    </iframe>
+                </div>
+            </div>
+
+            <div class="mb-8">
+                <h2 class="text-3xl font-semibold mb-4 card-title border-b pb-2 border-[var(--card-border)]">Conclusion & Future Works</h2>
+                <p class="text-lg leading-relaxed card-text">
+                    The project successfully implemented a Zumo robot capable of navigating its circular environment, detecting white boundaries, avoiding obstacles, and counting objects using IR and reflectance sensors. The system provided effective feedback through LED and buzzer signals. The algorithm demonstrated good results in various scenarios, though challenges were noted with objects placed very close to the arena edge. Future work could involve refining the edge detection logic, improving sensor fusion for more robust object discrimination, and potentially adding more sophisticated scanning patterns.
                 </p>
             </div>
 
-            <div class="mt-10 text-center">
-                 <a href="index.html#projects" class="inline-block bg-gray-500 text-white font-semibold py-2 px-6 rounded-lg shadow-md hover:bg-gray-600 transition duration-300">Back to Projects</a>
+            <div class="mb-8">
+                <button type="button" class="accordion-header" aria-expanded="false" aria-controls="zumo-code-content">
+                    <span>View Arduino C++ Code</span>
+                    <span class="arrow-icon"><i class="fas fa-chevron-right"></i></span>
+                </button>
+                <div id="zumo-code-content" class="accordion-content">
+                    <div class="code-block-container">
+                        <pre><code class="language-cpp">
+<span class="cpp-preprocessor">#include &lt;ZumoMotors.h&gt;</span>
+<span class="cpp-preprocessor">#include &lt;ZumoReflectanceSensorArray.h&gt;</span>
+<span class="cpp-preprocessor">#include &lt;ZumoBuzzer.h&gt;</span>
+
+<span class="cpp-preprocessor">#define PIN_IR 6</span>
+<span class="cpp-preprocessor">#define PIN_LED 13</span>
+<span class="cpp-preprocessor">#define SENSORS_COUNT 6</span>
+<span class="cpp-preprocessor">#define THRESHOLD_WHITE 550</span>  <span class="cpp-comment">// Adjust based on sensor readings for white</span>
+<span class="cpp-preprocessor">#define NUM_TRIALS 10</span>
+
+ZumoMotors motors;
+ZumoReflectanceSensorArray sensors;
+ZumoBuzzer buzzer;
+
+<span class="cpp-keyword">unsigned</span> <span class="cpp-keyword">int</span> sensorReadings[SENSORS_COUNT];
+<span class="cpp-keyword">int</span> dataValues[NUM_TRIALS];
+<span class="cpp-keyword">int</span> trialsCompleted = <span class="cpp-number">0</span>;
+<span class="cpp-keyword">int</span> objectCount = <span class="cpp-number">0</span>;
+<span class="cpp-keyword">bool</span> detectionPeriod = <span class="cpp-keyword">false</span>;
+
+<span class="cpp-keyword">void</span> <span class="cpp-function">setup</span>() {
+  Serial.begin(<span class="cpp-number">9600</span>);
+  pinMode(PIN_LED, OUTPUT);
+  pinMode(PIN_IR, INPUT);
+  <span class="cpp-comment">//Start with open led to show you are calibrating</span>
+  digitalWrite(PIN_LED, HIGH);
+  delay(<span class="cpp-number">3000</span>);
+  digitalWrite(PIN_LED, LOW);
+  delay(<span class="cpp-number">3000</span>);
+
+  <span class="cpp-comment">//Calibration start</span>
+  sensors.init();
+  <span class="cpp-keyword">for</span> (<span class="cpp-keyword">int</span> i = <span class="cpp-number">0</span>; i < <span class="cpp-number">400</span>; i++) {
+    sensors.calibrate();
+    <span class="cpp-keyword">if</span> (i % <span class="cpp-number">50</span> == <span class="cpp-number">0</span>) {
+      Serial.print(<span class="cpp-string">"Calibrating"</span>);
+    }
+  }
+  Serial.println(<span class="cpp-string">"\nCalibration complete."</span>);
+  buzzer.play(<span class="cpp-string">"!L16 V10 cdegreg4"</span>); <span class="cpp-comment">// Signal end of calibration</span>
+
+  delay(<span class="cpp-number">2000</span>); <span class="cpp-comment">// Put me to the black surface...</span>
+
+  <span class="cpp-comment">//Blink one time fastly to declare you are starting</span>
+  digitalWrite(PIN_LED, HIGH);
+  delay(<span class="cpp-number">500</span>);
+  digitalWrite(PIN_LED, LOW);
+}
+
+<span class="cpp-keyword">void</span> <span class="cpp-function">loop</span>() {
+  <span class="cpp-keyword">if</span> (trialsCompleted < NUM_TRIALS) {
+    moveUntilWhiteDetected();
+    evaluateWhiteDetection();
+  } <span class="cpp-keyword">else</span> {
+    <span class="cpp-keyword">int</span> result = getMaxCount();
+    delay(<span class="cpp-number">2000</span>);
+    blinkAndBuzz(result);
+    motors.setSpeeds(<span class="cpp-number">0</span>, <span class="cpp-number">0</span>);  <span class="cpp-comment">// Stop the robot</span>
+    <span class="cpp-keyword">while</span>(<span class="cpp-keyword">true</span>);  <span class="cpp-comment">// Halt further actions</span>
+  }
+}
+
+<span class="cpp-keyword">void</span> <span class="cpp-function">moveUntilWhiteDetected</span>() {
+    <span class="cpp-keyword">while</span> (<span class="cpp-keyword">true</span>) {
+        sensors.readLine(sensorReadings);
+        <span class="cpp-keyword">if</span> (digitalRead(PIN_IR) == LOW) {        <span class="cpp-comment">// Check if the IR sensor detects an object</span>
+            <span class="cpp-keyword">while</span> (digitalRead(PIN_IR) == LOW) {    <span class="cpp-comment">// Turn left until the IR sensor no longer detects anything</span>
+                motors.setSpeeds(-<span class="cpp-number">150</span>, <span class="cpp-number">150</span>);        <span class="cpp-comment">// Turn left</span>
+            }
+            motors.setSpeeds(<span class="cpp-number">0</span>, <span class="cpp-number">0</span>);              <span class="cpp-comment">// Stop turning once the object is no longer detected</span>
+        }
+        <span class="cpp-keyword">else</span> <span class="cpp-keyword">if</span> (isOnBlackSurface()) {          <span class="cpp-comment">// Continue moving forward if on black surface and no object detected</span>
+            motors.setSpeeds(<span class="cpp-number">100</span>, <span class="cpp-number">100</span>);          <span class="cpp-comment">// Move forward</span>
+        } <span class="cpp-keyword">else</span> {
+            motors.setSpeeds(<span class="cpp-number">0</span>, <span class="cpp-number">0</span>);              <span class="cpp-comment">// Stop motors if white is detected</span>
+            <span class="cpp-keyword">break</span>;
+        }
+    }
+}
+
+<span class="cpp-keyword">bool</span> <span class="cpp-function">isOnBlackSurface</span>() {
+  <span class="cpp-keyword">for</span> (<span class="cpp-keyword">int</span> i = <span class="cpp-number">0</span>; i < SENSORS_COUNT; i++) {
+    <span class="cpp-keyword">if</span> (sensorReadings[i] < THRESHOLD_WHITE) {
+      <span class="cpp-keyword">return</span> <span class="cpp-keyword">false</span>;  <span class="cpp-comment">// White detected</span>
+    }
+  }
+  <span class="cpp-keyword">return</span> <span class="cpp-keyword">true</span>;  <span class="cpp-comment">// No white detected</span>
+}
+
+<span class="cpp-keyword">void</span> <span class="cpp-function">evaluateWhiteDetection</span>() {
+  <span class="cpp-keyword">if</span> (sensorReadings[<span class="cpp-number">0</span>] < THRESHOLD_WHITE || sensorReadings[<span class="cpp-number">1</span>] < THRESHOLD_WHITE || sensorReadings[<span class="cpp-number">2</span>] < THRESHOLD_WHITE) {
+    <span class="cpp-comment">// Left sensors detected white, turn right</span>
+    detectionPeriod = <span class="cpp-keyword">true</span>;
+    turnRight();
+  } <span class="cpp-keyword">else</span> <span class="cpp-keyword">if</span> (sensorReadings[<span class="cpp-number">3</span>] < THRESHOLD_WHITE || sensorReadings[<span class="cpp-number">4</span>] < THRESHOLD_WHITE || sensorReadings[<span class="cpp-number">5</span>] < THRESHOLD_WHITE) {
+    <span class="cpp-comment">// Right sensors detected white, turn left</span>
+    detectionPeriod = <span class="cpp-keyword">true</span>;
+    turnLeft();
+  }
+}
+
+<span class="cpp-keyword">void</span> <span class="cpp-function">turnLeft</span>() {
+    <span class="cpp-keyword">while</span> (!isLeftGroupWhite()) {
+        motors.setSpeeds(-<span class="cpp-number">150</span>, <span class="cpp-number">155</span>);  <span class="cpp-comment">// Continue turning left</span>
+        checkForObject();  <span class="cpp-comment">// Check for objects and count if detected</span>
+    }
+    motors.setSpeeds(<span class="cpp-number">0</span>, <span class="cpp-number">0</span>);  <span class="cpp-comment">// Stop turning</span>
+    delay(<span class="cpp-number">200</span>);  <span class="cpp-comment">// Small delay to ensure complete stop</span>
+    dataValues[trialsCompleted++] = objectCount;  <span class="cpp-comment">// Store the count</span>
+    objectCount = <span class="cpp-number">0</span>;  <span class="cpp-comment">// Reset count</span>
+    detectionPeriod = <span class="cpp-keyword">false</span>;  <span class="cpp-comment">// End detection period</span>
+    <span class="cpp-keyword">while</span> (!isRightGroupWhite()){
+      motors.setSpeeds(<span class="cpp-number">155</span>, -<span class="cpp-number">150</span>);
+    }
+    <span class="cpp-comment">// Turn right for a brief period</span>
+    motors.setSpeeds(-<span class="cpp-number">130</span>, <span class="cpp-number">130</span>);
+    delay(<span class="cpp-number">200</span>);  <span class="cpp-comment">// Turn right for 200ms</span>
+    motors.setSpeeds(<span class="cpp-number">0</span>, <span class="cpp-number">0</span>);  <span class="cpp-comment">// Stop turning</span>
+}
+
+<span class="cpp-keyword">void</span> <span class="cpp-function">turnRight</span>() {
+    detectionPeriod = <span class="cpp-keyword">true</span>; <span class="cpp-comment">// This was missing in the original turnRight, added for consistency</span>
+    <span class="cpp-keyword">while</span> (!isRightGroupWhite()) {
+        motors.setSpeeds(<span class="cpp-number">155</span>, -<span class="cpp-number">150</span>);  <span class="cpp-comment">// Continue turning right</span>
+        checkForObject();  <span class="cpp-comment">// Check for objects and count if detected</span>
+    }
+    motors.setSpeeds(<span class="cpp-number">0</span>, <span class="cpp-number">0</span>);  <span class="cpp-comment">// Stop turning</span>
+    delay(<span class="cpp-number">1000</span>); <span class="cpp-comment">// Small delay to ensure complete stop (was 1000, can be adjusted)</span>
+    dataValues[trialsCompleted++] = objectCount;  <span class="cpp-comment">// Store the count</span>
+    objectCount = <span class="cpp-number">0</span>;  <span class="cpp-comment">// Reset count</span>
+    detectionPeriod = <span class="cpp-keyword">false</span>;  <span class="cpp-comment">// End detection period</span>
+    <span class="cpp-keyword">while</span> (!isLeftGroupWhite()){
+      motors.setSpeeds(-<span class="cpp-number">150</span>, <span class="cpp-number">155</span>);
+    }
+    <span class="cpp-comment">// Turn left for a brief period</span>
+    motors.setSpeeds(<span class="cpp-number">130</span>, -<span class="cpp-number">130</span>);
+    delay(<span class="cpp-number">200</span>);  <span class="cpp-comment">// Turn left for 200ms</span>
+    motors.setSpeeds(<span class="cpp-number">0</span>, <span class="cpp-number">0</span>);  <span class="cpp-comment">// Stop turning</span>
+}
+
+<span class="cpp-keyword">bool</span> <span class="cpp-function">isLeftGroupWhite</span>() {
+  sensors.readLine(sensorReadings);
+  <span class="cpp-keyword">return</span> sensorReadings[<span class="cpp-number">0</span>] < THRESHOLD_WHITE || sensorReadings[<span class="cpp-number">1</span>] < THRESHOLD_WHITE || sensorReadings[<span class="cpp-number">2</span>] < THRESHOLD_WHITE;
+}
+
+<span class="cpp-keyword">bool</span> <span class="cpp-function">isRightGroupWhite</span>() {
+  sensors.readLine(sensorReadings);
+  <span class="cpp-keyword">return</span> sensorReadings[<span class="cpp-number">3</span>] < THRESHOLD_WHITE || sensorReadings[<span class="cpp-number">4</span>] < THRESHOLD_WHITE || sensorReadings[<span class="cpp-number">5</span>] < THRESHOLD_WHITE;
+}
+
+<span class="cpp-keyword">void</span> <span class="cpp-function">checkForObject</span>() {
+  <span class="cpp-keyword">if</span> (detectionPeriod && digitalRead(PIN_IR) == LOW) {
+    objectCount++;
+    delay(<span class="cpp-number">200</span>);  <span class="cpp-comment">// Debounce delay</span>
+  }
+}
+
+<span class="cpp-keyword">int</span> <span class="cpp-function">getMaxCount</span>() {
+  <span class="cpp-keyword">int</span> maxCount = <span class="cpp-number">0</span>;
+  <span class="cpp-keyword">for</span> (<span class="cpp-keyword">int</span> i = <span class="cpp-number">0</span>; i < trialsCompleted; i++) {
+    <span class="cpp-keyword">if</span> (dataValues[i] > maxCount) {
+      maxCount = dataValues[i];
+    }
+  }
+  <span class="cpp-keyword">return</span> maxCount;
+}
+
+<span class="cpp-keyword">void</span> <span class="cpp-function">blinkAndBuzz</span>(<span class="cpp-keyword">int</span> count) {
+  <span class="cpp-keyword">for</span> (<span class="cpp-keyword">int</span> i = <span class="cpp-number">0</span>; i < count; i++) {
+    digitalWrite(PIN_LED, HIGH);
+    buzzer.playFrequency(<span class="cpp-number">2000</span>, <span class="cpp-number">500</span>, <span class="cpp-number">5</span>); <span class="cpp-comment">// Frequency, duration, volume</span>
+    delay(<span class="cpp-number">500</span>);
+    digitalWrite(PIN_LED, LOW);
+    delay(<span class="cpp-number">500</span>);
+  }
+}
+                    </code></pre>
+                </div>
+                </div>
             </div>
-
+            <div class="mt-12 text-center">
+                <a href="index.html#projects" class="btn-pop inline-block bg-[var(--accent1)] hover:bg-[var(--accent2)] text-white font-semibold py-3 px-8 rounded-lg shadow-md transition">
+                    <i class="fas fa-arrow-left mr-2"></i> Back to All Projects
+                </a>
+            </div>
         </section>
-
     </main>
 
-    <footer class="bg-gray-800 text-gray-300 py-6 mt-20 relative">
-        <div class="container mx-auto px-6 text-center">
-            <p>&copy; <span id="current-year"></span> Seyit Kubilay Ulucay.</p>
+    <div id="project-page-music-player-panel">
+        <h4>Music Player</h4>
+        <iframe id="project-soundcloud-iframe-player"
+            width="100%"
+            height="120" scrolling="no"
+            frameborder="no"
+            allow="autoplay"
+            src="https://w.soundcloud.com/player/?url=https%3A//soundcloud.com/seyit-kubilay-ulucay/sets/website&color=%23ff5500&auto_play=false&hide_related=true&show_comments=false&show_user=false&show_reposts=false&show_teaser=true&visual=false">
+        </iframe>
+        <div id="project-volume-controls-container" class="mt-2">
+            <div class="flex items-center space-x-2">
+                <button id="project-mute-toggle-btn" aria-label="Mute/Unmute" class="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
+                    <i class="fas fa-volume-up text-[var(--text-color-secondary)]"></i>
+                </button>
+                <input type="range" id="project-volume-slider" min="0" max="100" value="50" class="w-full h-2 rounded-lg appearance-none cursor-pointer volume-slider-thumb">
+            </div>
         </div>
-         {/* You can keep or remove the cat from project pages */}
-         <img id="easter-egg-cat" src="https://placehold.co/80x80/000000/FFFFFF?text=Cat+GIF" alt="Peeking Cat" class="absolute bottom-0 right-4 w-16 h-auto opacity-50 hover:opacity-100 transition-opacity duration-300" title="Meow?">
+    </div>
+
+    <footer class="footer-bg py-6 mt-20 relative font-rubik">
+        <div class="container mx-auto px-6 flex flex-col md:flex-row justify-center items-center">
+            <p class="footer-text text-center">
+                © <span id="current-year"></span> Seyit Kubilay Ulucay.
+            </p>
+        </div>
+        <img
+            id="easter-egg-cat"
+            src="images/peek-cat.gif" onerror="this.src='https://placehold.co/64x64/333/ccc?text=Peek'" alt="Peeking Cat"
+            class="absolute bottom-0 right-4 w-16 opacity-50 hover:opacity-100 transition-opacity cursor-pointer"
+            title="Meow?"
+        >
     </footer>
 
+    <script src="https://w.soundcloud.com/player/api.js"></script>
     <script>
-        // Simple script for footer year on project pages
-        const currentYearSpan = document.getElementById('current-year');
-        if (currentYearSpan) {
-            currentYearSpan.textContent = new Date().getFullYear();
+        // --- Footer Year & Basic Theme Application ---
+        const yearElement = document.getElementById("current-year");
+        if (yearElement) { yearElement.textContent = new Date().getFullYear(); }
+
+        const applyProjectPageTheme = () => {
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            if (savedTheme === 'dark') {
+                document.body.classList.add('dark-theme');
+            } else {
+                document.body.classList.remove('dark-theme');
+            }
+            if (typeof updateProjectVolumeSliderAppearance === 'function') {
+                updateProjectVolumeSliderAppearance();
+            }
+             // New: Update accordion header if function exists (for theme change)
+            if (typeof updateAccordionHeaderTheme === 'function') {
+                updateAccordionHeaderTheme();
+            }
+        };
+        applyProjectPageTheme();
+
+        // --- Accordion for Code Block ---
+        const accordionHeader = document.querySelector('.accordion-header');
+        const accordionContent = document.getElementById('zumo-code-content');
+        const arrowIcon = accordionHeader ? accordionHeader.querySelector('.arrow-icon i') : null;
+
+        // Function to update accordion header styles on theme change
+        window.updateAccordionHeaderTheme = () => {
+            if (accordionHeader) {
+                // This is mostly handled by CSS variables, but if specific JS logic was needed for theme, it would go here.
+                // For now, CSS variables should suffice.
+            }
+        };
+
+
+        if (accordionHeader && accordionContent && arrowIcon) {
+            accordionHeader.addEventListener('click', () => {
+                const isExpanded = accordionHeader.getAttribute('aria-expanded') === 'true' || false;
+                accordionHeader.setAttribute('aria-expanded', !isExpanded);
+                accordionContent.style.display = isExpanded ? 'none' : 'block';
+                accordionHeader.classList.toggle('active'); // For arrow rotation or other active styles
+                // arrowIcon.classList.toggle('fa-chevron-down');
+                // arrowIcon.classList.toggle('fa-chevron-right');
+                if (isExpanded) {
+                    arrowIcon.style.transform = 'rotate(0deg)';
+                } else {
+                    arrowIcon.style.transform = 'rotate(90deg)';
+                }
+            });
+             // Set initial arrow state if content is hidden
+            if (accordionContent.style.display === 'none' || accordionContent.style.display === '') {
+                 arrowIcon.style.transform = 'rotate(0deg)';
+            } else {
+                 arrowIcon.style.transform = 'rotate(90deg)';
+            }
         }
+
+
+        // --- Music Player Logic for Project Pages ---
+        document.addEventListener('DOMContentLoaded', () => {
+            // Ensure theme is applied before music player logic that might depend on themed elements
+            applyProjectPageTheme();
+
+            const projectSoundcloudIframe = document.getElementById('project-soundcloud-iframe-player');
+            const projectVolumeSlider = document.getElementById('project-volume-slider');
+            const projectMuteToggleButton = document.getElementById('project-mute-toggle-btn');
+            let projectScWidget = null;
+            let projectIsMuted = false;
+            let projectLastVolume = 50;
+
+            window.updateProjectVolumeSliderAppearance = () => {
+                if (!projectVolumeSlider) return;
+                const progressPercent = projectVolumeSlider.value;
+                const getProjectCssVariable = (varName) => document.body ? getComputedStyle(document.body).getPropertyValue(varName).trim() : null;
+                const progressColor = getProjectCssVariable('--volume-slider-progress-bg') || '#FF61E1';
+                const trackColor = getProjectCssVariable('--volume-slider-track-bg') || '#e5e7eb';
+                projectVolumeSlider.style.background = `linear-gradient(to right, ${progressColor} ${progressPercent}%, ${trackColor} ${progressPercent}%)`;
+            };
+
+            if (projectSoundcloudIframe && typeof SC !== 'undefined') {
+                projectScWidget = SC.Widget(projectSoundcloudIframe);
+                projectScWidget.bind(SC.Widget.Events.READY, () => {
+                    console.log('SoundCloud Widget is ready on project page.');
+                    const savedTrackURI = localStorage.getItem('soundcloudTrackURI');
+                    const savedTrackTimeStr = localStorage.getItem('soundcloudTrackTime');
+                    const savedVolumeStr = localStorage.getItem('soundcloudVolume');
+                    const savedMutedStr = localStorage.getItem('soundcloudMuted');
+                    const savedIsPlayingStr = localStorage.getItem('soundcloudIsPlaying');
+                    let playAfterLoad = savedIsPlayingStr === 'true';
+
+                    if (savedVolumeStr !== null) {
+                        projectLastVolume = parseInt(savedVolumeStr, 10);
+                        projectVolumeSlider.value = projectLastVolume;
+                        projectScWidget.setVolume(projectLastVolume);
+                    } else {
+                         projectVolumeSlider.value = projectLastVolume;
+                         projectScWidget.setVolume(projectLastVolume);
+                    }
+                    if (savedMutedStr === 'true') {
+                        projectIsMuted = true;
+                        projectScWidget.setVolume(0);
+                        projectVolumeSlider.value = 0;
+                        projectMuteToggleButton.innerHTML = '<i class="fas fa-volume-mute text-[var(--text-color-secondary)]"></i>';
+                    } else {
+                        projectIsMuted = false;
+                         projectMuteToggleButton.innerHTML = '<i class="fas fa-volume-up text-[var(--text-color-secondary)]"></i>';
+                    }
+                    updateProjectVolumeSliderAppearance();
+
+                    if (savedTrackURI) {
+                        projectScWidget.load(savedTrackURI, {
+                            auto_play: playAfterLoad,
+                            callback: () => {
+                                if (savedTrackTimeStr) {
+                                    projectScWidget.seekTo(parseInt(savedTrackTimeStr, 10));
+                                }
+                                if (playAfterLoad && projectScWidget.play) {
+                                   setTimeout(() => projectScWidget.play(), 250);
+                                }
+                            }
+                        });
+                    }
+                });
+                projectScWidget.bind(SC.Widget.Events.ERROR, (err) => { console.error("Project Page SC Widget Error:", err);});
+            }
+
+            if (projectVolumeSlider && projectScWidget) {
+                projectVolumeSlider.addEventListener('input', () => {
+                    const newVolume = parseInt(projectVolumeSlider.value, 10);
+                    projectScWidget.setVolume(newVolume);
+                    projectLastVolume = newVolume;
+                    projectIsMuted = newVolume === 0;
+                    localStorage.setItem('soundcloudVolume', newVolume.toString());
+                    localStorage.setItem('soundcloudMuted', projectIsMuted.toString());
+                    projectMuteToggleButton.innerHTML = projectIsMuted ? '<i class="fas fa-volume-mute text-[var(--text-color-secondary)]"></i>' : '<i class="fas fa-volume-up text-[var(--text-color-secondary)]"></i>';
+                    updateProjectVolumeSliderAppearance();
+                });
+            }
+
+            if (projectMuteToggleButton && projectScWidget) {
+                projectMuteToggleButton.addEventListener('click', () => {
+                    projectIsMuted = !projectIsMuted;
+                    if (projectIsMuted) {
+                        projectScWidget.getVolume((currentVolume) => {
+                            if(currentVolume > 0) projectLastVolume = currentVolume;
+                            projectScWidget.setVolume(0);
+                            projectVolumeSlider.value = 0;
+                            projectMuteToggleButton.innerHTML = '<i class="fas fa-volume-mute text-[var(--text-color-secondary)]"></i>';
+                        });
+                    } else {
+                        const restoreVolume = projectLastVolume > 0 ? projectLastVolume : 50;
+                        projectScWidget.setVolume(restoreVolume);
+                        projectVolumeSlider.value = restoreVolume;
+                        projectMuteToggleButton.innerHTML = '<i class="fas fa-volume-up text-[var(--text-color-secondary)]"></i>';
+                    }
+                    localStorage.setItem('soundcloudMuted', projectIsMuted.toString());
+                    if (!projectIsMuted) localStorage.setItem('soundcloudVolume', projectVolumeSlider.value);
+                    updateProjectVolumeSliderAppearance();
+                });
+            }
+            // Initial call for volume slider appearance after DOM is ready
+             if (typeof updateProjectVolumeSliderAppearance === 'function') {
+                updateProjectVolumeSliderAppearance();
+            }
+        });
     </script>
 </body>
 </html>
