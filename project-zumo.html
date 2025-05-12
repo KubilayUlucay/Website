@@ -42,59 +42,13 @@
             height: 100%;
             border: none;
         }
-
-        /* Styles for Collapsible Code Block */
-        .accordion-header {
-            background-color: var(--card-bg); /* Use card background for header */
-            color: var(--text-color);
-            cursor: pointer;
-            padding: 1rem; /* Consistent padding */
-            width: 100%;
-            text-align: left;
-            border: 1px solid var(--card-border);
-            border-radius: 0.5rem; /* Rounded corners for the header */
-            transition: background-color 0.3s ease;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 1.25rem; /* text-xl */
-            font-weight: 600; /* font-semibold */
-            font-family: 'Montserrat', sans-serif; /* Match other h2 */
-            margin-top: 2rem; /* Add some space above the accordion */
-        }
-        body.dark-theme .accordion-header {
-            background-color: #2d3748; /* Slightly different dark for accordion header */
-        }
-        .accordion-header:hover {
-            background-color: var(--card-border); /* Subtle hover effect */
-        }
-        body.dark-theme .accordion-header:hover {
-            background-color: #4a5568;
-        }
-        .accordion-header .arrow-icon {
-            transition: transform 0.3s ease;
-            font-size: 1rem; /* Adjust icon size */
-        }
-        .accordion-header.active .arrow-icon {
-            transform: rotate(90deg);
-        }
-        .accordion-content {
-            padding: 0; /* Padding will be on the code-block-container */
-            display: none; /* Hidden by default */
-            overflow: hidden;
-            background-color: transparent; /* Content bg is handled by code-block-container */
-            border: 1px solid var(--card-border);
-            border-top: none; /* Avoid double border with header */
-            border-radius: 0 0 0.5rem 0.5rem; /* Rounded bottom corners */
-            margin-bottom: 1.5rem; /* Spacing below the accordion */
-        }
         .code-block-container {
             background-color: var(--card-bg);
-            border: none; /* Border is now on accordion-content */
-            border-radius: 0; /* Inner container doesn't need rounding */
+            border: none;
+            border-radius: 0;
             padding: 1rem;
             overflow-x: auto;
-            box-shadow: none; /* Shadow is on accordion-content or main card */
+            box-shadow: none;
         }
         body.dark-theme .code-block-container {
              background-color: #1a202c;
@@ -108,36 +62,68 @@
             font-family: 'Courier New', Courier, monospace;
             font-size: 0.875rem;
             color: var(--text-color);
-            line-height: 1.5; /* Improved line spacing for readability */
+            line-height: 1.5;
         }
         body.dark-theme .code-block-container code {
-            color: #e2e8f0; /* Lighter text for dark mode code */
+            color: #e2e8f0;
         }
+        .accordion-header {
+            background-color: var(--card-bg);
+            color: var(--text-color);
+            cursor: pointer;
+            padding: 1rem;
+            width: 100%;
+            text-align: left;
+            border: 1px solid var(--card-border);
+            border-radius: 0.5rem;
+            transition: background-color 0.3s ease;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 1.25rem; /* text-xl */
+            font-weight: 600; /* font-semibold */
+            font-family: 'Montserrat', sans-serif;
+            margin-top: 2rem;
+        }
+        body.dark-theme .accordion-header {
+            background-color: #2d3748;
+        }
+        .accordion-header:hover {
+            background-color: var(--card-border);
+        }
+        body.dark-theme .accordion-header:hover {
+            background-color: #4a5568;
+        }
+        .accordion-header .arrow-icon {
+            transition: transform 0.3s ease;
+            font-size: 1rem;
+        }
+        .accordion-header.active .arrow-icon {
+            transform: rotate(90deg);
+        }
+        .accordion-content {
+            padding: 0;
+            display: none;
+            overflow: hidden;
+            background-color: transparent;
+            border: 1px solid var(--card-border);
+            border-top: none;
+            border-radius: 0 0 0.5rem 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+        .cpp-keyword { color: #569cd6; font-weight: bold; }
+        body.dark-theme .cpp-keyword { color: #4fc1ff; }
+        .cpp-preprocessor { color: #c586c0; }
+        .cpp-comment { color: #6a9955; }
+        body.dark-theme .cpp-comment { color: #608b4e; }
+        .cpp-string { color: #ce9178; }
+        .cpp-number { color: #b5cea8; }
+        .cpp-function { color: #dcdcaa; }
 
-        /* Basic C++ Syntax Highlighting */
-        .code-block-container .cpp-keyword { color: #569cd6; font-weight: bold; } /* Blue for keywords */
-        body.dark-theme .code-block-container .cpp-keyword { color: #4fc1ff; }
-
-        .code-block-container .cpp-preprocessor { color: #c586c0; } /* Purple for #include, #define */
-        body.dark-theme .code-block-container .cpp-preprocessor { color: #c586c0; }
-
-        .code-block-container .cpp-comment { color: #6a9955; } /* Green for comments */
-        body.dark-theme .code-block-container .cpp-comment { color: #608b4e; }
-
-        .code-block-container .cpp-string { color: #ce9178; } /* Orange for strings */
-        body.dark-theme .code-block-container .cpp-string { color: #ce9178; }
-
-        .code-block-container .cpp-number { color: #b5cea8; } /* Light green for numbers */
-        body.dark-theme .code-block-container .cpp-number { color: #b5cea8; }
-
-        .code-block-container .cpp-function { color: #dcdcaa; } /* Yellow for function names (general) */
-        body.dark-theme .code-block-container .cpp-function { color: #dcdcaa; }
-
-
-        /* Styles for the fixed mini music player on project pages */
+        /* Styles for the fixed mini music player and its toggle button */
         #project-page-music-player-panel {
             position: fixed;
-            bottom: 20px;
+            bottom: 80px; /* Position above the toggle button */
             right: 20px;
             width: 280px;
             background-color: var(--card-bg);
@@ -145,14 +131,54 @@
             box-shadow: 0 5px 15px -3px var(--shadow-color), 0 4px 6px -4px var(--shadow-color);
             border-radius: 0.5rem;
             padding: 1rem;
-            z-index: 1000;
             color: var(--text-color);
+            z-index: 999; /* Below toggle button if they overlap during transition */
+            transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+            transform: translateY(0%); /* Default visible state */
+            opacity: 1;
+        }
+        #project-page-music-player-panel.hidden-player {
+            transform: translateY(150%); /* Slide down further out of view */
+            opacity: 0;
+            pointer-events: none;
         }
         #project-page-music-player-panel h4 {
             font-family: 'Montserrat', sans-serif;
             font-size: 0.9rem;
             margin-bottom: 0.5rem;
             color: var(--text-color-secondary);
+        }
+
+        #toggle-project-music-player-btn { /* Renamed for clarity */
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: var(--accent1);
+            color: white;
+            border: none;
+            width: 48px; /* Circular button */
+            height: 48px; /* Circular button */
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000; /* Above player panel */
+        }
+        #toggle-project-music-player-btn:hover {
+            background-color: var(--accent2);
+            transform: scale(1.1);
+        }
+         body.dark-theme #toggle-project-music-player-btn {
+            background-color: var(--accent3);
+        }
+        body.dark-theme #toggle-project-music-player-btn:hover {
+            background-color: var(--accent1);
+        }
+        #toggle-project-music-player-btn i {
+            font-size: 1.2rem; /* Icon size */
         }
     </style>
 </head>
@@ -422,6 +448,7 @@ ZumoBuzzer buzzer;
                 </div>
                 </div>
             </div>
+
             <div class="mt-12 text-center">
                 <a href="index.html#projects" class="btn-pop inline-block bg-[var(--accent1)] hover:bg-[var(--accent2)] text-white font-semibold py-3 px-8 rounded-lg shadow-md transition">
                     <i class="fas fa-arrow-left mr-2"></i> Back to All Projects
@@ -430,8 +457,9 @@ ZumoBuzzer buzzer;
         </section>
     </main>
 
-    <div id="project-page-music-player-panel">
-        <h4>Music Player</h4>
+    <button id="toggle-project-music-player-btn" aria-label="Toggle Music Player">
+        <i class="fas fa-music"></i> </button>
+    <div id="project-page-music-player-panel" class="hidden-player"> <h4>Music Player</h4>
         <iframe id="project-soundcloud-iframe-player"
             width="100%"
             height="120" scrolling="no"
@@ -448,6 +476,7 @@ ZumoBuzzer buzzer;
             </div>
         </div>
     </div>
+
 
     <footer class="footer-bg py-6 mt-20 relative font-rubik">
         <div class="container mx-auto px-6 flex flex-col md:flex-row justify-center items-center">
@@ -479,7 +508,6 @@ ZumoBuzzer buzzer;
             if (typeof updateProjectVolumeSliderAppearance === 'function') {
                 updateProjectVolumeSliderAppearance();
             }
-             // New: Update accordion header if function exists (for theme change)
             if (typeof updateAccordionHeaderTheme === 'function') {
                 updateAccordionHeaderTheme();
             }
@@ -491,42 +519,26 @@ ZumoBuzzer buzzer;
         const accordionContent = document.getElementById('zumo-code-content');
         const arrowIcon = accordionHeader ? accordionHeader.querySelector('.arrow-icon i') : null;
 
-        // Function to update accordion header styles on theme change
-        window.updateAccordionHeaderTheme = () => {
-            if (accordionHeader) {
-                // This is mostly handled by CSS variables, but if specific JS logic was needed for theme, it would go here.
-                // For now, CSS variables should suffice.
-            }
-        };
-
+        window.updateAccordionHeaderTheme = () => { /* CSS variables handle this */ };
 
         if (accordionHeader && accordionContent && arrowIcon) {
             accordionHeader.addEventListener('click', () => {
                 const isExpanded = accordionHeader.getAttribute('aria-expanded') === 'true' || false;
                 accordionHeader.setAttribute('aria-expanded', !isExpanded);
                 accordionContent.style.display = isExpanded ? 'none' : 'block';
-                accordionHeader.classList.toggle('active'); // For arrow rotation or other active styles
-                // arrowIcon.classList.toggle('fa-chevron-down');
-                // arrowIcon.classList.toggle('fa-chevron-right');
-                if (isExpanded) {
-                    arrowIcon.style.transform = 'rotate(0deg)';
-                } else {
-                    arrowIcon.style.transform = 'rotate(90deg)';
-                }
+                accordionHeader.classList.toggle('active');
+                arrowIcon.style.transform = isExpanded ? 'rotate(0deg)' : 'rotate(90deg)';
             });
-             // Set initial arrow state if content is hidden
-            if (accordionContent.style.display === 'none' || accordionContent.style.display === '') {
-                 arrowIcon.style.transform = 'rotate(0deg)';
-            } else {
-                 arrowIcon.style.transform = 'rotate(90deg)';
-            }
+            arrowIcon.style.transform = 'rotate(0deg)'; // Initial state
         }
 
-
-        // --- Music Player Logic for Project Pages ---
+        // --- Music Player Logic for Project Pages (including toggle) ---
         document.addEventListener('DOMContentLoaded', () => {
-            // Ensure theme is applied before music player logic that might depend on themed elements
-            applyProjectPageTheme();
+            applyProjectPageTheme(); 
+
+            const projectMusicPlayerPanel = document.getElementById('project-page-music-player-panel');
+            const toggleMusicPlayerButton = document.getElementById('toggle-project-music-player-btn'); // Corrected ID
+            const toggleIcon = toggleMusicPlayerButton ? toggleMusicPlayerButton.querySelector('i') : null;
 
             const projectSoundcloudIframe = document.getElementById('project-soundcloud-iframe-player');
             const projectVolumeSlider = document.getElementById('project-volume-slider');
@@ -535,7 +547,33 @@ ZumoBuzzer buzzer;
             let projectIsMuted = false;
             let projectLastVolume = 50;
 
-            window.updateProjectVolumeSliderAppearance = () => {
+            if (toggleMusicPlayerButton && projectMusicPlayerPanel && toggleIcon) {
+                const isPlayerHidden = localStorage.getItem('projectPlayerHidden') === 'true';
+                if (isPlayerHidden) {
+                    projectMusicPlayerPanel.classList.add('hidden-player');
+                    toggleIcon.classList.remove('fa-times'); // Icon for "close" or "hide"
+                    toggleIcon.classList.add('fa-music');    // Icon for "show"
+                } else {
+                    projectMusicPlayerPanel.classList.remove('hidden-player');
+                    toggleIcon.classList.remove('fa-music');
+                    toggleIcon.classList.add('fa-times'); // Icon for "close" or "hide"
+                }
+
+                toggleMusicPlayerButton.addEventListener('click', () => {
+                    const currentlyHidden = projectMusicPlayerPanel.classList.toggle('hidden-player');
+                    localStorage.setItem('projectPlayerHidden', currentlyHidden);
+                    if (currentlyHidden) {
+                        toggleIcon.classList.remove('fa-times');
+                        toggleIcon.classList.add('fa-music');
+                    } else {
+                        toggleIcon.classList.remove('fa-music');
+                        toggleIcon.classList.add('fa-times');
+                    }
+                });
+            }
+
+
+            window.updateProjectVolumeSliderAppearance = () => { 
                 if (!projectVolumeSlider) return;
                 const progressPercent = projectVolumeSlider.value;
                 const getProjectCssVariable = (varName) => document.body ? getComputedStyle(document.body).getPropertyValue(varName).trim() : null;
@@ -546,7 +584,7 @@ ZumoBuzzer buzzer;
 
             if (projectSoundcloudIframe && typeof SC !== 'undefined') {
                 projectScWidget = SC.Widget(projectSoundcloudIframe);
-                projectScWidget.bind(SC.Widget.Events.READY, () => {
+                projectScWidget.bind(SC.Widget.Events.READY, () => { 
                     console.log('SoundCloud Widget is ready on project page.');
                     const savedTrackURI = localStorage.getItem('soundcloudTrackURI');
                     const savedTrackTimeStr = localStorage.getItem('soundcloudTrackTime');
@@ -557,20 +595,20 @@ ZumoBuzzer buzzer;
 
                     if (savedVolumeStr !== null) {
                         projectLastVolume = parseInt(savedVolumeStr, 10);
-                        projectVolumeSlider.value = projectLastVolume;
+                        if(projectVolumeSlider) projectVolumeSlider.value = projectLastVolume;
                         projectScWidget.setVolume(projectLastVolume);
                     } else {
-                         projectVolumeSlider.value = projectLastVolume;
+                         if(projectVolumeSlider) projectVolumeSlider.value = projectLastVolume;
                          projectScWidget.setVolume(projectLastVolume);
                     }
                     if (savedMutedStr === 'true') {
                         projectIsMuted = true;
                         projectScWidget.setVolume(0);
-                        projectVolumeSlider.value = 0;
-                        projectMuteToggleButton.innerHTML = '<i class="fas fa-volume-mute text-[var(--text-color-secondary)]"></i>';
+                        if(projectVolumeSlider) projectVolumeSlider.value = 0;
+                        if(projectMuteToggleButton) projectMuteToggleButton.innerHTML = '<i class="fas fa-volume-mute text-[var(--text-color-secondary)]"></i>';
                     } else {
                         projectIsMuted = false;
-                         projectMuteToggleButton.innerHTML = '<i class="fas fa-volume-up text-[var(--text-color-secondary)]"></i>';
+                         if(projectMuteToggleButton) projectMuteToggleButton.innerHTML = '<i class="fas fa-volume-up text-[var(--text-color-secondary)]"></i>';
                     }
                     updateProjectVolumeSliderAppearance();
 
@@ -591,7 +629,7 @@ ZumoBuzzer buzzer;
                 projectScWidget.bind(SC.Widget.Events.ERROR, (err) => { console.error("Project Page SC Widget Error:", err);});
             }
 
-            if (projectVolumeSlider && projectScWidget) {
+            if (projectVolumeSlider && projectScWidget) { 
                 projectVolumeSlider.addEventListener('input', () => {
                     const newVolume = parseInt(projectVolumeSlider.value, 10);
                     projectScWidget.setVolume(newVolume);
@@ -599,34 +637,33 @@ ZumoBuzzer buzzer;
                     projectIsMuted = newVolume === 0;
                     localStorage.setItem('soundcloudVolume', newVolume.toString());
                     localStorage.setItem('soundcloudMuted', projectIsMuted.toString());
-                    projectMuteToggleButton.innerHTML = projectIsMuted ? '<i class="fas fa-volume-mute text-[var(--text-color-secondary)]"></i>' : '<i class="fas fa-volume-up text-[var(--text-color-secondary)]"></i>';
+                    if(projectMuteToggleButton) projectMuteToggleButton.innerHTML = projectIsMuted ? '<i class="fas fa-volume-mute text-[var(--text-color-secondary)]"></i>' : '<i class="fas fa-volume-up text-[var(--text-color-secondary)]"></i>';
                     updateProjectVolumeSliderAppearance();
                 });
             }
 
-            if (projectMuteToggleButton && projectScWidget) {
+            if (projectMuteToggleButton && projectScWidget) { 
                 projectMuteToggleButton.addEventListener('click', () => {
                     projectIsMuted = !projectIsMuted;
                     if (projectIsMuted) {
                         projectScWidget.getVolume((currentVolume) => {
                             if(currentVolume > 0) projectLastVolume = currentVolume;
                             projectScWidget.setVolume(0);
-                            projectVolumeSlider.value = 0;
+                            if(projectVolumeSlider) projectVolumeSlider.value = 0;
                             projectMuteToggleButton.innerHTML = '<i class="fas fa-volume-mute text-[var(--text-color-secondary)]"></i>';
                         });
                     } else {
                         const restoreVolume = projectLastVolume > 0 ? projectLastVolume : 50;
                         projectScWidget.setVolume(restoreVolume);
-                        projectVolumeSlider.value = restoreVolume;
+                        if(projectVolumeSlider) projectVolumeSlider.value = restoreVolume;
                         projectMuteToggleButton.innerHTML = '<i class="fas fa-volume-up text-[var(--text-color-secondary)]"></i>';
                     }
                     localStorage.setItem('soundcloudMuted', projectIsMuted.toString());
-                    if (!projectIsMuted) localStorage.setItem('soundcloudVolume', projectVolumeSlider.value);
+                    if (!projectIsMuted && projectVolumeSlider) localStorage.setItem('soundcloudVolume', projectVolumeSlider.value);
                     updateProjectVolumeSliderAppearance();
                 });
             }
-            // Initial call for volume slider appearance after DOM is ready
-             if (typeof updateProjectVolumeSliderAppearance === 'function') {
+            if (typeof updateProjectVolumeSliderAppearance === 'function') {
                 updateProjectVolumeSliderAppearance();
             }
         });

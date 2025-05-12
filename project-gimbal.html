@@ -59,10 +59,10 @@
             border: 1px solid var(--card-border);
         }
 
-        /* Styles for the fixed mini music player on project pages */
+        /* Styles for the fixed mini music player and its toggle button */
         #project-page-music-player-panel {
             position: fixed;
-            bottom: 20px;
+            bottom: 80px; /* Position above the toggle button */
             right: 20px;
             width: 280px;
             background-color: var(--card-bg);
@@ -70,14 +70,54 @@
             box-shadow: 0 5px 15px -3px var(--shadow-color), 0 4px 6px -4px var(--shadow-color);
             border-radius: 0.5rem;
             padding: 1rem;
-            z-index: 1000;
             color: var(--text-color);
+            z-index: 999; 
+            transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+            transform: translateY(0%); 
+            opacity: 1;
+        }
+        #project-page-music-player-panel.hidden-player {
+            transform: translateY(150%); 
+            opacity: 0;
+            pointer-events: none;
         }
         #project-page-music-player-panel h4 {
             font-family: 'Montserrat', sans-serif;
             font-size: 0.9rem;
             margin-bottom: 0.5rem;
             color: var(--text-color-secondary);
+        }
+
+        #toggle-project-music-player-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: var(--accent1);
+            color: white;
+            border: none;
+            width: 48px; 
+            height: 48px; 
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000; 
+        }
+        #toggle-project-music-player-btn:hover {
+            background-color: var(--accent2);
+            transform: scale(1.1);
+        }
+         body.dark-theme #toggle-project-music-player-btn {
+            background-color: var(--accent3);
+        }
+        body.dark-theme #toggle-project-music-player-btn:hover {
+            background-color: var(--accent1);
+        }
+        #toggle-project-music-player-btn i {
+            font-size: 1.2rem; 
         }
     </style>
 </head>
@@ -115,7 +155,7 @@
                     The primary aim of this Mechatronics project (ME417) was to create a functional 3-axis servo-actuated gimbal capable of stabilizing an object (e.g., a camera or sensor). This was achieved by utilizing an MPU6050 Inertial Measurement Unit (IMU) to detect orientation changes and an Arduino Nano to process this data and control three servo motors (for Roll, Pitch, and Yaw axes) to counteract these movements.
                 </p>
                  <p class="text-lg leading-relaxed card-text">
-                    The project involved mechanical design modifications, 3D printing of custom parts, electronic circuit assembly, and programming the control logic for stabilization.
+                    The project involved mechanical design modifications to an existing online model, 3D printing of custom parts, electronic circuit assembly, and programming the control logic for stabilization.
                 </p>
             </div>
 
@@ -145,7 +185,7 @@
                 <ul class="list-disc list-inside text-lg card-text space-y-2 pl-4">
                     <li><strong>Axis Definition:</strong> Established the three axes of rotation: Roll, Pitch, and Yaw.</li>
                     <li><strong>IMU Calibration & Data Acquisition:</strong> Calibrated the MPU6050 IMU to obtain accurate raw data (accelerometer and gyroscope readings) via I²C communication with the Arduino Nano.</li>
-                    <li><strong>Data Processing:</strong> Processed the raw IMU data to determine the gimbal's current orientation and any deviations from the desired stable state. This often involves sensor fusion algorithms (e.g., Kalman filter, complementary filter) to combine accelerometer and gyroscope data effectively.</li>
+                    <li><strong>Data Processing:</strong> Processed the raw IMU data to determine the gimbal's current orientation and any deviations from the desired stable state. This often involves sensor fusion algorithms to combine accelerometer and gyroscope data effectively.</li>
                     <li><strong>Servo Control:</strong> Mapped the processed orientation data to corresponding servo motor movements. The Arduino code calculated the necessary adjustments for each servo to counteract the detected motion and maintain stability.</li>
                     <li><strong>Code Implementation:</strong> All control logic was programmed on the Arduino platform using C/C++. This included initializing the MPU6050, setting up interrupt routines for IMU data readiness, and controlling servo positions.</li>
                 </ul>
@@ -162,7 +202,7 @@
                     <img src="images/Projects/gimball/wiring-back.jpeg" alt="Gimbal Wiring Back View" class="rounded-lg shadow-md">
                     <img src="images/Projects/gimball/stabilizer.jpeg" alt="Gimbal Stabilizer Unit" class="rounded-lg shadow-md">
                     <img src="images/Projects/gimball/phone-data.jpeg" alt="Phone Data Graph for Gyroscope" class="rounded-lg shadow-md">
-                    <img src="images/Projects/gimball/cad-design.png" alt="CAD Design of Gimbal" class="rounded-lg shadow-md">
+                    <img src="images/Projects/gimball/cad-design.png" alt="CAD Model of Gimbal" class="rounded-lg shadow-md">
                 </div>
             </div>
 
@@ -179,17 +219,17 @@
             <div class="mb-8">
                 <h2 class="text-3xl font-semibold mb-4 card-title border-b pb-2 border-[var(--card-border)]">Results & Observations</h2>
                 <p class="text-lg leading-relaxed card-text mb-2">
-                    The project faced an initial setback due to a defective MPU6050 sensor. To validate the stabilization concept and gather comparative data, gyroscope values from a smartphone placed on the stabilized platform were used.
+                    The project faced an initial setback due to a defective MPU6050 sensor. To validate the stabilization concept and gather comparative data, gyroscope values from a smartphone placed on the stabilized platform were used as a reference.
                 </p>
                 <p class="text-lg leading-relaxed card-text mb-2">
                     Two sets of data were collected:
                     <ul class="list-disc list-inside text-lg card-text space-y-1 pl-4">
                         <li><strong>Gimbal IMU Data:</strong> Values gathered from the MPU6050 mounted on the gimbal's base (holding part). Data collection was initiated manually via the Arduino.</li>
-                        <li><strong>Phone Gyroscope Data:</strong> Values from the smartphone's gyroscope on the stabilized platform.</li>
+                        <li><strong>Phone Gyroscope Data:</strong> Values from the smartphone's gyroscope on the stabilized platform, serving as a ground truth for stability.</li>
                     </ul>
                 </p>
                 <p class="text-lg leading-relaxed card-text">
-                    A slight time difference existed between the two datasets due to the manual start of data collection. The "phone-data.jpeg" image (shown in the gallery) illustrates the gyroscope readings (x, y, z axes) obtained from the phone, demonstrating the attempts to stabilize against external movements. Further analysis would involve comparing these datasets to quantify the gimbal's stabilization performance.
+                    A slight time difference existed between the two datasets due to the manual start of data collection. The "phone-data.jpeg" image (shown in the gallery) illustrates the gyroscope readings (x, y, z axes) obtained from the phone, which ideally would show minimal variation if the gimbal were perfectly stabilizing. Further analysis would involve comparing these datasets to quantify the gimbal's stabilization performance and effectiveness.
                 </p>
             </div>
 
@@ -201,8 +241,9 @@
         </section>
     </main>
 
-    <div id="project-page-music-player-panel">
-        <h4>Music Player</h4>
+    <button id="toggle-project-music-player-btn" aria-label="Toggle Music Player">
+        <i class="fas fa-music"></i> </button>
+    <div id="project-page-music-player-panel" class="hidden-player"> <h4>Music Player</h4>
         <iframe id="project-soundcloud-iframe-player"
             width="100%"
             height="120" scrolling="no"
@@ -253,8 +294,14 @@
         };
         applyProjectPageTheme();
 
-        // --- Music Player Logic for Project Pages ---
+        // --- Music Player Logic for Project Pages (including toggle) ---
         document.addEventListener('DOMContentLoaded', () => {
+            applyProjectPageTheme(); 
+
+            const projectMusicPlayerPanel = document.getElementById('project-page-music-player-panel');
+            const toggleMusicPlayerButton = document.getElementById('toggle-project-music-player-btn');
+            const toggleIcon = toggleMusicPlayerButton ? toggleMusicPlayerButton.querySelector('i') : null;
+
             const projectSoundcloudIframe = document.getElementById('project-soundcloud-iframe-player');
             const projectVolumeSlider = document.getElementById('project-volume-slider');
             const projectMuteToggleButton = document.getElementById('project-mute-toggle-btn');
@@ -262,7 +309,32 @@
             let projectIsMuted = false;
             let projectLastVolume = 50;
 
-            window.updateProjectVolumeSliderAppearance = () => {
+            if (toggleMusicPlayerButton && projectMusicPlayerPanel && toggleIcon) {
+                const isPlayerHidden = localStorage.getItem('projectPlayerHidden') === 'true';
+                if (isPlayerHidden) {
+                    projectMusicPlayerPanel.classList.add('hidden-player');
+                    toggleIcon.classList.remove('fa-times'); 
+                    toggleIcon.classList.add('fa-music');    
+                } else {
+                    projectMusicPlayerPanel.classList.remove('hidden-player');
+                    toggleIcon.classList.remove('fa-music');
+                    toggleIcon.classList.add('fa-times'); 
+                }
+
+                toggleMusicPlayerButton.addEventListener('click', () => {
+                    const currentlyHidden = projectMusicPlayerPanel.classList.toggle('hidden-player');
+                    localStorage.setItem('projectPlayerHidden', currentlyHidden);
+                    if (currentlyHidden) {
+                        toggleIcon.classList.remove('fa-times');
+                        toggleIcon.classList.add('fa-music');
+                    } else {
+                        toggleIcon.classList.remove('fa-music');
+                        toggleIcon.classList.add('fa-times');
+                    }
+                });
+            }
+
+            window.updateProjectVolumeSliderAppearance = () => { 
                 if (!projectVolumeSlider) return;
                 const progressPercent = projectVolumeSlider.value;
                 const getProjectCssVariable = (varName) => document.body ? getComputedStyle(document.body).getPropertyValue(varName).trim() : null;
@@ -273,7 +345,7 @@
 
             if (projectSoundcloudIframe && typeof SC !== 'undefined') {
                 projectScWidget = SC.Widget(projectSoundcloudIframe);
-                projectScWidget.bind(SC.Widget.Events.READY, () => {
+                projectScWidget.bind(SC.Widget.Events.READY, () => { 
                     console.log('SoundCloud Widget is ready on project page.');
                     const savedTrackURI = localStorage.getItem('soundcloudTrackURI');
                     const savedTrackTimeStr = localStorage.getItem('soundcloudTrackTime');
@@ -284,20 +356,20 @@
 
                     if (savedVolumeStr !== null) {
                         projectLastVolume = parseInt(savedVolumeStr, 10);
-                        projectVolumeSlider.value = projectLastVolume;
+                        if(projectVolumeSlider) projectVolumeSlider.value = projectLastVolume;
                         projectScWidget.setVolume(projectLastVolume);
                     } else {
-                         projectVolumeSlider.value = projectLastVolume;
+                         if(projectVolumeSlider) projectVolumeSlider.value = projectLastVolume;
                          projectScWidget.setVolume(projectLastVolume);
                     }
                     if (savedMutedStr === 'true') {
                         projectIsMuted = true;
                         projectScWidget.setVolume(0);
-                        projectVolumeSlider.value = 0;
-                        projectMuteToggleButton.innerHTML = '<i class="fas fa-volume-mute text-[var(--text-color-secondary)]"></i>';
+                        if(projectVolumeSlider) projectVolumeSlider.value = 0;
+                        if(projectMuteToggleButton) projectMuteToggleButton.innerHTML = '<i class="fas fa-volume-mute text-[var(--text-color-secondary)]"></i>';
                     } else {
                         projectIsMuted = false;
-                         projectMuteToggleButton.innerHTML = '<i class="fas fa-volume-up text-[var(--text-color-secondary)]"></i>';
+                         if(projectMuteToggleButton) projectMuteToggleButton.innerHTML = '<i class="fas fa-volume-up text-[var(--text-color-secondary)]"></i>';
                     }
                     updateProjectVolumeSliderAppearance();
 
@@ -318,7 +390,7 @@
                 projectScWidget.bind(SC.Widget.Events.ERROR, (err) => { console.error("Project Page SC Widget Error:", err);});
             }
 
-            if (projectVolumeSlider && projectScWidget) {
+            if (projectVolumeSlider && projectScWidget) { 
                 projectVolumeSlider.addEventListener('input', () => {
                     const newVolume = parseInt(projectVolumeSlider.value, 10);
                     projectScWidget.setVolume(newVolume);
@@ -326,33 +398,35 @@
                     projectIsMuted = newVolume === 0;
                     localStorage.setItem('soundcloudVolume', newVolume.toString());
                     localStorage.setItem('soundcloudMuted', projectIsMuted.toString());
-                    projectMuteToggleButton.innerHTML = projectIsMuted ? '<i class="fas fa-volume-mute text-[var(--text-color-secondary)]"></i>' : '<i class="fas fa-volume-up text-[var(--text-color-secondary)]"></i>';
+                    if(projectMuteToggleButton) projectMuteToggleButton.innerHTML = projectIsMuted ? '<i class="fas fa-volume-mute text-[var(--text-color-secondary)]"></i>' : '<i class="fas fa-volume-up text-[var(--text-color-secondary)]"></i>';
                     updateProjectVolumeSliderAppearance();
                 });
             }
 
-            if (projectMuteToggleButton && projectScWidget) {
+            if (projectMuteToggleButton && projectScWidget) { 
                 projectMuteToggleButton.addEventListener('click', () => {
                     projectIsMuted = !projectIsMuted;
                     if (projectIsMuted) {
                         projectScWidget.getVolume((currentVolume) => {
                             if(currentVolume > 0) projectLastVolume = currentVolume;
                             projectScWidget.setVolume(0);
-                            projectVolumeSlider.value = 0;
+                            if(projectVolumeSlider) projectVolumeSlider.value = 0;
                             projectMuteToggleButton.innerHTML = '<i class="fas fa-volume-mute text-[var(--text-color-secondary)]"></i>';
                         });
                     } else {
                         const restoreVolume = projectLastVolume > 0 ? projectLastVolume : 50;
                         projectScWidget.setVolume(restoreVolume);
-                        projectVolumeSlider.value = restoreVolume;
+                        if(projectVolumeSlider) projectVolumeSlider.value = restoreVolume;
                         projectMuteToggleButton.innerHTML = '<i class="fas fa-volume-up text-[var(--text-color-secondary)]"></i>';
                     }
                     localStorage.setItem('soundcloudMuted', projectIsMuted.toString());
-                    if (!projectIsMuted) localStorage.setItem('soundcloudVolume', projectVolumeSlider.value);
+                    if (!projectIsMuted && projectVolumeSlider) localStorage.setItem('soundcloudVolume', projectVolumeSlider.value);
                     updateProjectVolumeSliderAppearance();
                 });
             }
-            updateProjectVolumeSliderAppearance();
+            if (typeof updateProjectVolumeSliderAppearance === 'function') {
+                updateProjectVolumeSliderAppearance();
+            }
         });
     </script>
 </body>

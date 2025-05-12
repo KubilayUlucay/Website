@@ -32,24 +32,11 @@
             height: 100%;
             border: none;
         }
-        .main-project-image-container { /* For a potential main image if you add one */
-            margin-bottom: 0.5rem;
-            text-align: center;
-        }
-        .main-project-image-container img {
-            max-height: 400px; /* Max height for a main project image */
-            width: auto;
-            max-width: 100%;
-            display: inline-block;
-            border-radius: 0.5rem;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-            border: 1px solid var(--card-border);
-        }
 
-        /* Styles for the fixed mini music player on project pages */
+        /* Styles for the fixed mini music player and its toggle button */
         #project-page-music-player-panel {
             position: fixed;
-            bottom: 20px;
+            bottom: 80px; /* Position above the toggle button */
             right: 20px;
             width: 280px;
             background-color: var(--card-bg);
@@ -57,14 +44,54 @@
             box-shadow: 0 5px 15px -3px var(--shadow-color), 0 4px 6px -4px var(--shadow-color);
             border-radius: 0.5rem;
             padding: 1rem;
-            z-index: 1000;
             color: var(--text-color);
+            z-index: 999; 
+            transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+            transform: translateY(0%); 
+            opacity: 1;
+        }
+        #project-page-music-player-panel.hidden-player {
+            transform: translateY(150%); 
+            opacity: 0;
+            pointer-events: none;
         }
         #project-page-music-player-panel h4 {
             font-family: 'Montserrat', sans-serif;
             font-size: 0.9rem;
             margin-bottom: 0.5rem;
             color: var(--text-color-secondary);
+        }
+
+        #toggle-project-music-player-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: var(--accent1);
+            color: white;
+            border: none;
+            width: 48px; 
+            height: 48px; 
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000; 
+        }
+        #toggle-project-music-player-btn:hover {
+            background-color: var(--accent2);
+            transform: scale(1.1);
+        }
+         body.dark-theme #toggle-project-music-player-btn {
+            background-color: var(--accent3);
+        }
+        body.dark-theme #toggle-project-music-player-btn:hover {
+            background-color: var(--accent1);
+        }
+        #toggle-project-music-player-btn i {
+            font-size: 1.2rem; 
         }
     </style>
 </head>
@@ -105,18 +132,18 @@
                 </p>
                 <ul class="list-disc list-inside text-lg card-text space-y-3 pl-4">
                     <li>
-                        <strong>Initial Data Exploration & Challenges:</strong> The initial goal was to analyze the relationship between Google Trends, daily Bitcoin tweet volume, and Bitcoin price. However, significant gaps in available Twitter datasets led to a pivot. Various imputation methods (Spline Interpolation, Linear Interpolation, Moving Average, STL Imputation) were explored to address missing data, but results were unsatisfactory for the original goal.
+                        <strong>Initial Data Exploration & Challenges:</strong> The initial goal was to analyze the relationship between Google Trends, daily Bitcoin tweet volume, and Bitcoin price. However, significant gaps in available Twitter datasets (from Kaggle) led to a pivot. Various imputation methods (Spline Interpolation, Linear Interpolation, Moving Average, STL Imputation) were explored to address missing data, but results were unsatisfactory for the original goal, with some methods even producing impossible results like negative tweet counts.
                     </li>
                     <li>
-                        <strong>Revised Focus:</strong> The project shifted to examining the direct relationship between the content of tweets and subsequent Bitcoin price movements.
+                        <strong>Revised Focus:</strong> The project shifted to examining the direct relationship between the content of tweets and subsequent Bitcoin price movements (specifically, whether the price would increase or decrease one week after the tweets).
                     </li>
                     <li>
                         <strong>Dataset Preparation & Filtering:</strong>
                         <ul class="list-disc list-inside ml-6 mt-1 space-y-1">
-                            <li>Sourced Bitcoin tweets dataset from Kaggle.</li>
+                            <li>Sourced Bitcoin tweets dataset from Kaggle (initially 4,689,288 rows).</li>
                             <li>Filtered relevant columns: user name, follower count, tweet content, and date.</li>
-                            <li>Applied filters to enhance data quality: removed tweets from crypto exchange accounts, filtered for accounts with >10,000 followers, removed advertisements, and selected tweets containing predictive keywords (e.g., "buy", "sell").</li>
-                            <li>Created a corresponding Bitcoin price dataset using the YahooFinance API, aligning with tweet dates and calculating a "result" column (1 for price increase, 0 for decrease/stagnation over 1 week).</li>
+                            <li>Applied filters to enhance data quality and relevance: removed tweets from crypto exchange accounts, filtered for accounts with a minimum of 10,000 followers (to focus on influential accounts), removed telegram advertisements, and selected tweets containing predictive keywords (e.g., "buy", "sell"). This reduced the dataset to 54,460 relevant tweets.</li>
+                            <li>Created a corresponding Bitcoin price dataset using the YahooFinance API, aligning with tweet dates. A "result" column was generated, indicating price direction (1 for positive change one week later, 0 otherwise).</li>
                         </ul>
                     </li>
                      <li>
@@ -124,7 +151,7 @@
                         <ul class="list-disc list-inside ml-6 mt-1 space-y-1">
                             <li>Merged the filtered tweet dataset with the Bitcoin price dataset.</li>
                             <li>Focused on "text" (tweet content) and "result" (price direction) columns.</li>
-                            <li>Grouped tweets by day to manage data volume for BERT processing, resulting in a dataset of daily aggregated tweet content.</li>
+                            <li>To manage the computational cost of BERT transformation, tweets sent on the same day were combined, reducing the dataset shape to 219 rows (daily aggregated tweet data).</li>
                         </ul>
                     </li>
                     <li>
@@ -137,13 +164,13 @@
                     <li>
                         <strong>Machine Learning Model:</strong>
                         <ul class="list-disc list-inside ml-6 mt-1 space-y-1">
-                            <li>Employed a Multi-Layer Perceptron (MLP) classifier from the Scikit-learn library.</li>
+                            <li>Employed a Multi-Layer Perceptron (MLP) classifier from the Scikit-learn (sklearn) library.</li>
                             <li>Trained the MLP model using the BERT-transformed tweet data as input and the price direction ("result") as the output.</li>
-                            <li>Experimented with various hidden layer sizes and maximum iteration numbers to optimize model performance, tracking accuracy for each combination.</li>
+                            <li>Experimented with various hidden layer sizes (from 1 to 7 for two hidden layers) and maximum iteration numbers (from 1000 to 49000) to optimize model performance, tracking accuracy for each of the 2401 combinations.</li>
                         </ul>
                     </li>
                     <li>
-                        <strong>Key Technologies:</strong> Python, Pandas (for data manipulation), Scikit-learn (for MLP), BERT, YahooFinance API.
+                        <strong>Key Technologies:</strong> Python, Pandas (for data manipulation), Scikit-learn (for MLP), Hugging Face Transformers (for BERT), YahooFinance API, Kaggle (for dataset).
                     </li>
                 </ul>
             </div>
@@ -163,7 +190,7 @@
             <div class="mb-8">
                 <h2 class="text-3xl font-semibold mb-4 card-title border-b pb-2 border-[var(--card-border)]">Conclusion & Outcomes</h2>
                 <p class="text-lg leading-relaxed card-text">
-                    Despite initial challenges with data completeness for the original research question, the project successfully pivoted to develop a model for understanding the potential manipulative effect of tweet content on Bitcoin's price. The final model, utilizing BERT for text feature extraction and an MLP classifier, achieved an accuracy score of approximately 72.73%. This result suggests that, with appropriate filtering and NLP techniques, it is possible to build a model that can discern patterns between tweet sentiment/content and short-term Bitcoin price movements. The project provided valuable experience in data cleaning, imputation, NLP application, and iterative machine learning model development.
+                    Despite initial challenges with data completeness for the original research question, the project successfully pivoted to develop a model for understanding the potential manipulative effect of tweet content on Bitcoin's price. The final model, utilizing BERT for text feature extraction and an MLP classifier (with 5 neurons in the first hidden layer, 6 in the second, and 10,000 maximum iterations), achieved an accuracy score of approximately 72.73%. This result suggests that, with appropriate filtering and NLP techniques, it is possible to build a model that can discern patterns between tweet sentiment/content and short-term Bitcoin price movements. The project provided valuable experience in data cleaning, imputation strategies (and their limitations), NLP application, and iterative machine learning model development.
                 </p>
             </div>
 
@@ -175,8 +202,9 @@
         </section>
     </main>
 
-    <div id="project-page-music-player-panel">
-        <h4>Music Player</h4>
+    <button id="toggle-project-music-player-btn" aria-label="Toggle Music Player">
+        <i class="fas fa-music"></i> </button>
+    <div id="project-page-music-player-panel" class="hidden-player"> <h4>Music Player</h4>
         <iframe id="project-soundcloud-iframe-player"
             width="100%"
             height="120" scrolling="no"
@@ -227,8 +255,14 @@
         };
         applyProjectPageTheme();
 
-        // --- Music Player Logic for Project Pages ---
+        // --- Music Player Logic for Project Pages (including toggle) ---
         document.addEventListener('DOMContentLoaded', () => {
+            applyProjectPageTheme(); 
+
+            const projectMusicPlayerPanel = document.getElementById('project-page-music-player-panel');
+            const toggleMusicPlayerButton = document.getElementById('toggle-project-music-player-btn');
+            const toggleIcon = toggleMusicPlayerButton ? toggleMusicPlayerButton.querySelector('i') : null;
+
             const projectSoundcloudIframe = document.getElementById('project-soundcloud-iframe-player');
             const projectVolumeSlider = document.getElementById('project-volume-slider');
             const projectMuteToggleButton = document.getElementById('project-mute-toggle-btn');
@@ -236,7 +270,32 @@
             let projectIsMuted = false;
             let projectLastVolume = 50;
 
-            window.updateProjectVolumeSliderAppearance = () => {
+            if (toggleMusicPlayerButton && projectMusicPlayerPanel && toggleIcon) {
+                const isPlayerHidden = localStorage.getItem('projectPlayerHidden') === 'true';
+                if (isPlayerHidden) {
+                    projectMusicPlayerPanel.classList.add('hidden-player');
+                    toggleIcon.classList.remove('fa-times'); 
+                    toggleIcon.classList.add('fa-music');    
+                } else {
+                    projectMusicPlayerPanel.classList.remove('hidden-player');
+                    toggleIcon.classList.remove('fa-music');
+                    toggleIcon.classList.add('fa-times'); 
+                }
+
+                toggleMusicPlayerButton.addEventListener('click', () => {
+                    const currentlyHidden = projectMusicPlayerPanel.classList.toggle('hidden-player');
+                    localStorage.setItem('projectPlayerHidden', currentlyHidden);
+                    if (currentlyHidden) {
+                        toggleIcon.classList.remove('fa-times');
+                        toggleIcon.classList.add('fa-music');
+                    } else {
+                        toggleIcon.classList.remove('fa-music');
+                        toggleIcon.classList.add('fa-times');
+                    }
+                });
+            }
+
+            window.updateProjectVolumeSliderAppearance = () => { 
                 if (!projectVolumeSlider) return;
                 const progressPercent = projectVolumeSlider.value;
                 const getProjectCssVariable = (varName) => document.body ? getComputedStyle(document.body).getPropertyValue(varName).trim() : null;
@@ -247,7 +306,7 @@
 
             if (projectSoundcloudIframe && typeof SC !== 'undefined') {
                 projectScWidget = SC.Widget(projectSoundcloudIframe);
-                projectScWidget.bind(SC.Widget.Events.READY, () => {
+                projectScWidget.bind(SC.Widget.Events.READY, () => { 
                     console.log('SoundCloud Widget is ready on project page.');
                     const savedTrackURI = localStorage.getItem('soundcloudTrackURI');
                     const savedTrackTimeStr = localStorage.getItem('soundcloudTrackTime');
@@ -258,20 +317,20 @@
 
                     if (savedVolumeStr !== null) {
                         projectLastVolume = parseInt(savedVolumeStr, 10);
-                        projectVolumeSlider.value = projectLastVolume;
+                        if(projectVolumeSlider) projectVolumeSlider.value = projectLastVolume;
                         projectScWidget.setVolume(projectLastVolume);
                     } else {
-                         projectVolumeSlider.value = projectLastVolume;
+                         if(projectVolumeSlider) projectVolumeSlider.value = projectLastVolume;
                          projectScWidget.setVolume(projectLastVolume);
                     }
                     if (savedMutedStr === 'true') {
                         projectIsMuted = true;
                         projectScWidget.setVolume(0);
-                        projectVolumeSlider.value = 0;
-                        projectMuteToggleButton.innerHTML = '<i class="fas fa-volume-mute text-[var(--text-color-secondary)]"></i>';
+                        if(projectVolumeSlider) projectVolumeSlider.value = 0;
+                        if(projectMuteToggleButton) projectMuteToggleButton.innerHTML = '<i class="fas fa-volume-mute text-[var(--text-color-secondary)]"></i>';
                     } else {
                         projectIsMuted = false;
-                         projectMuteToggleButton.innerHTML = '<i class="fas fa-volume-up text-[var(--text-color-secondary)]"></i>';
+                         if(projectMuteToggleButton) projectMuteToggleButton.innerHTML = '<i class="fas fa-volume-up text-[var(--text-color-secondary)]"></i>';
                     }
                     updateProjectVolumeSliderAppearance();
 
@@ -292,7 +351,7 @@
                 projectScWidget.bind(SC.Widget.Events.ERROR, (err) => { console.error("Project Page SC Widget Error:", err);});
             }
 
-            if (projectVolumeSlider && projectScWidget) {
+            if (projectVolumeSlider && projectScWidget) { 
                 projectVolumeSlider.addEventListener('input', () => {
                     const newVolume = parseInt(projectVolumeSlider.value, 10);
                     projectScWidget.setVolume(newVolume);
@@ -300,33 +359,35 @@
                     projectIsMuted = newVolume === 0;
                     localStorage.setItem('soundcloudVolume', newVolume.toString());
                     localStorage.setItem('soundcloudMuted', projectIsMuted.toString());
-                    projectMuteToggleButton.innerHTML = projectIsMuted ? '<i class="fas fa-volume-mute text-[var(--text-color-secondary)]"></i>' : '<i class="fas fa-volume-up text-[var(--text-color-secondary)]"></i>';
+                    if(projectMuteToggleButton) projectMuteToggleButton.innerHTML = projectIsMuted ? '<i class="fas fa-volume-mute text-[var(--text-color-secondary)]"></i>' : '<i class="fas fa-volume-up text-[var(--text-color-secondary)]"></i>';
                     updateProjectVolumeSliderAppearance();
                 });
             }
 
-            if (projectMuteToggleButton && projectScWidget) {
+            if (projectMuteToggleButton && projectScWidget) { 
                 projectMuteToggleButton.addEventListener('click', () => {
                     projectIsMuted = !projectIsMuted;
                     if (projectIsMuted) {
                         projectScWidget.getVolume((currentVolume) => {
                             if(currentVolume > 0) projectLastVolume = currentVolume;
                             projectScWidget.setVolume(0);
-                            projectVolumeSlider.value = 0;
+                            if(projectVolumeSlider) projectVolumeSlider.value = 0;
                             projectMuteToggleButton.innerHTML = '<i class="fas fa-volume-mute text-[var(--text-color-secondary)]"></i>';
                         });
                     } else {
                         const restoreVolume = projectLastVolume > 0 ? projectLastVolume : 50;
                         projectScWidget.setVolume(restoreVolume);
-                        projectVolumeSlider.value = restoreVolume;
+                        if(projectVolumeSlider) projectVolumeSlider.value = restoreVolume;
                         projectMuteToggleButton.innerHTML = '<i class="fas fa-volume-up text-[var(--text-color-secondary)]"></i>';
                     }
                     localStorage.setItem('soundcloudMuted', projectIsMuted.toString());
-                    if (!projectIsMuted) localStorage.setItem('soundcloudVolume', projectVolumeSlider.value);
+                    if (!projectIsMuted && projectVolumeSlider) localStorage.setItem('soundcloudVolume', projectVolumeSlider.value);
                     updateProjectVolumeSliderAppearance();
                 });
             }
-            updateProjectVolumeSliderAppearance();
+            if (typeof updateProjectVolumeSliderAppearance === 'function') {
+                updateProjectVolumeSliderAppearance();
+            }
         });
     </script>
 </body>

@@ -33,10 +33,10 @@
             border: none;
         }
 
-        /* Styles for the fixed mini music player on project pages */
+        /* Styles for the fixed mini music player and its toggle button */
         #project-page-music-player-panel {
             position: fixed;
-            bottom: 20px;
+            bottom: 80px; /* Position above the toggle button */
             right: 20px;
             width: 280px;
             background-color: var(--card-bg);
@@ -44,14 +44,54 @@
             box-shadow: 0 5px 15px -3px var(--shadow-color), 0 4px 6px -4px var(--shadow-color);
             border-radius: 0.5rem;
             padding: 1rem;
-            z-index: 1000;
             color: var(--text-color);
+            z-index: 999; 
+            transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+            transform: translateY(0%); 
+            opacity: 1;
+        }
+        #project-page-music-player-panel.hidden-player {
+            transform: translateY(150%); 
+            opacity: 0;
+            pointer-events: none;
         }
         #project-page-music-player-panel h4 {
             font-family: 'Montserrat', sans-serif;
             font-size: 0.9rem;
             margin-bottom: 0.5rem;
             color: var(--text-color-secondary);
+        }
+
+        #toggle-project-music-player-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: var(--accent1);
+            color: white;
+            border: none;
+            width: 48px; 
+            height: 48px; 
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000; 
+        }
+        #toggle-project-music-player-btn:hover {
+            background-color: var(--accent2);
+            transform: scale(1.1);
+        }
+         body.dark-theme #toggle-project-music-player-btn {
+            background-color: var(--accent3);
+        }
+        body.dark-theme #toggle-project-music-player-btn:hover {
+            background-color: var(--accent1);
+        }
+        #toggle-project-music-player-btn i {
+            font-size: 1.2rem; 
         }
     </style>
 </head>
@@ -75,7 +115,7 @@
                 Deforestation Analysis in Northeastern Turkey
             </h1>
             <p class="text-lg text-[var(--text-color-secondary)] mb-6">
-                Research on the causes, consequences, and potential solutions for deforestation in Turkey's Black Sea region, proposing an "Industrial Forest Project."
+                Researched causes, consequences, and solutions for deforestation in Turkey's Black Sea region, proposing an "Industrial Forest Project."
             </p>
 
             <div class="mb-8">
@@ -84,19 +124,19 @@
                     The central research question addressed was: "To what extent can deforestation in Northeastern Turkey be reduced?"
                 </p>
                 <p class="text-lg leading-relaxed card-text">
-                    This issue is critical due to the significant environmental and socio-economic impacts of forest loss in the region. For instance, the Altindere Valley, home to 32 endemic and 9 rare plant species, is under threat. Between 1984 and 2007, the Rize province saw a net decrease of 2.30% in total forested areas, with productive forests shrinking by 12,506 hectares while degraded forest areas increased.
+                    This issue is critical due to the significant environmental and socio-economic impacts of forest loss in the region. For instance, the Altindere Valley, home to 384 plant taxons including 32 endemic and 9 rare species, is under threat. Between 1984 and 2007, the Rize province saw a net decrease of 2.30% in total forested areas, with productive forests shrinking by 12,506 hectares while degraded forest areas increased by 14,805 hectares.
                 </p>
             </div>
 
             <div class="mb-8">
-                <h2 class="text-3xl font-semibold mb-4 card-title border-b pb-2 border-[var(--card-border)]">Underlying Causes</h2>
+                <h2 class="text-3xl font-semibold mb-4 card-title border-b pb-2 border-[var(--card-border)]">Underlying Causes of Deforestation</h2>
                 <p class="text-lg leading-relaxed card-text mb-2">
                     The research identified several key drivers of deforestation in Northeastern Turkey:
                 </p>
                 <ul class="list-disc list-inside text-lg card-text space-y-2 pl-4">
-                    <li><strong>Economic Factors:</strong> Excessive mining (open-pit operations requiring tree removal), construction of infrastructure (roads for tourism facilities causing damage to protected areas), and uncontrolled tourism growth aimed at short-term economic benefits.</li>
-                    <li><strong>Social Factors:</strong> Increased urbanization due to rural-to-urban migration leading to higher demand for wooden products and irregular land use changes. Lack of environmental education contributing to unsustainable harvesting, overgrazing, and human-caused wildfires.</li>
-                    <li><strong>Political Factors:</strong> Constitutional and legal arrangements that allow for the narrowing of "forest" definitions, and governmental decisions such as granting tree cutting permits for large-scale projects like the "Green Road Project."</li>
+                    <li><strong>Economic Factors:</strong> Excessive mining (e.g., 1012 mining licenses granted in six Eastern Black Sea provinces), construction of infrastructure (roads for tourism damaging protected areas like Altındere Valley National Park), and uncontrolled tourism growth aimed at short-term economic benefits (e.g., 3936.90 hectares of forest land allocated for tourism by 2001).</li>
+                    <li><strong>Social Factors:</strong> Increased urbanization due to rural-to-urban migration leading to higher demand for wooden products and irregular land use changes. Lack of environmental education contributing to unsustainable harvesting, overgrazing, and human-caused wildfires (a serious majority of wildfires are due to negligence).</li>
+                    <li><strong>Political Factors:</strong> Constitutional and legal arrangements that allow for the narrowing of "forest" definitions, and governmental decisions such as granting tree cutting permits for large-scale projects like the "Green Road Project" (16 decares permitted for cutting).</li>
                 </ul>
             </div>
 
@@ -104,7 +144,7 @@
                 <h2 class="text-3xl font-semibold mb-4 card-title border-b pb-2 border-[var(--card-border)]">Major Consequences</h2>
                  <ul class="list-disc list-inside text-lg card-text space-y-2 pl-4">
                     <li><strong>Socio-economic:</strong> Displacement of local populations from ancestral homes due to deforestation and its effects.</li>
-                    <li><strong>Environmental:</strong> Increased flooding and landslides in deforested areas (e.g., 1,280,820.83 tons of landslides annually in the Eastern Black Sea region). Habitat loss threatening biodiversity. Soil degradation. Contribution to CO2 emissions (estimated 10-15% of anthropogenic CO2 emissions globally are linked to deforestation).</li>
+                    <li><strong>Environmental:</strong> Increased flooding and landslides in deforested areas (e.g., 1,280,820.83 tons of landslides annually in the Eastern Black Sea region). Habitat loss threatening biodiversity. Soil degradation making land fragile and vulnerable. Contribution to CO2 emissions (estimated 10-15% of all anthropogenic CO2 emissions are linked to deforestation).</li>
                 </ul>
             </div>
 
@@ -114,32 +154,31 @@
                     As a comprehensive solution, the "K.O.A.Ş (Karadeniz Ormanlaştırma Anonim Şirketi)" social business project was proposed.
                 </p>
                 <p class="text-lg leading-relaxed card-text mb-2">
-                    <strong>Aim:</strong> To protect natural forests by reducing production pressure, decrease dependency on foreign raw materials, reduce carbon emissions and erosion, create employment, and contribute to rural development.
+                    <strong>Aim:</strong> To protect natural forests by reducing production pressure on them, decrease dependency on foreign raw materials by meeting increasing needs, reduce the current account deficit, reduce carbon emissions and erosion, create new employment areas, and contribute to rural development.
                 </p>
                 <p class="text-lg leading-relaxed card-text mb-2">
-                    <strong>Mission:</strong> To plant and manage an industrial forest (initially 60 hectares with ~120,000 oak and hornbeam trees) in the Rize province. This forest would supply raw materials for industries like paper and packaging, with harvesting and reforestation cycles planned over 15-17 years.
+                    <strong>Mission:</strong> To plant and create an industrial forest (initially 60 hectares with approximately 120,000 oak and hornbeam trees, or maritime pines) in the Rize province. This forest would supply raw materials for industries like paper and packaging, with harvesting and reforestation cycles planned over 15-17 years.
                 </p>
                  <p class="text-lg leading-relaxed card-text mb-2">
                     <strong>Implementation Stages:</strong>
                 </p>
                 <ul class="list-disc list-inside text-lg card-text space-y-1 pl-4">
-                    <li><strong>Public Awareness:</strong> Utilizing media and partnerships with schools/NGOs to educate the public on sustainable forest management.</li>
+                    <li><strong>Public Awareness:</strong> Utilizing media (TV, internet, print, billboards, product bills) and establishing partnerships with experts, schools, and local NGOs to educate the public on sustainable forest management and the importance of forests.</li>
                     <li><strong>Industrial Forest Project:</strong>
                         <ul class="list-disc list-inside ml-6 mt-1 space-y-1">
-                            <li>Acquiring land (e.g., in Rize, Fındıklı, Çağlayan village, an area previously affected by wildfire).</li>
+                            <li>Acquiring land (e.g., in Rize, Fındıklı, Çağlayan village, an area previously affected by wildfire with high potential for reforestation).</li>
                             <li>Planting a mixture of appropriate tree species (oak, hornbeam, or maritime pines) with optimal spacing ($3 \times 1$ meter gaps, ~3,300 trees/hectare).</li>
                             <li>Involving local citizens in planting and cutting processes to provide income and ensure transparency.</li>
-                            <li>Implementing a 15-17 year growth cycle, followed by a 5-year harvesting period, and immediate replanting. Converting cutting waste into mulch to enrich the soil.</li>
-                            <li>Potential for hazelnut cultivation on parts of the land for supplementary income.</li>
+                            <li>Implementing a 15-17 year growth cycle, followed by a 5-year harvesting period, and immediate replanting. Converting cutting waste into mulch to enrich the soil. The project cycle would repeat.</li>
+                            <li>Potential for hazelnut cultivation on parts of the land for supplementary income if more funds are needed.</li>
                         </ul>
                     </li>
-                    <li><strong>Evaluation:</strong> Selling harvested wood as raw material and finished furniture, reinvesting profits into forest expansion, worker incentives, and educational programs.</li>
+                    <li><strong>Evaluation:</strong> Selling harvested wood as raw material and finished furniture. Reinvesting profits into forest expansion, worker incentives, and continuing educational programs. Comparing deforestation statistics before and after the project to measure efficiency.</li>
                 </ul>
                  <p class="text-lg leading-relaxed card-text mt-2">
-                    This project aims to be a realistic, long-term, and measurable solution, addressing the root causes of deforestation and contributing to Turkey's sustainable development goals (SDG 13: Climate Action, SDG 15: Life on Land).
+                    This project aims to be a realistic, long-term, and measurable solution, addressing the root causes of deforestation like "lack of education" and contributing to Turkey's sustainable development goals (SDG 13: Climate Action, SDG 15: Life on Land).
                 </p>
             </div>
-
 
             <div class="mb-8">
                 <h2 class="text-3xl font-semibold mb-4 card-title border-b pb-2 border-[var(--card-border)]">Presentation Slides</h2>
@@ -171,8 +210,9 @@
         </section>
     </main>
 
-    <div id="project-page-music-player-panel">
-        <h4>Music Player</h4>
+    <button id="toggle-project-music-player-btn" aria-label="Toggle Music Player">
+        <i class="fas fa-music"></i> </button>
+    <div id="project-page-music-player-panel" class="hidden-player"> <h4>Music Player</h4>
         <iframe id="project-soundcloud-iframe-player"
             width="100%"
             height="120" scrolling="no"
@@ -223,8 +263,14 @@
         };
         applyProjectPageTheme();
 
-        // --- Music Player Logic for Project Pages ---
+        // --- Music Player Logic for Project Pages (including toggle) ---
         document.addEventListener('DOMContentLoaded', () => {
+            applyProjectPageTheme(); 
+
+            const projectMusicPlayerPanel = document.getElementById('project-page-music-player-panel');
+            const toggleMusicPlayerButton = document.getElementById('toggle-project-music-player-btn');
+            const toggleIcon = toggleMusicPlayerButton ? toggleMusicPlayerButton.querySelector('i') : null;
+
             const projectSoundcloudIframe = document.getElementById('project-soundcloud-iframe-player');
             const projectVolumeSlider = document.getElementById('project-volume-slider');
             const projectMuteToggleButton = document.getElementById('project-mute-toggle-btn');
@@ -232,7 +278,32 @@
             let projectIsMuted = false;
             let projectLastVolume = 50;
 
-            window.updateProjectVolumeSliderAppearance = () => {
+            if (toggleMusicPlayerButton && projectMusicPlayerPanel && toggleIcon) {
+                const isPlayerHidden = localStorage.getItem('projectPlayerHidden') === 'true';
+                if (isPlayerHidden) {
+                    projectMusicPlayerPanel.classList.add('hidden-player');
+                    toggleIcon.classList.remove('fa-times'); 
+                    toggleIcon.classList.add('fa-music');    
+                } else {
+                    projectMusicPlayerPanel.classList.remove('hidden-player');
+                    toggleIcon.classList.remove('fa-music');
+                    toggleIcon.classList.add('fa-times'); 
+                }
+
+                toggleMusicPlayerButton.addEventListener('click', () => {
+                    const currentlyHidden = projectMusicPlayerPanel.classList.toggle('hidden-player');
+                    localStorage.setItem('projectPlayerHidden', currentlyHidden);
+                    if (currentlyHidden) {
+                        toggleIcon.classList.remove('fa-times');
+                        toggleIcon.classList.add('fa-music');
+                    } else {
+                        toggleIcon.classList.remove('fa-music');
+                        toggleIcon.classList.add('fa-times');
+                    }
+                });
+            }
+
+            window.updateProjectVolumeSliderAppearance = () => { 
                 if (!projectVolumeSlider) return;
                 const progressPercent = projectVolumeSlider.value;
                 const getProjectCssVariable = (varName) => document.body ? getComputedStyle(document.body).getPropertyValue(varName).trim() : null;
@@ -243,7 +314,7 @@
 
             if (projectSoundcloudIframe && typeof SC !== 'undefined') {
                 projectScWidget = SC.Widget(projectSoundcloudIframe);
-                projectScWidget.bind(SC.Widget.Events.READY, () => {
+                projectScWidget.bind(SC.Widget.Events.READY, () => { 
                     console.log('SoundCloud Widget is ready on project page.');
                     const savedTrackURI = localStorage.getItem('soundcloudTrackURI');
                     const savedTrackTimeStr = localStorage.getItem('soundcloudTrackTime');
@@ -254,20 +325,20 @@
 
                     if (savedVolumeStr !== null) {
                         projectLastVolume = parseInt(savedVolumeStr, 10);
-                        projectVolumeSlider.value = projectLastVolume;
+                        if(projectVolumeSlider) projectVolumeSlider.value = projectLastVolume;
                         projectScWidget.setVolume(projectLastVolume);
                     } else {
-                         projectVolumeSlider.value = projectLastVolume;
+                         if(projectVolumeSlider) projectVolumeSlider.value = projectLastVolume;
                          projectScWidget.setVolume(projectLastVolume);
                     }
                     if (savedMutedStr === 'true') {
                         projectIsMuted = true;
                         projectScWidget.setVolume(0);
-                        projectVolumeSlider.value = 0;
-                        projectMuteToggleButton.innerHTML = '<i class="fas fa-volume-mute text-[var(--text-color-secondary)]"></i>';
+                        if(projectVolumeSlider) projectVolumeSlider.value = 0;
+                        if(projectMuteToggleButton) projectMuteToggleButton.innerHTML = '<i class="fas fa-volume-mute text-[var(--text-color-secondary)]"></i>';
                     } else {
                         projectIsMuted = false;
-                         projectMuteToggleButton.innerHTML = '<i class="fas fa-volume-up text-[var(--text-color-secondary)]"></i>';
+                         if(projectMuteToggleButton) projectMuteToggleButton.innerHTML = '<i class="fas fa-volume-up text-[var(--text-color-secondary)]"></i>';
                     }
                     updateProjectVolumeSliderAppearance();
 
@@ -288,7 +359,7 @@
                 projectScWidget.bind(SC.Widget.Events.ERROR, (err) => { console.error("Project Page SC Widget Error:", err);});
             }
 
-            if (projectVolumeSlider && projectScWidget) {
+            if (projectVolumeSlider && projectScWidget) { 
                 projectVolumeSlider.addEventListener('input', () => {
                     const newVolume = parseInt(projectVolumeSlider.value, 10);
                     projectScWidget.setVolume(newVolume);
@@ -296,33 +367,35 @@
                     projectIsMuted = newVolume === 0;
                     localStorage.setItem('soundcloudVolume', newVolume.toString());
                     localStorage.setItem('soundcloudMuted', projectIsMuted.toString());
-                    projectMuteToggleButton.innerHTML = projectIsMuted ? '<i class="fas fa-volume-mute text-[var(--text-color-secondary)]"></i>' : '<i class="fas fa-volume-up text-[var(--text-color-secondary)]"></i>';
+                    if(projectMuteToggleButton) projectMuteToggleButton.innerHTML = projectIsMuted ? '<i class="fas fa-volume-mute text-[var(--text-color-secondary)]"></i>' : '<i class="fas fa-volume-up text-[var(--text-color-secondary)]"></i>';
                     updateProjectVolumeSliderAppearance();
                 });
             }
 
-            if (projectMuteToggleButton && projectScWidget) {
+            if (projectMuteToggleButton && projectScWidget) { 
                 projectMuteToggleButton.addEventListener('click', () => {
                     projectIsMuted = !projectIsMuted;
                     if (projectIsMuted) {
                         projectScWidget.getVolume((currentVolume) => {
                             if(currentVolume > 0) projectLastVolume = currentVolume;
                             projectScWidget.setVolume(0);
-                            projectVolumeSlider.value = 0;
+                            if(projectVolumeSlider) projectVolumeSlider.value = 0;
                             projectMuteToggleButton.innerHTML = '<i class="fas fa-volume-mute text-[var(--text-color-secondary)]"></i>';
                         });
                     } else {
                         const restoreVolume = projectLastVolume > 0 ? projectLastVolume : 50;
                         projectScWidget.setVolume(restoreVolume);
-                        projectVolumeSlider.value = restoreVolume;
+                        if(projectVolumeSlider) projectVolumeSlider.value = restoreVolume;
                         projectMuteToggleButton.innerHTML = '<i class="fas fa-volume-up text-[var(--text-color-secondary)]"></i>';
                     }
                     localStorage.setItem('soundcloudMuted', projectIsMuted.toString());
-                    if (!projectIsMuted) localStorage.setItem('soundcloudVolume', projectVolumeSlider.value);
+                    if (!projectIsMuted && projectVolumeSlider) localStorage.setItem('soundcloudVolume', projectVolumeSlider.value);
                     updateProjectVolumeSliderAppearance();
                 });
             }
-            updateProjectVolumeSliderAppearance();
+            if (typeof updateProjectVolumeSliderAppearance === 'function') {
+                updateProjectVolumeSliderAppearance();
+            }
         });
     </script>
 </body>

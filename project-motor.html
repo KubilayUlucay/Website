@@ -22,6 +22,8 @@
             max-height: 400px; /* Limit height of gallery images */
             object-fit: cover; /* Ensure images cover the area nicely */
             width: 100%; /* Ensure gallery items take full width of their grid cell */
+            border-radius: 0.5rem; /* Added for consistency */
+            border: 1px solid var(--card-border); /* Added for consistency */
         }
         .slides-container {
             position: relative;
@@ -56,29 +58,66 @@
             border: 1px solid var(--card-border); /* Border consistent with theme */
         }
 
-        /* Styles for the fixed mini music player on project pages */
+        /* Styles for the fixed mini music player and its toggle button */
         #project-page-music-player-panel {
+            position: fixed;
+            bottom: 80px; /* Position above the toggle button */
+            right: 20px;
+            width: 280px;
+            background-color: var(--card-bg);
+            border: 1px solid var(--card-border);
+            box-shadow: 0 5px 15px -3px var(--shadow-color), 0 4px 6px -4px var(--shadow-color);
+            border-radius: 0.5rem;
+            padding: 1rem;
+            color: var(--text-color);
+            z-index: 999; 
+            transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+            transform: translateY(0%); 
+            opacity: 1;
+        }
+        #project-page-music-player-panel.hidden-player {
+            transform: translateY(150%); 
+            opacity: 0;
+            pointer-events: none;
+        }
+        #project-page-music-player-panel h4 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-color-secondary);
+        }
+
+        #toggle-project-music-player-btn {
             position: fixed;
             bottom: 20px;
             right: 20px;
-            width: 280px; /* Or your preferred width */
-            background-color: var(--card-bg); /* Use theme variable */
-            border: 1px solid var(--card-border); /* Use theme variable */
-            box-shadow: 0 5px 15px -3px var(--shadow-color), 0 4px 6px -4px var(--shadow-color); /* Use theme variable */
-            border-radius: 0.5rem; /* Tailwind's rounded-lg */
-            padding: 1rem;
-            z-index: 1000; /* Ensure it's above other content */
-            color: var(--text-color); /* Use theme variable */
+            background-color: var(--accent1);
+            color: white;
+            border: none;
+            width: 48px; 
+            height: 48px; 
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000; 
         }
-        /* Style for the title within the mini player */
-        #project-page-music-player-panel h4 {
-            font-family: 'Montserrat', sans-serif; /* Consistent heading font */
-            font-size: 0.9rem; /* Slightly smaller title */
-            margin-bottom: 0.5rem;
-            color: var(--text-color-secondary); /* Use theme variable */
+        #toggle-project-music-player-btn:hover {
+            background-color: var(--accent2);
+            transform: scale(1.1);
         }
-        /* Volume slider thumb styling will be inherited if class 'volume-slider-thumb' is used
-           and defined in the main style.css as previously discussed */
+         body.dark-theme #toggle-project-music-player-btn {
+            background-color: var(--accent3);
+        }
+        body.dark-theme #toggle-project-music-player-btn:hover {
+            background-color: var(--accent1);
+        }
+        #toggle-project-music-player-btn i {
+            font-size: 1.2rem; 
+        }
     </style>
 </head>
 <body class="font-rubik selection:bg-blue-200 selection:text-blue-900">
@@ -105,7 +144,7 @@
             </p>
 
             <div class="mb-8 main-project-image-container">
-                <img src="images/projects/motor/overall-motor.jpeg" alt="Overall view of the Axial Flux Motor">
+                <img src="images/Projects/Motor/overall-motor.jpeg" alt="Overall view of the Axial Flux Motor">
                 <p class="text-sm text-[var(--text-color-secondary)] mt-2"><i>Overall view of the completed motor prototype.</i></p>
             </div>
 
@@ -212,8 +251,9 @@
         </section>
     </main>
 
-    <div id="project-page-music-player-panel">
-        <h4>Music Player</h4>
+    <button id="toggle-project-music-player-btn" aria-label="Toggle Music Player">
+        <i class="fas fa-music"></i> </button>
+    <div id="project-page-music-player-panel" class="hidden-player"> <h4>Music Player</h4>
         <iframe id="project-soundcloud-iframe-player"
             width="100%"
             height="120" scrolling="no"
@@ -251,151 +291,153 @@
         const yearElement = document.getElementById("current-year");
         if (yearElement) { yearElement.textContent = new Date().getFullYear(); }
 
-        // Function to apply theme based on localStorage
         const applyProjectPageTheme = () => {
-            const savedTheme = localStorage.getItem('theme') || 'light'; // Default to light theme
+            const savedTheme = localStorage.getItem('theme') || 'light';
             if (savedTheme === 'dark') {
                 document.body.classList.add('dark-theme');
             } else {
                 document.body.classList.remove('dark-theme');
             }
-            // Update volume slider appearance if it exists and the function is defined
             if (typeof updateProjectVolumeSliderAppearance === 'function') {
                 updateProjectVolumeSliderAppearance();
             }
         };
-        applyProjectPageTheme(); // Apply theme as soon as the script runs
+        applyProjectPageTheme();
 
-        // --- Music Player Logic for Project Pages ---
+        // --- Music Player Logic for Project Pages (including toggle) ---
         document.addEventListener('DOMContentLoaded', () => {
+            applyProjectPageTheme(); 
+
+            const projectMusicPlayerPanel = document.getElementById('project-page-music-player-panel');
+            const toggleMusicPlayerButton = document.getElementById('toggle-project-music-player-btn');
+            const toggleIcon = toggleMusicPlayerButton ? toggleMusicPlayerButton.querySelector('i') : null;
+
             const projectSoundcloudIframe = document.getElementById('project-soundcloud-iframe-player');
             const projectVolumeSlider = document.getElementById('project-volume-slider');
             const projectMuteToggleButton = document.getElementById('project-mute-toggle-btn');
             let projectScWidget = null;
             let projectIsMuted = false;
-            let projectLastVolume = 50; // Default volume
+            let projectLastVolume = 50;
 
-            // Function to update the visual appearance of the volume slider's progress
-            window.updateProjectVolumeSliderAppearance = () => {
+            if (toggleMusicPlayerButton && projectMusicPlayerPanel && toggleIcon) {
+                // Initialize player visibility based on localStorage
+                const isPlayerHidden = localStorage.getItem('projectPlayerHidden') === 'true';
+                if (isPlayerHidden) {
+                    projectMusicPlayerPanel.classList.add('hidden-player');
+                    toggleIcon.classList.remove('fa-times'); 
+                    toggleIcon.classList.add('fa-music');    
+                } else {
+                    projectMusicPlayerPanel.classList.remove('hidden-player');
+                    toggleIcon.classList.remove('fa-music');
+                    toggleIcon.classList.add('fa-times'); 
+                }
+
+                toggleMusicPlayerButton.addEventListener('click', () => {
+                    const currentlyHidden = projectMusicPlayerPanel.classList.toggle('hidden-player');
+                    localStorage.setItem('projectPlayerHidden', currentlyHidden);
+                    if (currentlyHidden) {
+                        toggleIcon.classList.remove('fa-times');
+                        toggleIcon.classList.add('fa-music');
+                    } else {
+                        toggleIcon.classList.remove('fa-music');
+                        toggleIcon.classList.add('fa-times');
+                    }
+                });
+            }
+
+            window.updateProjectVolumeSliderAppearance = () => { 
                 if (!projectVolumeSlider) return;
                 const progressPercent = projectVolumeSlider.value;
-                // Helper to get CSS variables, ensuring body is available
                 const getProjectCssVariable = (varName) => document.body ? getComputedStyle(document.body).getPropertyValue(varName).trim() : null;
-
-                const progressColor = getProjectCssVariable('--volume-slider-progress-bg') || '#FF61E1'; // Fallback color
-                const trackColor = getProjectCssVariable('--volume-slider-track-bg') || '#e5e7eb'; // Fallback color
+                const progressColor = getProjectCssVariable('--volume-slider-progress-bg') || '#FF61E1';
+                const trackColor = getProjectCssVariable('--volume-slider-track-bg') || '#e5e7eb';
                 projectVolumeSlider.style.background = `linear-gradient(to right, ${progressColor} ${progressPercent}%, ${trackColor} ${progressPercent}%)`;
             };
 
-            // Initialize SoundCloud widget if the iframe and SC API are available
             if (projectSoundcloudIframe && typeof SC !== 'undefined') {
                 projectScWidget = SC.Widget(projectSoundcloudIframe);
-
-                projectScWidget.bind(SC.Widget.Events.READY, () => {
+                projectScWidget.bind(SC.Widget.Events.READY, () => { 
                     console.log('SoundCloud Widget is ready on project page.');
-
-                    // Retrieve saved music state from localStorage
                     const savedTrackURI = localStorage.getItem('soundcloudTrackURI');
                     const savedTrackTimeStr = localStorage.getItem('soundcloudTrackTime');
                     const savedVolumeStr = localStorage.getItem('soundcloudVolume');
                     const savedMutedStr = localStorage.getItem('soundcloudMuted');
                     const savedIsPlayingStr = localStorage.getItem('soundcloudIsPlaying');
+                    let playAfterLoad = savedIsPlayingStr === 'true';
 
-                    let playAfterLoad = savedIsPlayingStr === 'true'; // Determine if music should play on load
-
-                    // Set volume based on saved state or default
                     if (savedVolumeStr !== null) {
                         projectLastVolume = parseInt(savedVolumeStr, 10);
-                        projectVolumeSlider.value = projectLastVolume;
+                        if(projectVolumeSlider) projectVolumeSlider.value = projectLastVolume;
                         projectScWidget.setVolume(projectLastVolume);
                     } else {
-                         projectVolumeSlider.value = projectLastVolume; // Default 50
+                         if(projectVolumeSlider) projectVolumeSlider.value = projectLastVolume;
                          projectScWidget.setVolume(projectLastVolume);
                     }
-
-                    // Set mute state based on saved state
                     if (savedMutedStr === 'true') {
                         projectIsMuted = true;
-                        projectScWidget.setVolume(0); // Mute via API
-                        projectVolumeSlider.value = 0; // Reflect mute on slider
-                        projectMuteToggleButton.innerHTML = '<i class="fas fa-volume-mute text-[var(--text-color-secondary)]"></i>';
+                        projectScWidget.setVolume(0);
+                        if(projectVolumeSlider) projectVolumeSlider.value = 0;
+                        if(projectMuteToggleButton) projectMuteToggleButton.innerHTML = '<i class="fas fa-volume-mute text-[var(--text-color-secondary)]"></i>';
                     } else {
                         projectIsMuted = false;
-                        // Volume already set above
-                         projectMuteToggleButton.innerHTML = '<i class="fas fa-volume-up text-[var(--text-color-secondary)]"></i>';
+                         if(projectMuteToggleButton) projectMuteToggleButton.innerHTML = '<i class="fas fa-volume-up text-[var(--text-color-secondary)]"></i>';
                     }
-                    updateProjectVolumeSliderAppearance(); // Update slider visuals
+                    updateProjectVolumeSliderAppearance();
 
-                    // If a track URI was saved, load and attempt to resume it
                     if (savedTrackURI) {
-                        console.log(`Attempting to load and resume: ${savedTrackURI} at ${savedTrackTimeStr}ms, play: ${playAfterLoad}`);
                         projectScWidget.load(savedTrackURI, {
-                            auto_play: playAfterLoad, // SoundCloud API's auto_play for load
-                            callback: () => { // Callback after track is loaded
-                                console.log(`Track ${savedTrackURI} loaded.`);
+                            auto_play: playAfterLoad,
+                            callback: () => {
                                 if (savedTrackTimeStr) {
-                                    const seekTime = parseInt(savedTrackTimeStr, 10);
-                                    console.log(`Seeking to ${seekTime}ms`);
-                                    projectScWidget.seekTo(seekTime); // Seek to saved position
+                                    projectScWidget.seekTo(parseInt(savedTrackTimeStr, 10));
                                 }
-                                // Additional check to play if auto_play in load didn't trigger
                                 if (playAfterLoad && projectScWidget.play) {
-                                   setTimeout(() => projectScWidget.play(), 250); // Small delay might improve reliability
+                                   setTimeout(() => projectScWidget.play(), 250);
                                 }
                             }
                         });
-                    } else {
-                        console.log("No saved track URI found to resume. Player will load default playlist view.");
                     }
                 });
-                // Error handling for the widget
                 projectScWidget.bind(SC.Widget.Events.ERROR, (err) => { console.error("Project Page SC Widget Error:", err);});
-
-            }  else if (!projectSoundcloudIframe) {
-                console.log("SoundCloud iframe for project page music player not found.");
-            } else if (typeof SC === 'undefined') {
-                console.error("SoundCloud API (SC object) not loaded. Ensure api.js is included before this script.");
             }
 
-            // Event listener for the volume slider input
-            if (projectVolumeSlider && projectScWidget) {
+            if (projectVolumeSlider && projectScWidget) { 
                 projectVolumeSlider.addEventListener('input', () => {
                     const newVolume = parseInt(projectVolumeSlider.value, 10);
                     projectScWidget.setVolume(newVolume);
                     projectLastVolume = newVolume;
                     projectIsMuted = newVolume === 0;
-                    // Persist changes to localStorage
                     localStorage.setItem('soundcloudVolume', newVolume.toString());
                     localStorage.setItem('soundcloudMuted', projectIsMuted.toString());
-                    projectMuteToggleButton.innerHTML = projectIsMuted ? '<i class="fas fa-volume-mute text-[var(--text-color-secondary)]"></i>' : '<i class="fas fa-volume-up text-[var(--text-color-secondary)]"></i>';
+                    if(projectMuteToggleButton) projectMuteToggleButton.innerHTML = projectIsMuted ? '<i class="fas fa-volume-mute text-[var(--text-color-secondary)]"></i>' : '<i class="fas fa-volume-up text-[var(--text-color-secondary)]"></i>';
                     updateProjectVolumeSliderAppearance();
                 });
             }
 
-            // Event listener for the mute toggle button
-            if (projectMuteToggleButton && projectScWidget) {
+            if (projectMuteToggleButton && projectScWidget) { 
                 projectMuteToggleButton.addEventListener('click', () => {
                     projectIsMuted = !projectIsMuted;
                     if (projectIsMuted) {
-                        projectScWidget.getVolume((currentVolume) => { // Get current volume before muting
-                            if(currentVolume > 0) projectLastVolume = currentVolume; // Store it
-                            projectScWidget.setVolume(0); // Mute
-                            projectVolumeSlider.value = 0;
+                        projectScWidget.getVolume((currentVolume) => {
+                            if(currentVolume > 0) projectLastVolume = currentVolume;
+                            projectScWidget.setVolume(0);
+                            if(projectVolumeSlider) projectVolumeSlider.value = 0;
                             projectMuteToggleButton.innerHTML = '<i class="fas fa-volume-mute text-[var(--text-color-secondary)]"></i>';
                         });
                     } else {
-                        const restoreVolume = projectLastVolume > 0 ? projectLastVolume : 50; // Restore or default
+                        const restoreVolume = projectLastVolume > 0 ? projectLastVolume : 50;
                         projectScWidget.setVolume(restoreVolume);
-                        projectVolumeSlider.value = restoreVolume;
+                        if(projectVolumeSlider) projectVolumeSlider.value = restoreVolume;
                         projectMuteToggleButton.innerHTML = '<i class="fas fa-volume-up text-[var(--text-color-secondary)]"></i>';
                     }
                     localStorage.setItem('soundcloudMuted', projectIsMuted.toString());
-                    if (!projectIsMuted) localStorage.setItem('soundcloudVolume', projectVolumeSlider.value); // Save volume if unmuted
+                    if (!projectIsMuted && projectVolumeSlider) localStorage.setItem('soundcloudVolume', projectVolumeSlider.value);
                     updateProjectVolumeSliderAppearance();
                 });
             }
-             // Initial call to set slider gradient based on default/loaded value
-            updateProjectVolumeSliderAppearance();
+            if (typeof updateProjectVolumeSliderAppearance === 'function') {
+                updateProjectVolumeSliderAppearance();
+            }
         });
     </script>
 </body>

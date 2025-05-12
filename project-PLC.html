@@ -11,53 +11,42 @@
         href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;700&family=Montserrat:wght@400;600;700&display=swap"
         rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Honk&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="style.css"> <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link
         rel="icon"
         href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💡</text></svg>">
     <style>
         /* Styles for project page elements */
-        .project-gallery img {
-            max-height: 300px;
-            object-fit: contain;
-            width: 100%;
-            border-radius: 0.5rem;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            margin-bottom: 0.5rem;
-        }
-        .sub-project-card {
-            background-color: var(--bg-color);
-            padding: 1.5rem;
-            border-radius: 0.5rem;
-            margin-bottom: 2rem;
-            border: 1px solid var(--card-border);
-        }
-        body.dark-theme .sub-project-card {
-            background-color: #2d3748; /* Slightly lighter for contrast in dark mode */
-        }
-
-        /* Container for embedding PDF */
         .pdf-embed-container {
             width: 100%;
             height: 80vh; /* 80% of the viewport height, adjust as needed */
             border: 1px solid var(--card-border);
-            border-radius: 0.5rem; /* Match other card styles */
-            overflow: hidden; /* Ensures iframe respects border-radius */
+            border-radius: 0.5rem;
+            overflow: hidden;
             margin-top: 1rem;
             margin-bottom: 1.5rem;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); /* Consistent shadow */
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
         }
         .pdf-embed-container iframe {
             width: 100%;
             height: 100%;
-            border: none; /* Remove iframe default border */
+            border: none;
+        }
+        .sub-project-card {
+            background-color: var(--bg-color); /* Use a slightly different background or more padding */
+            padding: 1.5rem;
+            border-radius: 0.5rem; /* Consistent rounding */
+            margin-bottom: 2rem; /* Space between sub-project cards */
+            border: 1px solid var(--card-border); /* Consistent border */
+        }
+        body.dark-theme .sub-project-card {
+            background-color: #2d3748; /* Slightly lighter than main card-bg in dark for distinction */
         }
 
-        /* Styles for the fixed mini music player on project pages */
+        /* Styles for the fixed mini music player and its toggle button */
         #project-page-music-player-panel {
             position: fixed;
-            bottom: 20px;
+            bottom: 80px; /* Position above the toggle button */
             right: 20px;
             width: 280px;
             background-color: var(--card-bg);
@@ -65,14 +54,54 @@
             box-shadow: 0 5px 15px -3px var(--shadow-color), 0 4px 6px -4px var(--shadow-color);
             border-radius: 0.5rem;
             padding: 1rem;
-            z-index: 1000;
             color: var(--text-color);
+            z-index: 999; 
+            transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+            transform: translateY(0%); 
+            opacity: 1;
+        }
+        #project-page-music-player-panel.hidden-player {
+            transform: translateY(150%); 
+            opacity: 0;
+            pointer-events: none;
         }
         #project-page-music-player-panel h4 {
             font-family: 'Montserrat', sans-serif;
             font-size: 0.9rem;
             margin-bottom: 0.5rem;
             color: var(--text-color-secondary);
+        }
+
+        #toggle-project-music-player-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: var(--accent1);
+            color: white;
+            border: none;
+            width: 48px; 
+            height: 48px; 
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000; 
+        }
+        #toggle-project-music-player-btn:hover {
+            background-color: var(--accent2);
+            transform: scale(1.1);
+        }
+         body.dark-theme #toggle-project-music-player-btn {
+            background-color: var(--accent3);
+        }
+        body.dark-theme #toggle-project-music-player-btn:hover {
+            background-color: var(--accent1);
+        }
+        #toggle-project-music-player-btn i {
+            font-size: 1.2rem; 
         }
     </style>
 </head>
@@ -100,56 +129,44 @@
             </p>
 
             <div class="mb-8">
-                <h2 class="text-3xl font-semibold mb-4 card-title border-b pb-2 border-[var(--card-border)]">Project Overview & Report</h2>
+                <h2 class="text-3xl font-semibold mb-4 card-title border-b pb-2 border-[var(--card-border)]">Project Introduction</h2>
                 <p class="text-lg leading-relaxed mb-4 card-text">
-                    This final project for the EE392 Industrial Automated Systems course involved the design and implementation of two distinct PLC-based automation systems: an intelligent Traffic Lights Controller and an interactive Toy Claw machine. Both systems were developed using Schneider EcoStruxure, focusing on practical application of PLC programming, HMI design, and control logic development. The project aimed to demonstrate proficiency in creating automated solutions for real-world scenarios and entertainment applications.
+                    This final project for the EE392 Industrial Automated Systems course involved an exploration of control systems through two distinct projects: an intelligent Traffic Lights Controller and an interactive Toy Claw machine. Both systems were developed using Schneider EcoStruxure, focusing on the practical application of PLC programming, HMI design, and control logic development. The project aimed to demonstrate proficiency in creating automated solutions for real-world scenarios and entertainment applications, highlighting the versatility of control engineering.
                 </p>
-                <p class="text-lg leading-relaxed mb-4 card-text">
-                    The full project report, detailing both sub-projects, methodology, and findings, is embedded below for direct viewing:
-                </p>
-                 <div class="pdf-embed-container">
-                    <iframe src="EE392.pdf" title="PLC Automation Systems Project Report EE392">
-                        Your browser does not support embedded PDFs. You can <a href="EE392.pdf" target="_blank">download the PDF to view it.</a>
-                    </iframe>
-                </div>
             </div>
-
+            
             <div class="sub-project-card">
                 <h2 class="text-3xl font-semibold mb-4 card-title border-b pb-2 border-[var(--card-border)]">1. Traffic Lights Controller</h2>
                 <div class="mb-6">
                     <h3 class="text-2xl font-semibold mb-2 card-title">Problem Statement</h3>
                     <p class="text-lg leading-relaxed card-text">
-                        The core problem was to design an efficient control system for traffic management at a four-way intersection. This included defining logic for normal operational hours with specific light timings and an "after-hours" mode with flashing yellow lights for reduced traffic periods.
+                        The core problem addressed was the efficient control of traffic at a four-way intersection, considering both normal and after-hours operation. The system needed to manage traffic flow smoothly by adapting to varying conditions based on a state transition diagram and user-friendly HMI controls.
                     </p>
                 </div>
 
                 <div class="mb-6">
                     <h3 class="text-2xl font-semibold mb-2 card-title">Components & HMI</h3>
-                    <p class="text-lg leading-relaxed card-text mb-2">
-                        <strong>Inputs:</strong> System On/Off (B1), After Hours Operation (B2).
-                    </p>
-                    <p class="text-lg leading-relaxed card-text mb-2">
-                        <strong>Outputs:</strong> 8 traffic lights (L1-L4, two per intersection approach), system working indicator.
-                    </p>
+                    <p class="text-lg leading-relaxed card-text mb-1"><strong>Inputs:</strong> System Turn On/Off (B1 - latching), After Hours Operation (B2 - latching).</p>
+                    <p class="text-lg leading-relaxed card-text mb-1"><strong>Outputs:</strong> 8 traffic lights (2 pairs for each of the 4 intersections: L1, L2, L3, L4), Traffic system working indicator.</p>
                     <p class="text-lg leading-relaxed card-text">
-                        <strong>HMI Design:</strong> The HMI featured a visual representation of the intersection with all 8 traffic lights, a system status indicator, and three control buttons: "Start the system," "Stop the system," and "After Hours."
+                        <strong>HMI Design:</strong> The HMI provided a visual representation of the intersection with all 8 traffic lights, a system status indicator, and three control buttons: "Start the system," "Stop the system," and "After Hours."
                     </p>
                 </div>
 
                 <div class="mb-6">
-                    <h3 class="text-2xl font-semibold mb-2 card-title">Operational Logic</h3>
+                    <h3 class="text-2xl font-semibold mb-2 card-title">Operational Logic & Objectives</h3>
                     <ul class="list-disc list-inside text-lg card-text space-y-1">
-                        <li><strong>Normal Operation:</strong> Red light (90s), Yellow light (5s), Green light (120s followed by 5s flashing at 1Hz). This cycle repeats for opposing pairs of lights.</li>
-                        <li><strong>After-Hours Operation:</strong> Activated by button B2, all traffic lights switch to flashing yellow at 1Hz. The system reverts to normal operation if B2 is deactivated and the system is restarted.</li>
-                        <li><strong>Advanced Lights (Research):</strong> Explored the use of FCT Push/Pull Load Cells (0.5-500 Ton capacity) for vehicle detection to potentially optimize light timings, though not fully implemented in this phase.</li>
+                        <li><strong>Normal Operation:</strong> Designed to follow a specific timing cycle: State 1 - Red light (90s); State 2 - Yellow light (5s); State 3 - Green light (120s), followed by the green light flashing at 1Hz for 5 seconds before repeating the cycle.</li>
+                        <li><strong>After-Hours Operation:</strong> When activated (B2=1), all traffic lights transition to flashing yellow at 1Hz. The system was designed to revert to normal operation if B2 is deactivated and the system is (re)started.</li>
+                        <li><strong>Advanced Lights (Research):</strong> Explored the potential use of FCT Push/Pull Load Cells for vehicle detection to create more adaptive light timings, though this was a research component not fully implemented.</li>
                     </ul>
                 </div>
                  <div class="mb-6">
                     <h3 class="text-2xl font-semibold mb-2 card-title">Observations & Challenges</h3>
                     <ul class="list-disc list-inside text-lg card-text space-y-1">
-                        <li>Encountered an issue where the system did not correctly revert to the normal state from after-hours mode if stopped and restarted.</li>
-                        <li>Full implementation of Real-Time Clock (RTC) for automatic after-hours switching and sensor-based automation for advanced lights was not completed.</li>
-                        <li>A bug was observed where all lights could turn on simultaneously after extended green light periods, potentially leading to unsafe conditions.</li>
+                        <li>An issue was noted where the system did not correctly revert to the normal state from after-hours mode if stopped and then restarted; lights would turn off directly.</li>
+                        <li>Full implementation of a Real-Time Clock (RTC) for automatic after-hours switching and the sensor-based advanced light system was not completed.</li>
+                        <li>A bug was observed where, after the 120-second green light phase, all lights could potentially turn on, which could lead to hazardous road conditions.</li>
                     </ul>
                 </div>
             </div>
@@ -159,40 +176,54 @@
                 <div class="mb-6">
                     <h3 class="text-2xl font-semibold mb-2 card-title">Problem Statement</h3>
                     <p class="text-lg leading-relaxed card-text">
-                        The objective was to create an engaging and interactive toy claw machine simulation. This involved designing the control logic for claw movement (X, Y, Z axes), gripper operation, game timing, and user feedback via an HMI.
+                        The objective was to create an interactive and engaging toy claw machine simulation. This involved designing the control system for claw movement (X, Y, Z axes), gripper operation, game timing (90 seconds per play), and user feedback via an HMI.
                     </p>
                 </div>
 
                  <div class="mb-6">
-                    <h3 class="text-2xl font-semibold mb-2 card-title">Gameplay & Components</h3>
-                     <p class="text-lg leading-relaxed card-text mb-2">
-                        <strong>Game Rules:</strong> Coin insertion activates the game. Player has 90 seconds to position the claw using a joystick. Pressing "Start Game" initiates the claw's automated sequence (open, down, close, up, release). "Winner" or "Game Over" messages are displayed.
+                    <h3 class="text-2xl font-semibold mb-2 card-title">Gameplay, Components & HMI</h3>
+                     <p class="text-lg leading-relaxed card-text mb-1">
+                        <strong>Game Rules & Sequence:</strong> Coin insertion (simulated by button S0) activates the game. The player has 90 seconds to maneuver the claw. Pressing the "Start Game" button (B0) initiates the claw's automated sequence: open, descend, close, ascend, move to drop-off, and release. "Winner" or "Game Over" messages are displayed based on outcome.
                     </p>
-                    <p class="text-lg leading-relaxed card-text mb-2">
-                        <strong>Inputs:</strong> Game Start button (B0), Coin OK sensor (S0), X/Y motion inputs.
+                    <p class="text-lg leading-relaxed card-text mb-1">
+                        <strong>Inputs:</strong> Game Start Button (B0 - momentary), Input Coin OK (S0 - momentary), X/Y motion joystick inputs (X2, X3, X4, X5).
                     </p>
-                     <p class="text-lg leading-relaxed card-text mb-2">
-                        <strong>Outputs:</strong> X, Y, Z motor controls (Left/Right, Up/Down), Gripper Open/Close.
+                     <p class="text-lg leading-relaxed card-text mb-1">
+                        <strong>Outputs:</strong> X_Motor_Right/Left, Y_Motor_Right/Left, Z_Motor_Up/Down, Gripper_Open/Close.
+                    </p>
+                     <p class="text-lg leading-relaxed card-text mb-1">
+                        <strong>Internal Variables:</strong> Total_Number_of_Games_Played, Total_Number_of_Wins, Date_and_Time_of_Last_Win.
                     </p>
                     <p class="text-lg leading-relaxed card-text">
-                        <strong>HMI Design:</strong> Displayed joystick buttons (Up, Down, Left, Right), "Start Game" button, remaining time, game status messages ("GAME IS ON!", "CONGRATS!", "NO PRIZE :("), and visual feedback for arm motion. Included "Prize: ON/OFF" indicators.
+                        <strong>HMI Design:</strong> Displayed joystick buttons for four directions, a "START GAME" button, remaining time display, game status messages (e.g., "GAME IS ON!", "CONGRATS!", "NO PRIZE :(" with Spongebob/Mike Wazowski images), and "Prize: ON/OFF" indicators.
                     </p>
                 </div>
                  <div class="mb-6">
                     <h3 class="text-2xl font-semibold mb-2 card-title">Observations & Challenges</h3>
                     <ul class="list-disc list-inside text-lg card-text space-y-1">
-                        <li>The "time left" clock did not reset correctly for subsequent rounds after a game finished.</li>
-                        <li>The "Date_and_Time_of_Last_Win" internal variable was not displayed in a user-friendly date format on the HMI.</li>
-                        <li>Joystick buttons required continuous pressing for movement (hold-to-move).</li>
-                        <li>These identified issues were noted as fixable with further development and testing.</li>
+                        <li>The "time left" clock did not reset correctly for subsequent game rounds.</li>
+                        <li>The "Date_of_Last_Win" was not displayed in a proper date format in the animation table (though counted internally).</li>
+                        <li>Joystick buttons were designed as hold-to-move, requiring continuous pressing.</li>
                     </ul>
+                </div>
+            </div>
+
+            <div class="mb-8">
+                <h2 class="text-3xl font-semibold mb-4 card-title border-b pb-2 border-[var(--card-border)]">Full Project Report</h2>
+                <p class="text-lg leading-relaxed mb-4 card-text">
+                    The detailed problem statements, HMI designs, state diagrams, component lists, and observations for both the Traffic Lights Controller and the Toy Claw machine are documented in the full project report, embedded below:
+                </p>
+                <div class="pdf-embed-container">
+                    <iframe src="EE392.pdf" title="PLC Automation Systems Project Report (EE392)">
+                        Your browser does not support embedded PDFs. You can <a href="EE392.pdf" target="_blank">download the PDF to view it.</a>
+                    </iframe>
                 </div>
             </div>
 
             <div class="mb-8">
                 <h2 class="text-3xl font-semibold mb-4 card-title border-b pb-2 border-[var(--card-border)]">Overall Outcomes & Learning</h2>
                 <p class="text-lg leading-relaxed card-text">
-                    This project provided valuable hands-on experience in PLC programming with Schneider EcoStruxure, HMI design, and the development of control logic for both sequential and time-based operations. It highlighted the importance of thorough testing and debugging in automation projects. The challenges encountered offered practical learning opportunities in troubleshooting and refining control system behavior. Both sub-projects successfully demonstrated the core principles of industrial automated systems, showcasing the versatility of PLCs in diverse applications from traffic management to interactive entertainment.
+                    This project provided valuable hands-on experience in PLC programming with Schneider EcoStruxure, HMI design, and the development of control logic for both sequential and time-based operations. It highlighted the importance of thorough testing and debugging in automation projects. The challenges encountered offered practical learning opportunities in troubleshooting and refining control system behavior. Both sub-projects successfully demonstrated the core principles of industrial automated systems, showcasing the versatility of PLCs in diverse applications from traffic management to interactive entertainment. The lessons learned contribute to ongoing advancement in industrial automated systems.
                 </p>
             </div>
 
@@ -204,8 +235,9 @@
         </section>
     </main>
 
-    <div id="project-page-music-player-panel">
-        <h4>Music Player</h4>
+    <button id="toggle-project-music-player-btn" aria-label="Toggle Music Player">
+        <i class="fas fa-music"></i> </button>
+    <div id="project-page-music-player-panel" class="hidden-player"> <h4>Music Player</h4>
         <iframe id="project-soundcloud-iframe-player"
             width="100%"
             height="120" scrolling="no"
@@ -256,8 +288,14 @@
         };
         applyProjectPageTheme();
 
-        // --- Music Player Logic for Project Pages ---
+        // --- Music Player Logic for Project Pages (including toggle) ---
         document.addEventListener('DOMContentLoaded', () => {
+            applyProjectPageTheme(); 
+
+            const projectMusicPlayerPanel = document.getElementById('project-page-music-player-panel');
+            const toggleMusicPlayerButton = document.getElementById('toggle-project-music-player-btn');
+            const toggleIcon = toggleMusicPlayerButton ? toggleMusicPlayerButton.querySelector('i') : null;
+
             const projectSoundcloudIframe = document.getElementById('project-soundcloud-iframe-player');
             const projectVolumeSlider = document.getElementById('project-volume-slider');
             const projectMuteToggleButton = document.getElementById('project-mute-toggle-btn');
@@ -265,7 +303,32 @@
             let projectIsMuted = false;
             let projectLastVolume = 50;
 
-            window.updateProjectVolumeSliderAppearance = () => {
+            if (toggleMusicPlayerButton && projectMusicPlayerPanel && toggleIcon) {
+                const isPlayerHidden = localStorage.getItem('projectPlayerHidden') === 'true';
+                if (isPlayerHidden) {
+                    projectMusicPlayerPanel.classList.add('hidden-player');
+                    toggleIcon.classList.remove('fa-times'); 
+                    toggleIcon.classList.add('fa-music');    
+                } else {
+                    projectMusicPlayerPanel.classList.remove('hidden-player');
+                    toggleIcon.classList.remove('fa-music');
+                    toggleIcon.classList.add('fa-times'); 
+                }
+
+                toggleMusicPlayerButton.addEventListener('click', () => {
+                    const currentlyHidden = projectMusicPlayerPanel.classList.toggle('hidden-player');
+                    localStorage.setItem('projectPlayerHidden', currentlyHidden);
+                    if (currentlyHidden) {
+                        toggleIcon.classList.remove('fa-times');
+                        toggleIcon.classList.add('fa-music');
+                    } else {
+                        toggleIcon.classList.remove('fa-music');
+                        toggleIcon.classList.add('fa-times');
+                    }
+                });
+            }
+
+            window.updateProjectVolumeSliderAppearance = () => { 
                 if (!projectVolumeSlider) return;
                 const progressPercent = projectVolumeSlider.value;
                 const getProjectCssVariable = (varName) => document.body ? getComputedStyle(document.body).getPropertyValue(varName).trim() : null;
@@ -276,7 +339,7 @@
 
             if (projectSoundcloudIframe && typeof SC !== 'undefined') {
                 projectScWidget = SC.Widget(projectSoundcloudIframe);
-                projectScWidget.bind(SC.Widget.Events.READY, () => {
+                projectScWidget.bind(SC.Widget.Events.READY, () => { 
                     console.log('SoundCloud Widget is ready on project page.');
                     const savedTrackURI = localStorage.getItem('soundcloudTrackURI');
                     const savedTrackTimeStr = localStorage.getItem('soundcloudTrackTime');
@@ -287,20 +350,20 @@
 
                     if (savedVolumeStr !== null) {
                         projectLastVolume = parseInt(savedVolumeStr, 10);
-                        projectVolumeSlider.value = projectLastVolume;
+                        if(projectVolumeSlider) projectVolumeSlider.value = projectLastVolume;
                         projectScWidget.setVolume(projectLastVolume);
                     } else {
-                         projectVolumeSlider.value = projectLastVolume;
+                         if(projectVolumeSlider) projectVolumeSlider.value = projectLastVolume;
                          projectScWidget.setVolume(projectLastVolume);
                     }
                     if (savedMutedStr === 'true') {
                         projectIsMuted = true;
                         projectScWidget.setVolume(0);
-                        projectVolumeSlider.value = 0;
-                        projectMuteToggleButton.innerHTML = '<i class="fas fa-volume-mute text-[var(--text-color-secondary)]"></i>';
+                        if(projectVolumeSlider) projectVolumeSlider.value = 0;
+                        if(projectMuteToggleButton) projectMuteToggleButton.innerHTML = '<i class="fas fa-volume-mute text-[var(--text-color-secondary)]"></i>';
                     } else {
                         projectIsMuted = false;
-                         projectMuteToggleButton.innerHTML = '<i class="fas fa-volume-up text-[var(--text-color-secondary)]"></i>';
+                         if(projectMuteToggleButton) projectMuteToggleButton.innerHTML = '<i class="fas fa-volume-up text-[var(--text-color-secondary)]"></i>';
                     }
                     updateProjectVolumeSliderAppearance();
 
@@ -321,7 +384,7 @@
                 projectScWidget.bind(SC.Widget.Events.ERROR, (err) => { console.error("Project Page SC Widget Error:", err);});
             }
 
-            if (projectVolumeSlider && projectScWidget) {
+            if (projectVolumeSlider && projectScWidget) { 
                 projectVolumeSlider.addEventListener('input', () => {
                     const newVolume = parseInt(projectVolumeSlider.value, 10);
                     projectScWidget.setVolume(newVolume);
@@ -329,33 +392,35 @@
                     projectIsMuted = newVolume === 0;
                     localStorage.setItem('soundcloudVolume', newVolume.toString());
                     localStorage.setItem('soundcloudMuted', projectIsMuted.toString());
-                    projectMuteToggleButton.innerHTML = projectIsMuted ? '<i class="fas fa-volume-mute text-[var(--text-color-secondary)]"></i>' : '<i class="fas fa-volume-up text-[var(--text-color-secondary)]"></i>';
+                    if(projectMuteToggleButton) projectMuteToggleButton.innerHTML = projectIsMuted ? '<i class="fas fa-volume-mute text-[var(--text-color-secondary)]"></i>' : '<i class="fas fa-volume-up text-[var(--text-color-secondary)]"></i>';
                     updateProjectVolumeSliderAppearance();
                 });
             }
 
-            if (projectMuteToggleButton && projectScWidget) {
+            if (projectMuteToggleButton && projectScWidget) { 
                 projectMuteToggleButton.addEventListener('click', () => {
                     projectIsMuted = !projectIsMuted;
                     if (projectIsMuted) {
                         projectScWidget.getVolume((currentVolume) => {
                             if(currentVolume > 0) projectLastVolume = currentVolume;
                             projectScWidget.setVolume(0);
-                            projectVolumeSlider.value = 0;
+                            if(projectVolumeSlider) projectVolumeSlider.value = 0;
                             projectMuteToggleButton.innerHTML = '<i class="fas fa-volume-mute text-[var(--text-color-secondary)]"></i>';
                         });
                     } else {
                         const restoreVolume = projectLastVolume > 0 ? projectLastVolume : 50;
                         projectScWidget.setVolume(restoreVolume);
-                        projectVolumeSlider.value = restoreVolume;
+                        if(projectVolumeSlider) projectVolumeSlider.value = restoreVolume;
                         projectMuteToggleButton.innerHTML = '<i class="fas fa-volume-up text-[var(--text-color-secondary)]"></i>';
                     }
                     localStorage.setItem('soundcloudMuted', projectIsMuted.toString());
-                    if (!projectIsMuted) localStorage.setItem('soundcloudVolume', projectVolumeSlider.value);
+                    if (!projectIsMuted && projectVolumeSlider) localStorage.setItem('soundcloudVolume', projectVolumeSlider.value);
                     updateProjectVolumeSliderAppearance();
                 });
             }
-            updateProjectVolumeSliderAppearance();
+            if (typeof updateProjectVolumeSliderAppearance === 'function') {
+                updateProjectVolumeSliderAppearance();
+            }
         });
     </script>
 </body>
