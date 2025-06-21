@@ -15,7 +15,7 @@
   />
   <link href="https://fonts.googleapis.com/css2?family=Honk&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" xintegrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
   <link rel="stylesheet" href="style.css">
 
@@ -88,20 +88,30 @@
       <h2 class="text-4xl font-semibold text-center mb-10 font-montserrat">About Me</h2>
       <div class="card-bg p-8 rounded-lg shadow-lg font-rubik">
         <p class="text-lg leading-relaxed mb-4">
-          Hello! I'm Kubilay, an Electrical and Electronics Engineering student at Özyeğin University with a minor in Computer Science, expecting to graduate in 2025. I have a passion for bridging the gap between hardware and software, particularly in areas like power systems, sustainable technologies, electric vehicles, and robotics.
-        </p>
+          Hello, I'm Kubilay. I'm an Electrical and Electronics Engineering student at Özyeğin University with a deep passion for bringing technology to life. My studies and projects are driven by a fascination with the intersection of hardware and software—from designing custom PCBs and control systems to programming the logic that makes them work.        </p>
         <p class="text-lg leading-relaxed mb-4">
-          I thrive on hands-on projects, from designing custom motors and analyzing wind turbine grids to developing automation logic and diving into machine learning for financial analysis. My internship at BEKO R&D honed my skills in sensor integration and R&D processes within a corporate setting.
-        </p>
-        <p class="text-lg leading-relaxed">
-          Beyond academics, I've been actively involved in the IEEE Özyeğin University Student Branch, growing from crew member to Chairman and now President of the Supervisory Board, significantly boosting our activities and membership. I'm always eager to learn, solve problems, and contribute to innovative projects. Located right here in beautiful İstanbul!
-        </p>
+          My hands-on experience, including an R&D internship at BEKO, has solidified my desire to solve real-world engineering challenges. I'm currently seeking a full-time R&D role or a Master's program where I can apply my skills in power electronics, embedded systems, and robotics, and contribute to building innovative new technologies.        </p>
       </div>
     </section>
 
     <section id="projects" class="relative mb-20 scroll-mt-20">
       <h2 class="text-4xl font-semibold text-center mb-10 font-montserrat relative z-10">Projects</h2>
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 font-rubik relative z-10">
+        
+        <!-- === NEW: SENIOR PROJECT (FULL WIDTH) === -->
+        <a href="BMS.html" class="lg:col-span-3 card-bg block rounded-lg shadow-lg overflow-hidden transform hover:scale-105 transition duration-300 hover:shadow-xl">
+            <div class="p-6">
+                <h3 class="text-2xl font-semibold mb-3 card-title"><i class="fas fa-star text-yellow-400 mr-2"></i>Senior Year Project: Battery Health & Performance Management System</h3>
+                <p class="mb-4 card-text">Designed and simulated a comprehensive Battery Management System (BMS) for Li-ion batteries, featuring a custom PCB, an STM32-based control unit, and a novel active cell balancing algorithm validated in MATLAB/Simulink.</p>
+                <span class="inline-block bg-blue-100 text-blue-800 text-xs font-medium mr-2 mb-2 px-2.5 py-0.5 rounded">BMS</span>
+                <span class="inline-block bg-green-100 text-green-800 text-xs font-medium mr-2 mb-2 px-2.5 py-0.5 rounded">STM32</span>
+                <span class="inline-block bg-purple-100 text-purple-800 text-xs font-medium mr-2 mb-2 px-2.5 py-0.5 rounded">PCB Design</span>
+                <span class="inline-block bg-yellow-100 text-yellow-800 text-xs font-medium mr-2 mb-2 px-2.5 py-0.5 rounded">Active Balancing</span>
+                <span class="inline-block bg-indigo-100 text-indigo-800 text-xs font-medium mr-2 mb-2 px-2.5 py-0.5 rounded">MATLAB/Simulink</span>
+                <span class="inline-block bg-red-100 text-red-800 text-xs font-medium mr-2 mb-2 px-2.5 py-0.5 rounded">KiCad</span>
+            </div>
+        </a>
+
         <a href="project-motor.html" class="card-bg block rounded-lg shadow-lg overflow-hidden transform hover:scale-105 transition duration-300 hover:shadow-xl">
           <div class="p-6"><h3 class="text-2xl font-semibold mb-3 card-title">Remote-Controlled Axial Flux Motor</h3><p class="mb-4 card-text">Designed, built, and tested a custom electric axial flux motor with hand-wired coils and NRF24 remote control.</p><span class="inline-block bg-blue-100 text-blue-800 text-xs font-medium mr-2 mb-2 px-2.5 py-0.5 rounded">Arduino</span><span class="inline-block bg-green-100 text-green-800 text-xs font-medium mr-2 mb-2 px-2.5 py-0.5 rounded">3D Printing</span><span class="inline-block bg-yellow-100 text-yellow-800 text-xs font-medium mr-2 mb-2 px-2.5 py-0.5 rounded">Custom PCB</span></div>
         </a>
@@ -112,7 +122,7 @@
           <div class="p-6"><h3 class="text-2xl font-semibold mb-3 card-title">PLC Automation Systems</h3><p class="mb-4 card-text">Developed automation logic for a simulated traffic light system and a functional toy claw machine using Schneider EcoStruxure.</p><span class="inline-block bg-indigo-100 text-indigo-800 text-xs font-medium mr-2 mb-2 px-2.5 py-0.5 rounded">PLC</span><span class="inline-block bg-pink-100 text-pink-800 text-xs font-medium mr-2 mb-2 px-2.5 py-0.5 rounded">Automation</span></div>
         </a>
         <a href="project-gimbal.html" class="card-bg block rounded-lg shadow-lg overflow-hidden transform hover:scale-105 transition duration-300 hover:shadow-xl">
-          <div class="p-6"><h3 class="text-2xl font-semibold mb-3 card-title">Servo Actuated 3-Axis Gimbal</h3><p class="mb-4 card-text">Co-designed and built a 3-axis gimbal using Arduino, MPU6050 IMU, servo motors, and 3D printing for stabilization.</p><span class="inline-block bg-blue-100 text-blue-800 text-xs font-medium mr-2 mb-2 px-2.5 py-0.5 rounded">Arduino</span><span class="inline-block bg-gray-100 text-gray-800 text-xs font-medium mr-2 mb-2 px-2.5 py-0.5 rounded">IMU</span><span class="inline-block bg-green-100 text-green-800 text-xs font-medium mr-2 mb-2 px-2.5 py-0.5 rounded">3D Printing</span></div>
+          <div class="p-6"><h3 class="text-2xl font-semibold mb-3 card-title">Servo Actuated 3-Axis Gimbal</h3><p class="mb-4 card-text">Co-designed and built a 3-axis gimbal using Arduino, MPU6050 IMU, servo motors, and 3D printing for stabilization.</p><span class="inline-block bg-blue-100 text-blue-800 text-xs font-medium mr-2 mb-2 px-2.5 py-0.5 rounded">Arduino</span><span class="inline-block bg-gray-100 text-gray-800 text-xs font-medium mr-2 mb-2 px-2.5 py-0.5 rounded">IMU</span><span class="inline-block bg-green-100 text-green-800 text-xs font-medium mr-2 mb-2 px-2.5 py-0.5 rounded">3D Printing</span><span class="inline-block bg-red-100 text-red-800 text-xs font-medium mr-2 mb-2 px-2.5 py-0.5 rounded">Sensors</span></div>
         </a>
         <a href="project-ML.html" class="card-bg block rounded-lg shadow-lg overflow-hidden transform hover:scale-105 transition duration-300 hover:shadow-xl">
           <div class="p-6"><h3 class="text-2xl font-semibold mb-3 card-title">ML: Bitcoin Market Analysis</h3><p class="mb-4 card-text">Investigated correlation between Twitter volume and Bitcoin fluctuations using BART model, Python, and Pandas.</p><span class="inline-block bg-orange-100 text-orange-800 text-xs font-medium mr-2 mb-2 px-2.5 py-0.5 rounded">Python</span><span class="inline-block bg-teal-100 text-teal-800 text-xs font-medium mr-2 mb-2 px-2.5 py-0.5 rounded">Machine Learning</span><span class="inline-block bg-yellow-100 text-yellow-800 text-xs font-medium mr-2 mb-2 px-2.5 py-0.5 rounded">Pandas</span></div>

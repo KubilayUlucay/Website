@@ -20,7 +20,7 @@ html { scroll-behavior: smooth; }
   --profile-glow-color: var(--accent2);
   --profile-glow-blur: 15px;
   --profile-glow-spread: 5px;
-  /* NEW: Volume Slider Colors - Light Theme */
+  /* Volume Slider Colors - Light Theme */
   --volume-slider-track-bg: #e5e7eb; /* Light gray track */
   --volume-slider-thumb-bg: var(--accent1); /* Accent color for thumb */
   --volume-slider-progress-bg: var(--accent1); /* Accent color for progress */
@@ -41,7 +41,7 @@ body.dark-theme {
   --profile-glow-color: var(--accent3);
   --profile-glow-blur: 18px;
   --profile-glow-spread: 6px;
-  /* NEW: Volume Slider Colors - Dark Theme */
+  /* Volume Slider Colors - Dark Theme */
   --volume-slider-track-bg: #374151; /* Darker gray track */
   --volume-slider-thumb-bg: var(--accent1); /* Accent color for thumb */
   --volume-slider-progress-bg: var(--accent1); /* Accent color for progress */
@@ -121,7 +121,8 @@ header.scrolled { backdrop-filter: blur(10px); }
 .animate-fade-in-up { animation: fadeInUp .8s ease-out .2s forwards; opacity: 0; }
 
 /* ===== Section Scroll Margin ===== */
-section[id] { scroll-margin-top: 140px; overflow: hidden; position: relative; }
+/* === EDITED: Removed 'overflow: hidden' to prevent clipping on hover === */
+section[id] { scroll-margin-top: 140px; position: relative; }
 
 /* ===== Profile Picture Styles ===== */
 #profile-picture {
@@ -179,18 +180,6 @@ section[id] { scroll-margin-top: 140px; overflow: hidden; position: relative; }
     box-shadow: 0 0 2px rgba(0,0,0,0.2);
 }
 
-/* Styling the progress fill of the slider (the part of the track before the thumb) */
-/* This is a bit tricky and browser-dependent. The easiest way is to use a pseudo-element or a background gradient.
-   For simplicity and better cross-browser compatibility without complex JS, we'll style the thumb and track.
-   A true "progress fill" often requires more specific CSS or JS.
-   However, we can simulate it for Webkit. For Firefox, it's more complex.
-*/
-#volume-slider {
-  /* A common trick for Webkit to show progress: */
-  /* background: linear-gradient(to right, var(--volume-slider-progress-bg) 0%, var(--volume-slider-progress-bg) var(--volume-percent, 50%), var(--volume-slider-track-bg) var(--volume-percent, 50%), var(--volume-slider-track-bg) 100%); */
-  /* The above line needs JS to update --volume-percent. We will do this in script.js */
-}
-
 #mute-toggle-btn i {
     font-size: 1rem; /* Adjust icon size if needed */
     color: var(--control-icon-color); /* Use theme variable for icon color */
@@ -198,4 +187,3 @@ section[id] { scroll-margin-top: 140px; overflow: hidden; position: relative; }
 #mute-toggle-btn:hover i {
     color: var(--control-hover-icon-color); /* Use theme variable for icon hover color */
 }
-

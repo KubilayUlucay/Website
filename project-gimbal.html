@@ -11,21 +11,12 @@
         href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;700&family=Montserrat:wght@400;600;700&display=swap"
         rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Honk&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css"> <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="style.css"> <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" xintegrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link
         rel="icon"
         href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💡</text></svg>">
     <style>
         /* Styles for project page elements */
-        .project-gallery img {
-            max-height: 400px;
-            object-fit: cover;
-            width: 100%;
-            border-radius: 0.5rem;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            margin-bottom: 0.5rem;
-            border: 1px solid var(--card-border);
-        }
         .slides-container {
             position: relative;
             padding-bottom: 56.25%; /* 16:9 aspect ratio for slides */
@@ -58,11 +49,45 @@
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
             border: 1px solid var(--card-border);
         }
+        
+        /* === GALLERY & LIGHTBOX STYLES === */
+        .project-gallery .gallery-item {
+            aspect-ratio: 4 / 3;
+            overflow: hidden;
+            border-radius: 0.5rem;
+            cursor: pointer;
+        }
+        .project-gallery .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+        .project-gallery .gallery-item:hover img {
+            transform: scale(1.05);
+        }
+        #lightbox-modal {
+            transition: opacity 0.3s ease;
+        }
+        #lightbox-modal.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+        body.lightbox-open {
+            overflow: hidden;
+        }
+        #prev-lightbox, #next-lightbox {
+            transition: color 0.2s ease;
+            user-select: none;
+        }
+        #prev-lightbox:hover, #next-lightbox:hover {
+            color: #ccc;
+        }
 
-        /* Styles for the fixed mini music player and its toggle button */
+        /* Music Player styles */
         #project-page-music-player-panel {
             position: fixed;
-            bottom: 80px; /* Position above the toggle button */
+            bottom: 80px;
             right: 20px;
             width: 280px;
             background-color: var(--card-bg);
@@ -87,7 +112,6 @@
             margin-bottom: 0.5rem;
             color: var(--text-color-secondary);
         }
-
         #toggle-project-music-player-btn {
             position: fixed;
             bottom: 20px;
@@ -197,12 +221,24 @@
                     Images showcasing the gimbal's construction, wiring, and components.
                 </p>
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 project-gallery">
-                    <img src="images/Projects/gimball/gimball-side.jpeg" alt="Gimbal Side View" class="rounded-lg shadow-md">
-                    <img src="images/Projects/gimball/wiring-top.jpeg" alt="Gimbal Wiring Top View" class="rounded-lg shadow-md">
-                    <img src="images/Projects/gimball/wiring-back.jpeg" alt="Gimbal Wiring Back View" class="rounded-lg shadow-md">
-                    <img src="images/Projects/gimball/stabilizer.jpeg" alt="Gimbal Stabilizer Unit" class="rounded-lg shadow-md">
-                    <img src="images/Projects/gimball/phone-data.jpeg" alt="Phone Data Graph for Gyroscope" class="rounded-lg shadow-md">
-                    <img src="images/Projects/gimball/cad-design.png" alt="CAD Model of Gimbal" class="rounded-lg shadow-md">
+                    <a href="images/Projects/gimball/gimball-side.jpeg" class="gallery-item" data-caption="Side view of the gimbal assembly">
+                        <img src="images/Projects/gimball/gimball-side.jpeg" alt="Gimbal Side View">
+                    </a>
+                    <a href="images/Projects/gimball/wiring-top.jpeg" class="gallery-item" data-caption="Top-down view of the wiring and Arduino Nano">
+                        <img src="images/Projects/gimball/wiring-top.jpeg" alt="Gimbal Wiring Top View">
+                    </a>
+                    <a href="images/Projects/gimball/wiring-back.jpeg" class="gallery-item" data-caption="Back view showing servo motors and wiring">
+                         <img src="images/Projects/gimball/wiring-back.jpeg" alt="Gimbal Wiring Back View">
+                    </a>
+                    <a href="images/Projects/gimball/stabilizer.jpeg" class="gallery-item" data-caption="The complete gimbal stabilizer unit">
+                        <img src="images/Projects/gimball/stabilizer.jpeg" alt="Gimbal Stabilizer Unit">
+                    </a>
+                     <a href="images/Projects/gimball/phone-data.jpeg" class="gallery-item" data-caption="Data graph from phone gyroscope used for reference">
+                        <img src="images/Projects/gimball/phone-data.jpeg" alt="Phone Data Graph for Gyroscope">
+                    </a>
+                    <a href="images/Projects/gimball/cad-design.png" class="gallery-item" data-caption="CAD model of the gimbal design">
+                        <img src="images/Projects/gimball/cad-design.png" alt="CAD Model of Gimbal">
+                    </a>
                 </div>
             </div>
 
@@ -223,7 +259,7 @@
                 </p>
                 <p class="text-lg leading-relaxed card-text mb-2">
                     Two sets of data were collected:
-                    <ul class="list-disc list-inside text-lg card-text space-y-1 pl-4">
+                     <ul class="list-disc list-inside text-lg card-text space-y-1 pl-4">
                         <li><strong>Gimbal IMU Data:</strong> Values gathered from the MPU6050 mounted on the gimbal's base (holding part). Data collection was initiated manually via the Arduino.</li>
                         <li><strong>Phone Gyroscope Data:</strong> Values from the smartphone's gyroscope on the stabilized platform, serving as a ground truth for stability.</li>
                     </ul>
@@ -240,6 +276,15 @@
             </div>
         </section>
     </main>
+
+    <!-- Lightbox Modal -->
+    <div id="lightbox-modal" class="hidden fixed top-0 left-0 w-full h-full bg-black bg-opacity-90 flex justify-center items-center z-[1001]">
+        <span id="close-lightbox" class="absolute top-4 right-6 text-white text-5xl font-bold cursor-pointer hover:text-gray-300 transition-colors">&times;</span>
+        <span id="prev-lightbox" class="absolute left-6 text-white text-5xl font-bold cursor-pointer select-none hover:text-gray-300 transition-colors">&#10094;</span>
+        <img id="lightbox-image" class="max-w-[90vw] max-h-[80vh] object-contain rounded-lg">
+        <span id="next-lightbox" class="absolute right-6 text-white text-5xl font-bold cursor-pointer select-none hover:text-gray-300 transition-colors">&#10095;</span>
+        <div id="lightbox-caption" class="absolute bottom-6 text-white text-center w-full text-lg p-2 bg-black bg-opacity-50 rounded-b-lg"></div>
+    </div>
 
     <button id="toggle-project-music-player-btn" aria-label="Toggle Music Player">
         <i class="fas fa-music"></i> </button>
@@ -294,10 +339,78 @@
         };
         applyProjectPageTheme();
 
-        // --- Music Player Logic for Project Pages (including toggle) ---
+        // --- Music Player & Lightbox Logic ---
         document.addEventListener('DOMContentLoaded', () => {
             applyProjectPageTheme(); 
 
+            // --- Lightbox Gallery Logic ---
+            const galleryItems = document.querySelectorAll('.gallery-item');
+            const lightboxModal = document.getElementById('lightbox-modal');
+            const lightboxImage = document.getElementById('lightbox-image');
+            const lightboxCaption = document.getElementById('lightbox-caption');
+            const closeBtn = document.getElementById('close-lightbox');
+            const prevBtn = document.getElementById('prev-lightbox');
+            const nextBtn = document.getElementById('next-lightbox');
+            let currentIndex = 0;
+
+            const openLightbox = (index) => {
+                currentIndex = index;
+                updateLightboxContent();
+                lightboxModal.classList.remove('hidden');
+                document.body.classList.add('lightbox-open');
+            };
+
+            const closeLightbox = () => {
+                lightboxModal.classList.add('hidden');
+                document.body.classList.remove('lightbox-open');
+            };
+            
+            const updateLightboxContent = () => {
+                const item = galleryItems[currentIndex];
+                const imgSrc = item.getAttribute('href');
+                const captionText = item.getAttribute('data-caption');
+                lightboxImage.setAttribute('src', imgSrc);
+                lightboxCaption.textContent = captionText;
+            };
+
+            const showNextImage = () => {
+                currentIndex = (currentIndex + 1) % galleryItems.length;
+                updateLightboxContent();
+            };
+
+            const showPrevImage = () => {
+                currentIndex = (currentIndex - 1 + galleryItems.length) % galleryItems.length;
+                updateLightboxContent();
+            };
+
+            galleryItems.forEach((item, index) => {
+                item.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    openLightbox(index);
+                });
+            });
+
+            if (closeBtn) closeBtn.addEventListener('click', closeLightbox);
+            if (prevBtn) prevBtn.addEventListener('click', showPrevImage);
+            if (nextBtn) nextBtn.addEventListener('click', showNextImage);
+            if (lightboxModal) {
+                 lightboxModal.addEventListener('click', (e) => {
+                    if (e.target === lightboxModal) { // Close if clicking on the background overlay
+                        closeLightbox();
+                    }
+                });
+            }
+           
+            document.addEventListener('keydown', (e) => {
+                if (!lightboxModal.classList.contains('hidden')) {
+                    if (e.key === 'Escape') closeLightbox();
+                    if (e.key === 'ArrowRight') showNextImage();
+                    if (e.key === 'ArrowLeft') showPrevImage();
+                }
+            });
+
+
+            // --- Music Player Logic ---
             const projectMusicPlayerPanel = document.getElementById('project-page-music-player-panel');
             const toggleMusicPlayerButton = document.getElementById('toggle-project-music-player-btn');
             const toggleIcon = toggleMusicPlayerButton ? toggleMusicPlayerButton.querySelector('i') : null;
@@ -314,7 +427,7 @@
                 if (isPlayerHidden) {
                     projectMusicPlayerPanel.classList.add('hidden-player');
                     toggleIcon.classList.remove('fa-times'); 
-                    toggleIcon.classList.add('fa-music');    
+                    toggleIcon.classList.add('fa-music');     
                 } else {
                     projectMusicPlayerPanel.classList.remove('hidden-player');
                     toggleIcon.classList.remove('fa-music');
@@ -369,7 +482,7 @@
                         if(projectMuteToggleButton) projectMuteToggleButton.innerHTML = '<i class="fas fa-volume-mute text-[var(--text-color-secondary)]"></i>';
                     } else {
                         projectIsMuted = false;
-                         if(projectMuteToggleButton) projectMuteToggleButton.innerHTML = '<i class="fas fa-volume-up text-[var(--text-color-secondary)]"></i>';
+                          if(projectMuteToggleButton) projectMuteToggleButton.innerHTML = '<i class="fas fa-volume-up text-[var(--text-color-secondary)]"></i>';
                     }
                     updateProjectVolumeSliderAppearance();
 
