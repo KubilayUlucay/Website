@@ -211,15 +211,21 @@
                 </div>
             </div>
 
+            <!-- GÜNCELLENDİ: PDF Görüntüleyici yerine Butonlar -->
             <div class="mb-8">
-                <h2 class="text-3xl font-semibold mb-4 card-title border-b pb-2 border-[var(--card-border)]">Full Project Report</h2>
+                <h2 class="text-3xl font-semibold mb-4 card-title border-b pb-2 border-[var(--card-border)]">Project Reports</h2>
                 <p class="text-lg leading-relaxed mb-4 card-text">
-                    The complete senior year project report, including detailed methodology, simulation results, schematics, and analysis, is embedded below.
+                  This project consists of two main parts: theoretical research and practical application. You can view the relevant PDF reports in a new tab using the buttons below.
                 </p>
-                <div class="pdf-embed-container">
-                    <iframe src="SeniorYearProject.pdf" title="Battery Health & Performance Management System Project Report">
-                        Your browser does not support embedded PDFs. You can <a href="SeniorYearProject.pdf" target="_blank">download the PDF to view it.</a>
-                    </iframe>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center pt-4">
+                  <a href="Projects/SeniorYearProject2.pdf" target="_blank"
+                     class="btn-pop w-full sm:w-auto inline-flex items-center justify-center bg-[var(--accent1)] hover:bg-[var(--accent2)] text-white font-semibold py-3 px-8 rounded-lg shadow-md transition text-center">
+                     <i class="fas fa-book-open mr-2"></i>Research Report
+                  </a>
+                  <a href="Projects/SeniorYearProject.pdf" target="_blank"
+                     class="btn-pop w-full sm:w-auto inline-flex items-center justify-center bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-8 rounded-lg shadow-md transition text-center">
+                     <i class="fas fa-microchip mr-2"></i>Fabrication & Test Report
+                  </a>
                 </div>
             </div>
 
@@ -498,3 +504,4 @@
     </script>
 </body>
 </html>
+
