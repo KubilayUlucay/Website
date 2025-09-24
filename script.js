@@ -256,31 +256,139 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // Add event listeners to project links to save state before navigating
-  // This assumes project links can be identified, e.g., by a class or structure.
-  // For this example, I'll assume links to .html pages within the same domain are project links.
-  document.querySelectorAll('a[href^="project-"]').forEach(link => {
+  document.querySelectorAll('a[href^="project-"], a[href^="BMS.html"]').forEach(link => {
     link.addEventListener('click', (e) => {
-        // Check if it's an internal link to another HTML page (project page)
         if (link.hostname === window.location.hostname && link.pathname.endsWith('.html')) {
             console.log('Project link clicked, saving music state...');
             saveMusicStateToLocalStorage();
-            // Allow a brief moment for localStorage to write, though it's usually synchronous
-            // For very complex state or slower devices, a tiny timeout might be considered,
-            // but usually not necessary.
         }
     });
   });
-  // Fallback: also save on pagehide (more reliable than beforeunload for some cases)
   window.addEventListener('pagehide', saveMusicStateToLocalStorage);
 
 
-  if (openPlayerBtn && playerPanel) { /* ... Open/close player panel logic ... */
-    openPlayerBtn.addEventListener('click', () => { playerPanel.classList.remove('translate-x-full'); openPlayerBtn.classList.add('hidden'); if (scWidget && volumeSlider) { scWidget.getVolume((currentVolume) => { if (isMuted) { volumeSlider.value = 0; } else { volumeSlider.value = currentVolume; lastVolume = currentVolume; } window.updateVolumeSliderAppearance(); }); } });
+  if (openPlayerBtn && playerPanel) {
+    openPlayerBtn.addEventListener('click', () => {
+        playerPanel.classList.remove('translate-x-full');
+        openPlayerBtn.classList.add('hidden');
+        if(window.completeQuest) window.completeQuest(3); // Quest 3 complete
+        if (scWidget && volumeSlider) {
+            scWidget.getVolume((currentVolume) => {
+                if (isMuted) {
+                    volumeSlider.value = 0;
+                } else {
+                    volumeSlider.value = currentVolume;
+                    lastVolume = currentVolume;
+                }
+                window.updateVolumeSliderAppearance();
+            });
+        }
+    });
   }
   const closeMusicPanel = () => { if (!playerPanel || playerPanel.classList.contains('translate-x-full')) { return; } playerPanel.classList.add('translate-x-full'); setTimeout(() => { if (playerPanel.classList.contains('translate-x-full')) { openPlayerBtn.classList.remove('hidden'); } }, 300); };
   if (closePlayerBtn && playerPanel) { closePlayerBtn.addEventListener('click', closeMusicPanel); }
   document.addEventListener('click', function(event) { if (playerPanel && !playerPanel.classList.contains('translate-x-full') && !playerPanel.contains(event.target) && !openPlayerBtn.contains(event.target)) { closeMusicPanel(); } });
   window.updateVolumeSliderAppearance(); // Initial call
 
+  // ===== EASTER EGG SCRIPT =====
+  const profilePicture = document.getElementById('profile-picture');
+  const questPanel = document.getElementById('quest-panel');
+  const closeQuestBtn = document.getElementById('close-quest-btn');
+  const congratsBtn = document.getElementById('congrats-btn');
+  const congratsModal = document.getElementById('congrats-modal');
+  const closeCongratsBtn = document.getElementById('close-congrats-btn');
+  const easterEggCat = document.getElementById('easter-egg-cat');
+  const questFontChangeText = document.getElementById('font-change-text'); // Quest 2 Target
+
+  let profileClickCount = 0;
+  const clicksNeeded = 10;
+  
+  let quests = JSON.parse(localStorage.getItem('quests')) || {
+      1: false,
+      2: false,
+      3: false
+  };
+
+  const updateQuestUI = () => {
+      for (const id in quests) {
+          const questItem = document.getElementById(`quest${id}`);
+          if (questItem && quests[id]) {
+              questItem.classList.add('completed');
+              questItem.querySelector('i').className = 'fas fa-check-circle text-green-500 mr-3';
+          }
+      }
+      const allComplete = Object.values(quests).every(status => status === true);
+      if (allComplete) {
+          congratsBtn.classList.remove('hidden');
+      }
+  };
+
+  const completeQuest = (id) => {
+      if (!quests[id]) {
+          console.log(`Quest ${id} completed!`);
+          quests[id] = true;
+          localStorage.setItem('quests', JSON.stringify(quests));
+          updateQuestUI();
+      }
+  };
+  window.completeQuest = completeQuest;
+
+  if (profilePicture) {
+    profilePicture.addEventListener('click', () => {
+      profileClickCount++;
+      if (profileClickCount >= clicksNeeded) {
+        if(questPanel) questPanel.classList.remove('-translate-x-full');
+        profileClickCount = 0;
+      }
+    });
+  }
+
+  if (closeQuestBtn) {
+    closeQuestBtn.addEventListener('click', () => {
+      if(questPanel) questPanel.classList.add('-translate-x-full');
+    });
+  }
+
+  if(easterEggCat) {
+      easterEggCat.addEventListener('click', () => {
+          completeQuest(1);
+      });
+  }
+
+  if(questFontChangeText) {
+      questFontChangeText.addEventListener('click', () => {
+          completeQuest(2);
+      });
+  }
+
+  if (congratsBtn) {
+      congratsBtn.addEventListener('click', () => {
+          if(congratsModal) {
+            congratsModal.classList.remove('hidden');
+            setTimeout(() => congratsModal.classList.remove('opacity-0'), 10);
+          }
+      });
+  }
+
+  const closeCongratsModal = () => {
+    if(congratsModal) {
+      congratsModal.classList.add('opacity-0');
+      setTimeout(() => congratsModal.classList.add('hidden'), 400);
+    }
+  };
+  
+  if (closeCongratsBtn) {
+      closeCongratsBtn.addEventListener('click', closeCongratsModal);
+  }
+  if (congratsModal) {
+    congratsModal.addEventListener('click', (e) => {
+      if (e.target === congratsModal) {
+        closeCongratsModal();
+      }
+    });
+  }
+  
+  updateQuestUI();
+
 }); // End DOMContentLoaded
+
