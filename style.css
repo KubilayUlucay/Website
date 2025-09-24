@@ -121,69 +121,121 @@ header.scrolled { backdrop-filter: blur(10px); }
 .animate-fade-in-up { animation: fadeInUp .8s ease-out .2s forwards; opacity: 0; }
 
 /* ===== Section Scroll Margin ===== */
-/* === EDITED: Removed 'overflow: hidden' to prevent clipping on hover === */
 section[id] { scroll-margin-top: 140px; position: relative; }
 
 /* ===== Profile Picture Styles ===== */
+@keyframes pulse-glow {
+    0%, 100% {
+        box-shadow: 0 0 var(--profile-glow-blur) var(--profile-glow-spread) var(--profile-glow-color);
+    }
+    50% {
+         box-shadow: 0 0 calc(var(--profile-glow-blur) * 1.5) calc(var(--profile-glow-spread) * 1.2) var(--profile-glow-color);
+    }
+}
+
 #profile-picture {
-    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    transition: border-color 0.3s ease;
     position: relative;
     z-index: 10;
     cursor: pointer;
     border-color: var(--bg-color);
-    box-shadow: 0 0 var(--profile-glow-blur) var(--profile-glow-spread) var(--profile-glow-color);
+    animation: pulse-glow 5s infinite ease-in-out;
 }
 
-/* Ensure the open button is not obscured if the panel closes over it due to z-index */
-#open-player-btn.hidden {
-    display: none;
+/* ===== Profile Tooltip Style ===== */
+.profile-tooltip {
+    position: absolute;
+    top: 50%;
+    left: 100%;
+    transform: translateY(-50%);
+    margin-left: 1.5rem; 
+    
+    background-color: var(--card-bg);
+    color: var(--text-color);
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
+    white-space: nowrap;
+    z-index: 20;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    pointer-events: none;
 }
 
-/* ===== NEW: Volume Control Styling ===== */
+
+/* ===== Volume Control Styling ===== */
 #volume-slider {
-    -webkit-appearance: none; /* Override default Wekbit/Blink appearance */
+    -webkit-appearance: none;
     appearance: none;
     width: 100%;
-    height: 8px; /* Height of the track */
-    background: var(--volume-slider-track-bg); /* Track background */
+    height: 8px;
+    background: var(--volume-slider-track-bg);
     border-radius: 5px;
-    outline: none; /* Remove outline */
+    outline: none;
     opacity: 0.7;
     transition: opacity .2s;
 }
 
 #volume-slider:hover {
-    opacity: 1; /* Full opacity on hover */
+    opacity: 1;
 }
 
-/* Thumb (slider handle) for Webkit browsers (Chrome, Safari, Opera, Edge Chromium) */
 #volume-slider::-webkit-slider-thumb {
-    -webkit-appearance: none; /* Override default appearance */
+    -webkit-appearance: none;
     appearance: none;
-    width: 18px; /* Width of the thumb */
-    height: 18px; /* Height of the thumb */
-    background: var(--volume-slider-thumb-bg); /* Thumb background */
-    border-radius: 50%; /* Circular thumb */
+    width: 18px;
+    height: 18px;
+    background: var(--volume-slider-thumb-bg);
+    border-radius: 50%;
     cursor: pointer;
-    border: 2px solid var(--card-bg); /* Optional: border to match card background for a "floating" effect */
-    box-shadow: 0 0 2px rgba(0,0,0,0.2); /* Subtle shadow for thumb */
+    border: 2px solid var(--card-bg);
+    box-shadow: 0 0 2px rgba(0,0,0,0.2);
 }
 
-/* Thumb (slider handle) for Firefox */
 #volume-slider::-moz-range-thumb {
-    width: 16px; /* Width of the thumb */
-    height: 16px; /* Height of the thumb */
-    background: var(--volume-slider-thumb-bg); /* Thumb background */
-    border-radius: 50%; /* Circular thumb */
+    width: 16px;
+    height: 16px;
+    background: var(--volume-slider-thumb-bg);
+    border-radius: 50%;
     cursor: pointer;
     border: 2px solid var(--card-bg);
     box-shadow: 0 0 2px rgba(0,0,0,0.2);
 }
 
 #mute-toggle-btn i {
-    font-size: 1rem; /* Adjust icon size if needed */
-    color: var(--control-icon-color); /* Use theme variable for icon color */
+    font-size: 1rem;
+    color: var(--control-icon-color);
 }
 #mute-toggle-btn:hover i {
-    color: var(--control-hover-icon-color); /* Use theme variable for icon hover color */
+    color: var(--control-hover-icon-color);
 }
+
+/* ===== YENİ: Language Switcher ===== */
+.lang-switcher {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem; /* 12px */
+}
+.lang-btn {
+    cursor: pointer;
+    opacity: 0.5;
+    transition: opacity 0.2s ease-in-out, transform 0.2s ease-in-out;
+    border: 2px solid transparent;
+    border-radius: 50%;
+    padding: 2px;
+}
+.lang-btn:hover {
+    opacity: 1;
+    transform: scale(1.1);
+}
+.lang-btn.active {
+    opacity: 1;
+    border-color: var(--accent1);
+    box-shadow: 0 0 5px var(--accent1);
+}
+.lang-btn img {
+    width: 1.5rem; /* 24px */
+    height: 1.5rem; /* 24px */
+    border-radius: 50%;
+    display: block;
+}
+
