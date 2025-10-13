@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sticker Maker - Kubilay Ulucay</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .drag-area { border-style: dashed; }
+        .drag-over { border-color: #ec4899; background-color: #312e81; }
+        #main-canvas.no-cursor { cursor: none; }
+        .tool-btn.active { background-color: #ec4899; color: white; }
+        .tool-btn:disabled { cursor: not-allowed; opacity: 0.5; }
+
+        #magnifier-wrapper {
+            position: absolute;
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            border: 3px solid #ec4899;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+            z-index: 1000;
+            background-color: #1f2937;
+            display: none; 
+            pointer-events: none;
+        }
+        #magnifier-canvas {
+            width: 100%;
+            height: 100%;
+        }
+        #brush-cursor {
+            position: absolute;
+            border-radius: 50%;
+            border: 1px solid white;
+            background-color: rgba(236, 72, 153, 0.3);
+            pointer-events: none;
+            display: none;
+            z-index: 1001;
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-white antialiased">
+
+    <div id="magnifier-wrapper"><canvas id="magnifier-canvas"></canvas></div>
+    <div id="brush-cursor"></div>
+
+    <div class="container mx-auto p-4 md:p-8 max-w-7xl">
+        
+        <div class="mb-8 flex justify-between items-center">
+            <a href="index.html" class="inline-flex items-center text-gray-400 hover:text-white transition-colors duration-300 group">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" /></svg>
+                Ana Sayfaya Dön
+            </a>
+            <div class="flex items-center gap-4 text-sm md:text-base">
+                <button id="how-to-use-btn" class="text-gray-400 hover:text-white transition-colors"><i class="fas fa-tools mr-2"></i>Nasıl Kullanılır?</button>
+                <button id="whatsapp-help-btn" class="text-gray-400 hover:text-white transition-colors"><i class="fab fa-whatsapp mr-2"></i>WhatsApp</button>
+                <button id="telegram-help-btn" class="text-gray-400 hover:text-white transition-colors"><i class="fab fa-telegram-plane mr-2"></i>Telegram</button>
+            </div>
+        </div>
+        
+        <header class="text-center mb-8">
+            <h1 class="text-4xl md:text-5xl font-bold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-pink-500 to-violet-500">Sticker Maker</h1>
+            <p class="text-gray-400 mt-2 text-lg">Fotoğraflarından kolayca stickerlar oluştur.</p>
+        </header>
+
+        <div id="upload-screen" class="flex flex-col items-center justify-center">
+            <div id="drag-area" class="drag-area bg-indigo-900/20 border-2 border-indigo-700 rounded-2xl p-8 text-center cursor-pointer transition-all duration-300 hover:border-pink-500 hover:bg-indigo-900/40 w-full max-w-3xl">
+                <input type="file" id="file-input" class="hidden" accept="image/*">
+                <div class="flex flex-col items-center">
+                    <svg class="w-16 h-16 text-indigo-500 mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 16.5V9.75m0 0l-3 3m3-3l3 3M6.75 19.5a4.5 4.5 0 01-1.41-8.775 5.25 5.25 0 0110.233-2.33 3 3 0 013.758 3.848A3.752 3.752 0 0118 19.5H6.75z" />
+                    </svg>
+                    <p class="text-xl font-semibold">Fotoğrafı sürükleyin, yapıştırın veya seçmek için tıklayın</p>
+                </div>
+            </div>
+            <div id="upload-progress-screen" class="hidden w-full max-w-3xl mt-4">
+                <div class="bg-gray-700 rounded-full h-4">
+                    <div id="upload-progress-bar" class="bg-pink-600 h-4 rounded-full transition-all duration-300" style="width: 0%"></div>
+                </div>
+                <p id="upload-progress-text" class="text-center mt-2 text-gray-400"></p>
+            </div>
+        </div>
+
+        <div id="editor-screen" class="hidden">
+            <div class="flex flex-col lg:flex-row gap-6">
+                <div class="w-full lg:w-72 bg-gray-800 rounded-2xl p-4 flex flex-col gap-4 self-start">
+                    <h2 class="text-xl font-bold text-center border-b border-gray-700 pb-2">Araçlar</h2>
+                    
+                    <div class="flex flex-col gap-2">
+                        <button id="poly-lasso-tool-btn" class="tool-btn w-full flex items-center justify-center gap-2 bg-gray-700 hover:bg-pink-600 text-white font-bold py-2 px-4 rounded-lg transition-colors">
+                            <i class="fas fa-draw-polygon"></i> Poligonal Kement
+                        </button>
+                        <button id="free-lasso-tool-btn" class="tool-btn w-full flex items-center justify-center gap-2 bg-gray-700 hover:bg-pink-600 text-white font-bold py-2 px-4 rounded-lg transition-colors">
+                            <i class="fas fa-signature"></i> Serbest Kement
+                        </button>
+                        <button id="brush-tool-btn" class="tool-btn w-full flex items-center justify-center gap-2 bg-gray-700 hover:bg-pink-600 text-white font-bold py-2 px-4 rounded-lg transition-colors">
+                            <i class="fas fa-paint-brush"></i> Seçim Fırçası
+                        </button>
+                        <button id="eraser-tool-btn" class="tool-btn w-full flex items-center justify-center gap-2 bg-gray-700 hover:bg-pink-600 text-white font-bold py-2 px-4 rounded-lg transition-colors">
+                            <i class="fas fa-eraser"></i> Silgi
+                        </button>
+                    </div>
+
+                    <div id="brush-options" class="hidden flex-col gap-2 mt-2 border-t border-gray-700 pt-4">
+                        <label for="brush-size" class="text-sm">Fırça Boyutu: <span id="brush-size-label">20</span></label>
+                        <input type="range" id="brush-size" min="2" max="100" value="20" class="w-full">
+                    </div>
+
+                    <button id="text-tool-btn" class="tool-btn w-full flex items-center justify-center gap-2 bg-gray-700 hover:bg-pink-600 text-white font-bold py-2 px-4 rounded-lg transition-colors">
+                        <i class="fas fa-font"></i> Yazı
+                    </button>
+                    <button id="move-tool-btn" class="tool-btn w-full flex items-center justify-center gap-2 bg-gray-700 hover:bg-pink-600 text-white font-bold py-2 px-4 rounded-lg transition-colors">
+                        <i class="fas fa-arrows-alt"></i> Taşı
+                    </button>
+
+                    <div id="text-options" class="hidden flex-col gap-3 mt-2 border-t border-gray-700 pt-4">
+                        <input type="text" id="text-input" placeholder="Yazınızı buraya girin..." class="w-full bg-gray-700 border border-gray-600 rounded-lg p-2 text-white">
+                        <div class="flex items-center justify-between">
+                            <label for="text-color">Renk:</label>
+                            <input type="color" id="text-color" value="#FFFFFF" class="bg-gray-700 rounded">
+                        </div>
+                        <div class="flex flex-col gap-2">
+                            <label>Arka Plan:</label>
+                            <div class="grid grid-cols-4 gap-2">
+                                <button class="text-bg-btn h-8 rounded" data-bg="transparent" style="background-image: linear-gradient(45deg, #808080 25%, transparent 25%), linear-gradient(-45deg, #808080 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #808080 75%), linear-gradient(-45deg, transparent 75%, #808080 75%); background-size: 20px 20px; background-position: 0 0, 0 10px, 10px -10px, -10px 0px;"></button>
+                                <button class="text-bg-btn h-8 rounded bg-black" data-bg="black"></button>
+                                <button class="text-bg-btn h-8 rounded bg-white" data-bg="white"></button>
+                                <button class="text-bg-btn h-8 rounded bg-red-600" data-bg="red"></button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex-grow"></div> 
+
+                    <div class="border-t border-gray-700 pt-4 flex flex-col gap-2">
+                        <button id="crop-btn" disabled class="tool-btn w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg transition-colors disabled:bg-gray-600">
+                           <i class="fas fa-cut"></i> Seçimi Kes
+                        </button>
+                         <button id="add-to-tray-btn" class="tool-btn w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded-lg transition-colors disabled:bg-gray-600" disabled>
+                            <i class="fas fa-plus"></i> Tepsiye Ekle
+                        </button>
+                        <button id="undo-btn" disabled class="tool-btn w-full bg-yellow-600 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded-lg transition-colors disabled:bg-gray-600">
+                            <i class="fas fa-history"></i> Geri Al
+                        </button>
+                        <button id="reset-btn" class="tool-btn w-full bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-lg transition-colors">
+                            <i class="fas fa-undo"></i> Sıfırla
+                        </button>
+                        <div class="grid grid-cols-2 gap-2 mt-2">
+                            <button id="download-btn" class="tool-btn w-full bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-4 rounded-lg transition-colors flex items-center justify-center gap-2">
+                                <i class="fas fa-download"></i> İndir
+                            </button>
+                            <button id="send-to-telegram-btn" class="tool-btn w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-4 rounded-lg transition-colors flex items-center justify-center gap-2">
+                                <i class="fab fa-telegram-plane"></i> Gönder
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex-grow flex flex-col gap-4">
+                    <div class="flex-grow flex items-center justify-center bg-gray-800 rounded-2xl p-2 relative" style="min-height: 50vh;">
+                         <canvas id="main-canvas"></canvas>
+                    </div>
+                    <div id="sticker-tray-section" class="bg-gray-800 p-4 rounded-2xl">
+                        <h3 class="text-lg font-bold mb-3 text-center">Sticker Paketi Tepsisi (<span id="sticker-count">0</span>/30)</h3>
+                        <div id="sticker-tray" class="grid grid-cols-5 md:grid-cols-8 gap-2 min-h-[80px] bg-gray-900/50 p-2 rounded-lg"></div>
+                        <div class="mt-4 flex flex-col sm:flex-row gap-2">
+                             <button id="download-whatsapp-btn" class="tool-btn w-full bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-lg transition-colors flex items-center justify-center gap-2 disabled:bg-gray-600" disabled>
+                                <i class="fab fa-whatsapp"></i> WhatsApp için İndir
+                            </button>
+                            <button id="clear-tray-btn" class="tool-btn w-full bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg transition-colors flex items-center justify-center gap-2 disabled:bg-gray-600" disabled>
+                                <i class="fas fa-trash"></i> Tepsiyi Temizle
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="status-message" class="mt-4 text-center text-lg h-6"></div>
+        </div>
+    </div>
+    
+    <div id="instructions-modal" class="hidden fixed inset-0 bg-black bg-opacity-70 z-50 flex items-center justify-center p-4">
+        <div class="bg-gray-800 rounded-2xl p-8 max-w-2xl w-full relative">
+            <button id="close-instructions-btn" class="absolute top-4 right-4 text-gray-400 hover:text-white text-2xl">&times;</button>
+            <h2 class="text-2xl font-bold mb-4 text-center">Nasıl Kullanılır?</h2>
+            <div class="space-y-4 text-gray-300">
+                <p>1. <strong>Fotoğraf Yükle:</strong> Alanın içine bir resim sürükleyin, yapıştırın (Ctrl+V) veya tıklayarak seçin.</p>
+                <p>2. <strong>Alan Seç:</strong> <span class="text-pink-400">Kement</span> veya <span class="text-pink-400">Fırça</span> araçlarıyla sticker yapmak istediğiniz alanı seçin. <span class="text-pink-400">Silgi</span> ile seçimi düzeltebilirsiniz.</p>
+                <p>3. <strong>Yazı Ekle (İsteğe Bağlı):</strong> <span class="text-pink-400">Yazı</span> aracını seçip resmin üzerine tıklayarak metin ekleyin. <span class="text-pink-400">Taşı</span> aracıyla metinlerin yerini değiştirin.</p>
+                <p>4. <strong>Kes ve Ekle:</strong> <span class="text-blue-400">Seçimi Kes</span> butonuna basarak sticker'ınızı oluşturun ve ardından <span class="text-purple-400">Tepsiye Ekle</span> butonuna basarak paketinize dahil edin.</p>
+                <p>5. <strong>İndir veya Gönder:</strong> Tepsiyi doldurduktan sonra <span class="text-green-400">WhatsApp için İndir</span> veya <span class="text-blue-400">Telegram'a Gönder</span> seçeneklerini kullanın.</p>
+                 <p class="text-sm text-gray-500 mt-2"><strong>Unutma:</strong> Yaptığın bir işlemi beğenmezsen <span class="text-yellow-400">Geri Al</span> butonuyla geri alabilirsin.</p>
+            </div>
+        </div>
+    </div>
+    <div id="whatsapp-instructions-modal" class="hidden fixed inset-0 bg-black bg-opacity-70 z-50 flex items-center justify-center p-4">
+         <div class="bg-gray-800 rounded-2xl p-8 max-w-2xl w-full relative">
+            <button id="close-whatsapp-instructions-btn" class="absolute top-4 right-4 text-gray-400 hover:text-white text-2xl">&times;</button>
+            <h2 class="text-2xl font-bold mb-4 text-center">WhatsApp'a Nasıl Eklenir?</h2>
+            <div class="space-y-4 text-gray-300">
+                <p>1. <strong>Paketi İndir:</strong> <span class="text-green-400">WhatsApp için İndir</span> butonuna basarak `.zip` dosyasını telefonunuza kaydedin.</p>
+                <p>2. <strong>Uygulamayı Yükle:</strong> Telefonunuzun uygulama mağazasından (Google Play veya App Store) <strong>"Sticker.ly"</strong> veya benzeri bir "sticker maker" uygulaması indirin.</p>
+                <p>3. <strong>Uygulamayı Aç ve Paket Ekle:</strong> İndirdiğiniz uygulamayı açın, "Yeni Paket Oluştur" veya "+" ikonuna tıklayın.</p>
+                <p>4. <strong>Sticker'ları Seç:</strong> Uygulama içinden, web sitemizden indirdiğiniz `.zip` dosyasının içeriğini (veya sticker'ları tek tek) seçerek paketinize ekleyin.</p>
+                <p>5. <strong>WhatsApp'a Aktar:</strong> Paketi oluşturduktan sonra, uygulama içindeki "WhatsApp'a Ekle" butonuna basın. Hepsi bu kadar!</p>
+            </div>
+        </div>
+    </div>
+    <div id="telegram-instructions-modal" class="hidden fixed inset-0 bg-black bg-opacity-70 z-50 flex items-center justify-center p-4">
+        <div class="bg-gray-800 rounded-2xl p-8 max-w-2xl w-full relative">
+            <button id="close-telegram-instructions-btn" class="absolute top-4 right-4 text-gray-400 hover:text-white text-2xl">&times;</button>
+            <h2 class="text-2xl font-bold mb-4 text-center">Telegram'a Nasıl Eklenir?</h2>
+            <div class="space-y-4 text-gray-300">
+                <p>1. <strong>Sticker'ı Hazırla:</strong> Web sitemizde sticker'ınızı kesin, üzerine yazı ekleyin ve son haline getirin.</p>
+                <p>2. <strong>Kullanıcı ID'nizi Öğrenin:</strong> Telegram'da <a href="https://t.me/UlucayStickerBot" target="_blank" class="text-blue-400 hover:underline">@UlucayStickerBot</a>'u açın ve bota <code>/start</code> komutunu gönderin. Bot size Kullanıcı ID'nizi bir mesajla bildirecektir.</p>
+                <p>3. <strong>Sticker'ı Gönder:</strong> Web sitemize geri dönün, <span class="text-blue-400">Gönder</span> butonuna tıklayın ve botun size verdiği Kullanıcı ID'sini açılan pencereye girin.</p>
+                <p>4. <strong>Paketi Ekle:</strong> Bot, size sticker'ınızın eklendiği paketin linkini bir mesajla gönderecektir. Bu linke tıklayarak paketi Telegram'a ekleyebilirsiniz.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const uploadScreen = document.getElementById('upload-screen'), editorScreen = document.getElementById('editor-screen'),
+                  uploadProgressScreen = document.getElementById('upload-progress-screen'), uploadProgressBar = document.getElementById('upload-progress-bar'),
+                  uploadProgressText = document.getElementById('upload-progress-text'), dragArea = document.getElementById('drag-area'),
+                  fileInput = document.getElementById('file-input'), canvas = document.getElementById('main-canvas'),
+                  ctx = canvas.getContext('2d'), magnifierWrapper = document.getElementById('magnifier-wrapper'),
+                  magnifierCanvas = document.getElementById('magnifier-canvas'), magCtx = magnifierCanvas.getContext('2d'),
+                  brushCursor = document.getElementById('brush-cursor'), polyLassoBtn = document.getElementById('poly-lasso-tool-btn'),
+                  freeLassoBtn = document.getElementById('free-lasso-tool-btn'), brushBtn = document.getElementById('brush-tool-btn'),
+                  eraserBtn = document.getElementById('eraser-tool-btn'), brushOptions = document.getElementById('brush-options'),
+                  brushSizeSlider = document.getElementById('brush-size'), brushSizeLabel = document.getElementById('brush-size-label'),
+                  textBtn = document.getElementById('text-tool-btn'), moveBtn = document.getElementById('move-tool-btn'),
+                  textOptions = document.getElementById('text-options'), textInput = document.getElementById('text-input'),
+                  textColorInput = document.getElementById('text-color'), textBgBtns = document.querySelectorAll('.text-bg-btn'),
+                  cropBtn = document.getElementById('crop-btn'), resetBtn = document.getElementById('reset-btn'),
+                  downloadBtn = document.getElementById('download-btn'), undoBtn = document.getElementById('undo-btn'),
+                  addToTrayBtn = document.getElementById('add-to-tray-btn'), stickerTray = document.getElementById('sticker-tray'),
+                  stickerCountEl = document.getElementById('sticker-count'), downloadWhatsappBtn = document.getElementById('download-whatsapp-btn'),
+                  clearTrayBtn = document.getElementById('clear-tray-btn'),
+                  howToUseBtn = document.getElementById('how-to-use-btn'), instructionsModal = document.getElementById('instructions-modal'),
+                  closeInstructionsBtn = document.getElementById('close-instructions-btn'), whatsappInstructionsModal = document.getElementById('whatsapp-instructions-modal'),
+                  closeWhatsappInstructionsBtn = document.getElementById('close-whatsapp-instructions-btn'),
+                  telegramInstructionsModal = document.getElementById('telegram-instructions-modal'),
+                  closeTelegramInstructionsBtn = document.getElementById('close-telegram-instructions-btn'),
+                  whatsappHelpBtn = document.getElementById('whatsapp-help-btn'),
+                  telegramHelpBtn = document.getElementById('telegram-help-btn'),
+                  sendToTelegramBtn = document.getElementById('send-to-telegram-btn'), statusMessage = document.getElementById('status-message');
+
+            let originalImage = null, currentImage = null, maskCanvas = null, maskCtx = null, activeTool = null, selectionPath = [],
+                isDrawing = false, textObjects = [], selectedText = null, isDraggingText = false, dragOffsetX, dragOffsetY,
+                currentTextBg = 'transparent', historyStack = [], brushSize = 20, stickerTrayItems = [];
+
+            // --- Modals ---
+            howToUseBtn.addEventListener('click', () => instructionsModal.classList.remove('hidden'));
+            closeInstructionsBtn.addEventListener('click', () => instructionsModal.classList.add('hidden'));
+            instructionsModal.addEventListener('click', (e) => { if(e.target === instructionsModal) instructionsModal.classList.add('hidden'); });
+            
+            whatsappHelpBtn.addEventListener('click', () => whatsappInstructionsModal.classList.remove('hidden'));
+            closeWhatsappInstructionsBtn.addEventListener('click', () => whatsappInstructionsModal.classList.add('hidden'));
+            whatsappInstructionsModal.addEventListener('click', (e) => { if(e.target === whatsappInstructionsModal) whatsappInstructionsModal.classList.add('hidden'); });
+
+            telegramHelpBtn.addEventListener('click', () => telegramInstructionsModal.classList.remove('hidden'));
+            closeTelegramInstructionsBtn.addEventListener('click', () => telegramInstructionsModal.classList.add('hidden'));
+            telegramInstructionsModal.addEventListener('click', (e) => { if(e.target === telegramInstructionsModal) telegramInstructionsModal.classList.add('hidden'); });
+         
+            downloadWhatsappBtn.addEventListener('click', () => {
+                if(stickerTrayItems.length > 0) {
+                     createAndDownloadWhatsAppPack();
+                     whatsappInstructionsModal.classList.remove('hidden');
+                }
+            });
+            closeWhatsappInstructionsBtn.addEventListener('click', () => whatsappInstructionsModal.classList.add('hidden'));
+            whatsappInstructionsModal.addEventListener('click', (e) => { if(e.target === whatsappInstructionsModal) whatsappInstructionsModal.classList.add('hidden'); });
+            
+            ['click', 'dragover', 'dragleave', 'drop', 'paste'].forEach(evt => {
+                const target = evt === 'paste' ? window : dragArea;
+                if (evt === 'click') target.addEventListener(evt, () => fileInput.click());
+                else if (evt.startsWith('drag')) {
+                    target.addEventListener(evt, (e) => { e.preventDefault(); dragArea.classList.toggle('drag-over', evt === 'dragover'); if (evt === 'drop') handleFile(e.dataTransfer.files[0]); });
+                } else { target.addEventListener(evt, (e) => handleFile(e.clipboardData.files[0])); }
+            });
+            fileInput.addEventListener('change', (e) => handleFile(e.target.files[0]));
+
+            function handleFile(file) {
+                if (!file || !file.type.startsWith('image/')) return;
+                const reader = new FileReader();
+                uploadProgressScreen.classList.remove('hidden');
+                reader.onprogress = e => { if (e.lengthComputable) { const percent = Math.round((e.loaded / e.total) * 100); uploadProgressBar.style.width = `${percent}%`; uploadProgressText.textContent = `Yükleniyor: ${percent}%`; } };
+                reader.onload = e => {
+                    originalImage = new Image();
+                    originalImage.onload = () => {
+                        currentImage = originalImage;
+                        resetAll();
+                        uploadScreen.classList.add('hidden'); uploadProgressScreen.classList.add('hidden'); editorScreen.classList.remove('hidden');
+                        magnifierWrapper.style.display = 'block';
+                        requestAnimationFrame(setupCanvas);
+                    };
+                    originalImage.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+            
+            function saveState() {
+                const state = {
+                    image: currentImage,
+                    texts: JSON.parse(JSON.stringify(textObjects))
+                };
+                historyStack.push(state);
+                undoBtn.disabled = false;
+            }
+            undoBtn.addEventListener('click', () => {
+                if (historyStack.length <= 1) return;
+                historyStack.pop();
+                const lastState = historyStack[historyStack.length - 1];
+                currentImage = lastState.image;
+                textObjects = lastState.texts;
+                selectionPath = [];
+                if(maskCtx) maskCtx.clearRect(0, 0, maskCanvas.width, maskCanvas.height);
+                redrawCanvas();
+                if (historyStack.length <= 1) undoBtn.disabled = true;
+            });
+
+            const MAG_SIZE = 150, ZOOM_FACTOR = 3;
+            magnifierCanvas.width = MAG_SIZE; magnifierCanvas.height = MAG_SIZE;
+            canvas.addEventListener('mousemove', e => {
+                updateMagnifier(e);
+                magnifierWrapper.style.left = `${e.pageX + 20}px`;
+                magnifierWrapper.style.top = `${e.pageY - MAG_SIZE - 20}px`;
+                if (['brush', 'eraser'].includes(activeTool)) {
+                    brushCursor.style.left = `${e.pageX - brushSize / 2}px`;
+                    brushCursor.style.top = `${e.pageY - brushSize / 2}px`;
+                }
+            });
+            canvas.addEventListener('mouseenter', () => { magnifierWrapper.style.display = 'block'; if (['brush', 'eraser'].includes(activeTool)) brushCursor.style.display = 'block'; });
+            canvas.addEventListener('mouseleave', () => { magnifierWrapper.style.display = 'none'; brushCursor.style.display = 'none'; });
+            function updateMagnifier(e) {
+                const rect = canvas.getBoundingClientRect();
+                const mouseX = e.clientX - rect.left; const mouseY = e.clientY - rect.top;
+                magCtx.clearRect(0, 0, MAG_SIZE, MAG_SIZE);
+                magCtx.imageSmoothingEnabled = false;
+                magCtx.drawImage(canvas, mouseX - (MAG_SIZE / (ZOOM_FACTOR * 2)), mouseY - (MAG_SIZE / (ZOOM_FACTOR * 2)), MAG_SIZE / ZOOM_FACTOR, MAG_SIZE / ZOOM_FACTOR, 0, 0, MAG_SIZE, MAG_SIZE);
+                
+                if (['brush', 'eraser'].includes(activeTool)) {
+                    magCtx.strokeStyle = 'rgba(255,255,255,0.7)';
+                    magCtx.lineWidth = 1;
+                    magCtx.beginPath();
+                    magCtx.arc(MAG_SIZE / 2, MAG_SIZE / 2, (brushSize / 2) * ZOOM_FACTOR, 0, Math.PI * 2);
+                    magCtx.stroke();
+                }
+
+                magCtx.strokeStyle = 'red'; magCtx.lineWidth = 1; magCtx.beginPath();
+                magCtx.moveTo(MAG_SIZE / 2, 0); magCtx.lineTo(MAG_SIZE / 2, MAG_SIZE);
+                magCtx.moveTo(0, MAG_SIZE / 2); magCtx.lineTo(MAG_SIZE, MAG_SIZE / 2);
+                magCtx.stroke();
+            }
+
+            function setupCanvas() {
+                const container = canvas.parentElement; const containerRect = container.getBoundingClientRect();
+                const containerRatio = containerRect.width / containerRect.height; const imgRatio = currentImage.width / currentImage.height;
+                if (containerRatio > imgRatio) { canvas.height = containerRect.height * 0.95; canvas.width = canvas.height * imgRatio; }
+                else { canvas.width = containerRect.width * 0.95; canvas.height = canvas.width / imgRatio; }
+                maskCanvas = document.createElement('canvas'); maskCanvas.width = canvas.width; maskCanvas.height = canvas.height;
+                maskCtx = maskCanvas.getContext('2d');
+                redrawCanvas(); saveState();
+            }
+            
+            function redrawCanvas() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                ctx.drawImage(currentImage, 0, 0, canvas.width, canvas.height);
+                if (hasMaskData()) { ctx.globalAlpha = 0.4; ctx.drawImage(maskCanvas, 0, 0); ctx.globalAlpha = 1.0; }
+                textObjects.forEach(obj => {
+                    ctx.font = obj.font;
+                    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+                    if (obj.background !== 'transparent') {
+                        const metrics = ctx.measureText(obj.text);
+                        ctx.fillStyle = obj.background;
+                        const padding = 5;
+                        const textWidth = metrics.width + padding * 2;
+                        const textHeight = metrics.actualBoundingBoxAscent + metrics.actualBoundingBoxDescent + padding * 2;
+                        ctx.fillRect(obj.x - textWidth / 2, obj.y - textHeight / 2, textWidth, textHeight);
+                    }
+                    ctx.fillStyle = obj.color;
+                    ctx.fillText(obj.text, obj.x, obj.y);
+                });
+                if (selectionPath.length > 0) {
+                    ctx.strokeStyle = 'rgba(236, 72, 153, 0.9)'; ctx.lineWidth = 2; ctx.setLineDash([5, 5]);
+                    ctx.beginPath(); ctx.moveTo(selectionPath[0].x, selectionPath[0].y);
+                    for (let i = 1; i < selectionPath.length; i++) ctx.lineTo(selectionPath[i].x, selectionPath[i].y);
+                    if (isPathClosed()) ctx.closePath();
+                    ctx.stroke(); ctx.setLineDash([]);
+                    if(activeTool === 'poly-lasso') {
+                        selectionPath.forEach(p => {
+                            ctx.fillStyle = 'white'; ctx.strokeStyle = 'black'; ctx.lineWidth = 1;
+                            ctx.beginPath(); ctx.arc(p.x, p.y, 3, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+                        });
+                    }
+                }
+            }
+            
+            [polyLassoBtn, freeLassoBtn, brushBtn, eraserBtn, textBtn, moveBtn].forEach(btn => {
+                btn.addEventListener('click', () => setActiveTool(btn.id.replace('-tool-btn', '')));
+            });
+            
+            function setActiveTool(tool) {
+                if (activeTool === tool) activeTool = null; else activeTool = tool;
+                const toolBtns = { 'poly-lasso': polyLassoBtn, 'free-lasso': freeLassoBtn, 'brush': brushBtn, 'eraser': eraserBtn, 'text': textBtn, 'move': moveBtn };
+                for (const t in toolBtns) toolBtns[t].classList.toggle('active', activeTool === t);
+                
+                textOptions.classList.toggle('hidden', activeTool !== 'text');
+                brushOptions.classList.toggle('hidden', !['brush', 'eraser'].includes(activeTool));
+                canvas.classList.toggle('no-cursor', ['brush', 'eraser'].includes(activeTool));
+                brushCursor.style.display = ['brush', 'eraser'].includes(activeTool) ? 'block' : 'none';
+
+                if (activeTool?.includes('lasso')) canvas.style.cursor = 'crosshair';
+                else if (activeTool === 'move') canvas.style.cursor = 'move';
+                else if (activeTool === 'text') canvas.style.cursor = 'text';
+                else if (!['brush', 'eraser'].includes(activeTool)) canvas.style.cursor = 'default';
+
+                if (!activeTool?.includes('lasso') && !['brush', 'eraser'].includes(activeTool)) {
+                    selectionPath = [];
+                    redrawCanvas();
+                }
+                cropBtn.disabled = !(isPathClosed() || hasMaskData());
+            }
+
+            function isPathClosed() { return selectionPath.length > 2 && selectionPath[0] === selectionPath[selectionPath.length - 1]; }
+            function hasMaskData() {
+                if (!maskCtx) return false;
+                const data = maskCtx.getImageData(0, 0, maskCanvas.width, maskCanvas.height).data;
+                for (let i = 3; i < data.length; i += 4) { if (data[i] > 0) return true; }
+                return false;
+            }
+
+            canvas.addEventListener('click', e => { if (activeTool === 'poly-lasso') handlePolyLassoClick(e); if (activeTool === 'text') handleTextClick(e); });
+            canvas.addEventListener('mousedown', e => {
+                if (['free-lasso', 'brush', 'eraser'].includes(activeTool)) { isDrawing = true; handleBrushDraw(e); if (historyStack.length === 0 || historyStack[historyStack.length - 1].image !== currentImage) saveState(); }
+                if (activeTool === 'move') handleMoveMouseDown(e);
+            });
+            canvas.addEventListener('mousemove', e => {
+                if (isDrawing && (['free-lasso', 'brush', 'eraser'].includes(activeTool))) handleBrushDraw(e);
+                if (isDraggingText) handleMoveMouseMove(e);
+            });
+            canvas.addEventListener('mouseup', () => { if (isDrawing) { isDrawing = false; if (activeTool === 'free-lasso') { selectionPath.push(selectionPath[0]); } cropBtn.disabled = !(isPathClosed() || hasMaskData()); redrawCanvas(); saveState(); } if (isDraggingText) handleMoveMouseUp(); });
+            canvas.addEventListener('mouseleave', () => { if(isDrawing) { isDrawing = false; if (activeTool === 'free-lasso') { selectionPath.push(selectionPath[0]); cropBtn.disabled = !isPathClosed(); redrawCanvas(); } }});
+
+            function handlePolyLassoClick(e) { if (selectionPath.length === 0) saveState(); if (isPathClosed()) return; const point = { x: e.offsetX, y: e.offsetY }; if (selectionPath.length > 2 && Math.hypot(point.x - selectionPath[0].x, point.y - selectionPath[0].y) < 10) { cropBtn.disabled = false; selectionPath.push(selectionPath[0]); } else selectionPath.push(point); redrawCanvas(); }
+            brushSizeSlider.addEventListener('input', e => { brushSize = e.target.value; brushSizeLabel.textContent = brushSize; updateBrushCursorSize(); });
+            function updateBrushCursorSize() { brushCursor.style.width = `${brushSize}px`; brushCursor.style.height = `${brushSize}px`; }
+            updateBrushCursorSize();
+
+            function handleBrushDraw(e) {
+                const point = { x: e.offsetX, y: e.offsetY };
+                if (activeTool === 'free-lasso') selectionPath.push(point);
+                else {
+                    maskCtx.globalCompositeOperation = activeTool === 'brush' ? 'source-over' : 'destination-out';
+                    maskCtx.fillStyle = 'white';
+                    maskCtx.beginPath(); maskCtx.arc(point.x, point.y, brushSize / 2, 0, Math.PI * 2); maskCtx.fill();
+                }
+                redrawCanvas();
+            }
+
+            function handleTextClick(e) { if (!textInput.value) return; saveState(); const fontSize = canvas.width / 18; textObjects.push({ text: textInput.value, x: e.offsetX, y: e.offsetY, color: textColorInput.value, font: `bold ${fontSize}px Arial`, background: currentTextBg }); textInput.value = ''; redrawCanvas(); }
+            textBgBtns.forEach(btn => btn.addEventListener('click', () => { currentTextBg = btn.dataset.bg; textBgBtns.forEach(b => b.classList.remove('ring-2', 'ring-pink-500')); btn.classList.add('ring-2', 'ring-pink-500'); }));
+
+            function handleMoveMouseDown(e) {
+                for (let i = textObjects.length - 1; i >= 0; i--) {
+                    const obj = textObjects[i]; ctx.font = obj.font; const metrics = ctx.measureText(obj.text);
+                    const width = metrics.width + 10, height = metrics.actualBoundingBoxAscent + metrics.actualBoundingBoxDescent + 10;
+                    if (e.offsetX > obj.x - width / 2 && e.offsetX < obj.x + width / 2 && e.offsetY > obj.y - height / 2 && e.offsetY < obj.y + height / 2) {
+                        selectedText = textObjects[i]; isDraggingText = true;
+                        dragOffsetX = e.offsetX - selectedText.x; dragOffsetY = e.offsetY - selectedText.y;
+                        saveState(); return;
+                    }
+                }
+            }
+            function handleMoveMouseMove(e) { if (isDraggingText && selectedText) { selectedText.x = e.offsetX - dragOffsetX; selectedText.y = e.offsetY - dragOffsetY; redrawCanvas(); } }
+            function handleMoveMouseUp() { if (isDraggingText) { isDraggingText = false; selectedText = null; } }
+            
+            cropBtn.addEventListener('click', applyCrop);
+            resetBtn.addEventListener('click', resetAll);
+            addToTrayBtn.addEventListener('click', addCurrentStateToTray);
+
+            function applyCrop() {
+                saveState();
+                const tempCanvas = document.createElement('canvas'); tempCanvas.width = canvas.width; tempCanvas.height = canvas.height;
+                const tempCtx = tempCanvas.getContext('2d');
+                
+                tempCtx.drawImage(getCanvasWithTexts(currentImage), 0, 0);
+                
+                const finalMask = document.createElement('canvas'); finalMask.width = canvas.width; finalMask.height = canvas.height;
+                const finalMaskCtx = finalMask.getContext('2d');
+
+                if (isPathClosed()) {
+                    finalMaskCtx.beginPath(); finalMaskCtx.moveTo(selectionPath[0].x, selectionPath[0].y);
+                    for (let i = 1; i < selectionPath.length; i++) finalMaskCtx.lineTo(selectionPath[i].x, selectionPath[i].y);
+                    finalMaskCtx.closePath(); finalMaskCtx.fillStyle = 'white'; finalMaskCtx.fill();
+                } else if (hasMaskData()){
+                    finalMaskCtx.drawImage(maskCanvas, 0, 0);
+                }
+                
+                tempCtx.globalCompositeOperation = 'destination-in';
+                tempCtx.drawImage(finalMask, 0, 0);
+                
+                const dataUrl = tempCanvas.toDataURL();
+                currentImage = new Image(); currentImage.src = dataUrl;
+                currentImage.onload = () => {
+                    selectionPath = []; textObjects = []; cropBtn.disabled = true; addToTrayBtn.disabled = false;
+                    maskCtx.clearRect(0, 0, maskCanvas.width, maskCanvas.height);
+                    redrawCanvas();
+                    saveState();
+                };
+            }
+            
+            function getCanvasWithTexts(baseImage) {
+                 const tempCanvas = document.createElement('canvas'); tempCanvas.width = canvas.width; tempCanvas.height = canvas.height;
+                 const tempCtx = tempCanvas.getContext('2d');
+                 tempCtx.drawImage(baseImage, 0, 0, canvas.width, canvas.height);
+                 textObjects.forEach(obj => {
+                    tempCtx.font = obj.font; tempCtx.textAlign = 'center'; tempCtx.textBaseline = 'middle';
+                    if (obj.background !== 'transparent') {
+                        const metrics = tempCtx.measureText(obj.text);
+                        const padding = 5;
+                        const textWidth = metrics.width + padding * 2;
+                        const textHeight = metrics.actualBoundingBoxAscent + metrics.actualBoundingBoxDescent + padding * 2;
+                        tempCtx.fillStyle = obj.background;
+                        tempCtx.fillRect(obj.x - textWidth / 2, obj.y - textHeight / 2, textWidth, textHeight);
+                    }
+                    tempCtx.fillStyle = obj.color;
+                    tempCtx.fillText(obj.text, obj.x, obj.y);
+                });
+                return tempCanvas;
+            }
+
+            function resetAll() {
+                currentImage = originalImage; textObjects = []; selectionPath = []; historyStack = [];
+                cropBtn.disabled = true; undoBtn.disabled = true; addToTrayBtn.disabled = true;
+                if(activeTool) setActiveTool(null);
+                if(maskCtx) maskCtx.clearRect(0, 0, maskCanvas.width, maskCanvas.height);
+                redrawCanvas(); saveState();
+            }
+
+            function addCurrentStateToTray() {
+                if (stickerTrayItems.length >= 30) {
+                    alert('Sticker tepsisi dolu (Maksimum 30).');
+                    return;
+                }
+                const finalCanvas = getCanvasWithTexts(currentImage);
+                finalCanvas.toBlob(blob => {
+                    stickerTrayItems.push(blob);
+                    updateTrayUI();
+                }, 'image/png');
+                resetAll();
+            }
+            
+            function updateTrayUI() {
+                stickerTray.innerHTML = '';
+                stickerTrayItems.forEach((blob, index) => {
+                    const img = document.createElement('img');
+                    img.src = URL.createObjectURL(blob);
+                    img.className = 'w-16 h-16 object-contain bg-gray-700 rounded-md p-1 cursor-pointer';
+                    img.onclick = () => {
+                        stickerTrayItems.splice(index, 1);
+                        updateTrayUI();
+                    };
+                    stickerTray.appendChild(img);
+                });
+                stickerCountEl.textContent = stickerTrayItems.length;
+                const hasItems = stickerTrayItems.length > 0;
+                downloadWhatsappBtn.disabled = !hasItems;
+                clearTrayBtn.disabled = !hasItems;
+            }
+
+            clearTrayBtn.addEventListener('click', () => {
+                stickerTrayItems = [];
+                updateTrayUI();
+            });
+
+            async function createAndDownloadWhatsAppPack() {
+                if (stickerTrayItems.length === 0) return;
+                statusMessage.textContent = 'WhatsApp paketi oluşturuluyor...';
+                const formData = new FormData();
+                formData.append('packName', 'Ulucay Stickers');
+                formData.append('publisher', 'Ulucay.org');
+                stickerTrayItems.forEach((blob, index) => {
+                    formData.append('stickers', blob, `${index}.png`);
+                });
+
+                try {
+                    const response = await fetch('https://ulucay-file-converter-124999888102.europe-west1.run.app/create-whatsapp-pack', {
+                        method: 'POST',
+                        body: formData,
+                    });
+                    if (!response.ok) throw new Error(`Sunucu hatası: ${response.statusText}`);
+                    
+                    const blob = await response.blob();
+                    const link = document.createElement('a');
+                    link.href = URL.createObjectURL(blob);
+                    link.download = 'WhatsApp_Stickers.zip';
+                    link.click();
+                    URL.revokeObjectURL(link.href);
+                    statusMessage.textContent = 'Paket başarıyla indirildi!';
+                } catch(error) {
+                    statusMessage.textContent = `Hata: ${error.message}`;
+                }
+            }
+
+            downloadBtn.addEventListener('click', () => { getFinalSticker(blob => { const link = document.createElement('a'); link.download = 'sticker.png'; link.href = URL.createObjectURL(blob); link.click(); URL.revokeObjectURL(link.href); }); });
+            sendToTelegramBtn.addEventListener('click', sendStickerToTelegram);
+            
+            function getFinalSticker(callback) {
+                const finalCanvas = getCanvasWithTexts(currentImage);
+                const stickerSize = 512;
+                const trimmedCanvas = trimCanvas(finalCanvas);
+                const resizedCanvas = document.createElement('canvas');
+                resizedCanvas.width = stickerSize; resizedCanvas.height = stickerSize;
+                const resizedCtx = resizedCanvas.getContext('2d');
+                
+                const aspectRatio = trimmedCanvas.width / trimmedCanvas.height;
+                let drawWidth, drawHeight;
+                if(aspectRatio > 1) {
+                    drawWidth = stickerSize * 0.9;
+                    drawHeight = (stickerSize * 0.9) / aspectRatio;
+                } else {
+                    drawHeight = stickerSize * 0.9;
+                    drawWidth = (stickerSize * 0.9) * aspectRatio;
+                }
+                const x = (stickerSize - drawWidth) / 2;
+                const y = (stickerSize - drawHeight) / 2;
+                resizedCtx.drawImage(trimmedCanvas, x, y, drawWidth, drawHeight);
+                resizedCanvas.toBlob(callback, 'image/png');
+            }
+
+            async function sendStickerToTelegram() {
+                const userId = prompt("Lütfen Telegram Kullanıcı ID'nizi girin.\n(Bunu öğrenmek için Telegram'da @UlucayStickerBot'a /start yazabilirsiniz.)");
+                if (!userId) return;
+
+                statusMessage.textContent = 'Sticker bota gönderiliyor...';
+                statusMessage.classList.remove('text-green-400', 'text-red-400');
+
+                getFinalSticker(async (blob) => {
+                    const formData = new FormData();
+                    formData.append('sticker', blob, 'sticker.png');
+                    formData.append('userId', userId);
+
+                    try {
+                        const response = await fetch('https://ulucay-file-converter-124999888102.europe-west1.run.app/upload-sticker', {
+                            method: 'POST',
+                            body: formData,
+                        });
+                        if (!response.ok) throw new Error(`Sunucu hatası: ${response.statusText}`);
+                        const result = await response.json();
+                        if (result.success) {
+                            statusMessage.textContent = 'Başarılı! Sticker botuna gönderildi. Telegram\'ı kontrol et.';
+                            statusMessage.classList.add('text-green-400');
+                        } else {
+                            throw new Error(result.message);
+                        }
+                    } catch (error) {
+                        statusMessage.textContent = `Hata: ${error.message}`;
+                        statusMessage.classList.add('text-red-400');
+                    }
+                });
+            }
+
+            function trimCanvas(c) {
+                const ctx = c.getContext('2d'),
+                    pixels = ctx.getImageData(0, 0, c.width, c.height),
+                    l = pixels.data.length;
+                let i, bound = { top: null, left: null, right: null, bottom: null }, x, y;
+
+                for (i = 0; i < l; i += 4) {
+                    if (pixels.data[i + 3] !== 0) {
+                        x = (i / 4) % c.width;
+                        y = ~ ~((i / 4) / c.width);
+
+                        if (bound.top === null) bound.top = y;
+                        if (bound.left === null) bound.left = x; 
+                        else if (x < bound.left) bound.left = x;
+                        if (bound.right === null) bound.right = x; 
+                        else if (bound.right < x) bound.right = x;
+                        if (bound.bottom === null) bound.bottom = y;
+                        else if (bound.bottom < y) bound.bottom = y;
+                    }
+                }
+                if (bound.top === null) return c;
+                
+                const trimHeight = bound.bottom - bound.top + 1,
+                      trimWidth = bound.right - bound.left + 1,
+                      trimmed = ctx.getImageData(bound.left, bound.top, trimWidth, trimHeight);
+
+                const copy = document.createElement('canvas');
+                copy.width = trimWidth;
+                copy.height = trimHeight;
+                copy.getContext('2d').putImageData(trimmed, 0, 0);
+                return copy;
+            }
+            
+            window.addEventListener('resize', () => { if(currentImage) setupCanvas(); });
+        });
+    </script>
+</body>
+</html>
+
